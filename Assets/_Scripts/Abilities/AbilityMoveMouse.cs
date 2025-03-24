@@ -12,7 +12,7 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
         path = new();
     }
 
-    public override void Update()
+    public override void FixedUpdate()
     {
         if(owner == null || owner.cc == null) return;
 

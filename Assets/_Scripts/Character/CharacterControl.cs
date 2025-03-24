@@ -9,23 +9,25 @@ public class CharacterControl : MonoBehaviour{
     [HideInInspector] public AbilityControl ability;
     public List<AbilityData> initialAbilities;
     [ReadOnly] public CharacterController cc;
+    [ReadOnly] public Animator animator;
     [ReadOnly] public bool isGrounded;
     void Awake()
     {
         TryGetComponent(out ability);
         TryGetComponent(out cc);
+        TryGetComponent(out animator);
     }
 
     void Start()
     {
-        foreach( var dat in initialAbilities){
-            ability.Add(dat, true);
+        foreach( var data in initialAbilities){
+            ability.Add(data, true);
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        isGrounded = cc.isGrounded;
+        isGrounded = CheckGrounded();
         InputKeyboard();
     }
 
@@ -33,5 +35,9 @@ public class CharacterControl : MonoBehaviour{
         if(Input.GetButtonDown("Jump")) {
             ability.Activate(AbilityFlag.Jump);
         }
+    }
+    bool CheckGrounded(){
+        var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
+        return Physics.Raycast(ray, 0.3f);
     }
 }

@@ -19,12 +19,6 @@ public class AbilityControl : MonoBehaviour
     private readonly Dictionary<AbilityFlag, Ability> actives = new Dictionary<AbilityFlag, Ability>();
 
     //활성화된 능력만 Update.
-    private void Update()
-    {
-        foreach( var a in actives.ToList())             // ToList 하는 이유? Dictionary는 순서를 고려하지 않는다. 
-            a.Value.Update();    
-    }
-
     private void FixedUpdate()
     {
         foreach( var a in actives.ToList())
@@ -67,7 +61,6 @@ public class AbilityControl : MonoBehaviour
                 actives[flag].Activate();
             }
         }
-        // HashSet<Key> : 리스트와 같지만, 중복(x), 자동 정렬(O)
     }
 
     public void DeActivate(AbilityFlag flag){
@@ -75,7 +68,7 @@ public class AbilityControl : MonoBehaviour
             if((d.Flag & flag) == flag)
             {
                 if(actives.ContainsKey(flag) == false){
-                    actives[flag].DeActivate();
+                    actives[flag].Deactivate();
                     actives.Remove(flag);
                 }
             }
