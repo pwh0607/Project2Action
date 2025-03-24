@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CustomInspector;
 using UnityEngine;
 
 // GAS (Game Ability System) : 언리얼.
@@ -7,33 +8,30 @@ using UnityEngine;
 public class CharacterControl : MonoBehaviour{
     [HideInInspector] public AbilityControl ability;
     public List<AbilityData> initialAbilities;
-    public bool isGrounded;
-    public Rigidbody rb;
-
+    [ReadOnly] public CharacterController characterController;
+    [ReadOnly] public bool isGrounded;
     void Awake()
     {
-        if(TryGetComponent(out ability) == false){
-            Debug.LogWarning("CharacterControl : AblityControl 없음");
-        }
-        if(TryGetComponent(out rb) == false){
-            Debug.LogWarning("rigidbody 없음");
-        }
+        TryGetComponent(out ability);
+        TryGetComponent(out characterController);
     }
 
     void Start()
     {
         foreach( var dat in initialAbilities){
-            ability.Add(dat);
+            ability.Add(dat, true);
         }
     }
 
     void Update()
     {
-        isGrounded = Physics.Raycast(transform.position + Vector3.up, -transform.up, 1f);
+        isGrounded = characterController.isGrounded;
         InputKeyboard();
     }
 
     void InputKeyboard(){
-        if(Input.GetButtonDown("Jump")) ability.Trigger(AbilityFlag.Jump);
+        if(Input.GetButtonDown("Jump")) {
+            ability.Activate(AbilityFlag.Jump);
+        }
     }
 }
