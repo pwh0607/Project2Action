@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using CustomInspector;
+using System.Linq;
 
 // abilityDatas : 외부에서 능력 부여/회수 인터페이스
 // abilities : abilityDatas 갱신해서 행동
@@ -17,18 +18,20 @@ public class AbilityControl : MonoBehaviour
     // 사용할 수 있는 능력
     private readonly Dictionary<AbilityFlag, Ability> actives = new Dictionary<AbilityFlag, Ability>();
 
+    //활성화된 능력만 Update.
     private void Update()
     {
-        foreach( var a in actives)
+        foreach( var a in actives.ToList())             // ToList 하는 이유? Dictionary는 순서를 고려하지 않는다. 
             a.Value.Update();    
     }
 
     private void FixedUpdate()
     {
-        foreach( var a in actives)
+        foreach( var a in actives.ToList())
             a.Value.FixedUpdate();
     }
 
+    // 잠재능력을 추가
     public void Add(AbilityData d, bool immediate = false)
     {
         if (datas.Contains(d) == true || d == null)
@@ -42,6 +45,7 @@ public class AbilityControl : MonoBehaviour
             actives[d.Flag] = ability;      
     }
 
+    // 잠재능력 제거 => 절대 할 수 없는 행동.
     public void Remove(AbilityData d)
     {
         if (datas.Contains(d) == false || d == null)
@@ -52,27 +56,28 @@ public class AbilityControl : MonoBehaviour
         actives.Remove(d.Flag);
     }
 
-    // 능력 활성화 및 업데이트 활성화
+    // 잠재 능력 활성화 및 업데이트 활성화
     public void Activate(AbilityFlag flag)
     {
-        foreach(var pair in actives){
-            if(pair.Key.Has(flag)) {
-                pair.Value.Activate();
-                if(!actives.ContainsKey(flag)){
-                    actives[flag] = pair.Value;
-                }
+        foreach(var d in datas){
+            if((d.Flag & flag) == flag) {
+                if(actives.ContainsKey(flag) == false)
+                    actives[flag] = d.CreateAbility(GetComponent<CharacterControl>());
+                
+                actives[flag].Activate();
             }
         }
         // HashSet<Key> : 리스트와 같지만, 중복(x), 자동 정렬(O)
     }
 
-    // 능력 비활성화 및 업데이트 제거
     public void DeActivate(AbilityFlag flag){
-        foreach(var pair in actives){
-            if(pair.Key.Has(flag))
+        foreach(var d in datas){
+            if((d.Flag & flag) == flag)
             {
-                actives.Remove(flag);
-                pair.Value.Deactivate();
+                if(actives.ContainsKey(flag) == false){
+                    actives[flag].DeActivate();
+                    actives.Remove(flag);
+                }
             }
         }
     }

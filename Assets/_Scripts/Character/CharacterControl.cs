@@ -8,12 +8,12 @@ using UnityEngine;
 public class CharacterControl : MonoBehaviour{
     [HideInInspector] public AbilityControl ability;
     public List<AbilityData> initialAbilities;
-    [ReadOnly] public CharacterController characterController;
+    [ReadOnly] public CharacterController cc;
     [ReadOnly] public bool isGrounded;
     void Awake()
     {
         TryGetComponent(out ability);
-        TryGetComponent(out characterController);
+        TryGetComponent(out cc);
     }
 
     void Start()
@@ -25,7 +25,7 @@ public class CharacterControl : MonoBehaviour{
 
     void Update()
     {
-        isGrounded = characterController.isGrounded;
+        isGrounded = cc.isGrounded;
         InputKeyboard();
     }
 

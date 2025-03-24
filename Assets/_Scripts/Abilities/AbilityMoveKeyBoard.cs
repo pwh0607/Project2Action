@@ -26,9 +26,9 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
         base.Activate();
     }
 
-    public override void Deactivate()
+    public override void DeActivate()
     {
-        base.Deactivate();
+        base.DeActivate();
     }
 
     void InputKeyboard()
@@ -48,7 +48,7 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
     void Movement()
     {
         // owner.rb.AddForce(movement * data.moveSpeed * Time.deltaTime * 10f);
-        owner.characterController.Move(direction * data.movePerSec * Time.deltaTime);
+        owner.cc.Move(direction * data.movePerSec * Time.deltaTime);
     }
 
     void Rotate()

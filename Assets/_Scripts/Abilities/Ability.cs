@@ -46,7 +46,7 @@ public abstract class Ability{
     // 어빌리티 활성
     public virtual void Activate() { }
     // 어빌리티 비활성a
-    public virtual void Deactivate() { }
+    public virtual void DeActivate() { }
     // 어빌리티 계속 Update
     public virtual void Update() { }
 

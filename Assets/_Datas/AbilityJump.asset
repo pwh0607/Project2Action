@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AbilityJump
   m_EditorClassIdentifier: 
   jumpForce: 10
-  jumpDuration: 10
+  jumpDuration: 1
   jumpCurve:
     serializedVersion: 2
     m_Curve:
