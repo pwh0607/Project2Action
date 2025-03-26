@@ -38920,9 +38920,9 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.2
-    functionName: 
+    functionName: FootStep
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 11500000, guid: 9df58b6b5e25da244b72182702afb403, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

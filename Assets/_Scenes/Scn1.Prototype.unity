@@ -1648,6 +1648,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   animator: {fileID: 0}
   isGrounded: 1
+  isArrived: 1
 --- !u!1 &1033078647
 GameObject:
   m_ObjectHideFlags: 0
@@ -3706,6 +3707,7 @@ GameObject:
   - component: {fileID: 992839349}
   - component: {fileID: 95787105106847983}
   - component: {fileID: 95787105106847986}
+  - component: {fileID: 95787105106847987}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -7480,6 +7482,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &95787105106847987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316981408253735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9df58b6b5e25da244b72182702afb403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Lfoot: {fileID: 4195159530945591}
+  Rfoot: {fileID: 4850888507196125}
+  smoke: {fileID: 2629689706300806626, guid: 0d879c6f654b17e4e8b87b32da426228, type: 3}
+  jumpSmoke: {fileID: -3041555348497599386, guid: 9c39fbcfdd2562143b816b99c1ea418b, type: 3}
 --- !u!1 &152878826316080638
 GameObject:
   m_ObjectHideFlags: 0

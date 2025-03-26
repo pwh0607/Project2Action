@@ -6,11 +6,18 @@ using UnityEngine;
 // 32bit = 4byte ( int )
 // 0000 .... 0000 0000
 public class CharacterControl : MonoBehaviour{
+    [Header("Ability")]
     [HideInInspector] public AbilityControl ability;
     public List<AbilityData> initialAbilities;
+
+    [Header("Physics")]   
     [ReadOnly] public Rigidbody rb;
     [ReadOnly] public Animator animator;
+
+    [Header("flag")]   
     [ReadOnly] public bool isGrounded;
+    [ReadOnly] public bool isArrived = true;
+
     void Awake()
     {
         TryGetComponent(out ability);

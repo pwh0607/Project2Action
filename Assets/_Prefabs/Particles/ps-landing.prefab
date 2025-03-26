@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4991225636794827027}
   - component: {fileID: 6489525614415880461}
   - component: {fileID: 3892966074085434830}
+  - component: {fileID: -3041555348497599386}
   m_Layer: 0
   m_Name: ps-landing
   m_TagString: Untagged
@@ -4854,6 +4855,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4910,6 +4914,19 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &-3041555348497599386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6279694706564535481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9451ca51ec4ae348bbaa83f0579dc56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolManager: {fileID: 0}
 --- !u!1 &7009077470039571774
 GameObject:
   m_ObjectHideFlags: 0
@@ -9879,6 +9896,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

@@ -61,7 +61,7 @@ public class PoolManager : BehaviourSingleton<PoolManager>
         var pool = prefabs[pb];
         var clone = pool.Get();
         clone.transform.SetPositionAndRotation(pos, rot);
-        clone.transform.SetParent(parent);
+        clone.transform.SetParent(parent ?? transform);         // ?? parent가 null이 아니면 parent를 쓰고, parent가 null이면 transform을 써라!
         
         instances[clone] = pool;
 

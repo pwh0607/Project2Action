@@ -7,14 +7,13 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     private NavMeshPath path;
     private Vector3[] corners;
     private int next;
-    private bool isArrived;
     private float hitDistance;      //hit,point화 캐릭터 간의 거리
     private ParticleSystem marker;
     public AbilityMoveMouse(AbilityMoveMouseData data, CharacterControl owner) : base(data, owner)
     {
         camera = Camera.main;
         path = new();
-        isArrived = true;
+        owner.isArrived = true;
 
         this.marker = GameObject.Instantiate(data.marker).GetComponent<ParticleSystem>();
         if(marker == null){
@@ -51,13 +50,13 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
         if(NavMesh.CalculatePath(owner.transform.position, destination, -1, path) == false) return;
         corners = path.corners;
         next = 1;
-        isArrived = false;
+        owner.isArrived = false;
     }
     
     Quaternion lookrot;
     float currentVelocity;
     private void FollowPath(){
-        if(corners == null || corners.Length <= 0 || isArrived == true) return;
+        if(corners == null || corners.Length <= 0 || owner.isArrived == true) return;
 
         Vector3 nextTarget = corners[next];
         Vector3 finalTarget = corners[corners.Length-1];
@@ -78,7 +77,7 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
         if(Vector3.Distance(nextTarget, owner.rb.position) <= data.stopDistance){
             next++;
             if(next >= corners.Length){
-                isArrived = true;
+                owner.isArrived = true;
                 owner.rb.linearVelocity = Vector3.zero;
             }
         }
@@ -89,7 +88,7 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     }
 
     private void MoveAnimation(){
-        float a = isArrived? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
+        float a = owner.isArrived? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
         float spd = Mathf.Lerp(owner.animator.GetFloat("moveSpeed"), a, Time.deltaTime * 10f);
         owner.animator.SetFloat("moveSpeed", spd);
     }
