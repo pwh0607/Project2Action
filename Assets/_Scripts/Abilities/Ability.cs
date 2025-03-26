@@ -37,6 +37,8 @@ public abstract class Ability{
     public virtual void Activate() { }
     // 어빌리티 비활성a
     public virtual void Deactivate() { }
+    
+    public virtual void Update(){ }
     // 어빌리티를 더 빠르게 Update 수행 (주로 물리 연산에 이용)
     public virtual void FixedUpdate() { }
 }

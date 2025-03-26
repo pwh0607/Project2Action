@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CustomInspector;
 using UnityEngine;
+using UnityEngine.AI;
 
 // GAS (Game Ability System) : 언리얼.
 // 32bit = 4byte ( int )
@@ -8,13 +9,14 @@ using UnityEngine;
 public class CharacterControl : MonoBehaviour{
     [HideInInspector] public AbilityControl ability;
     public List<AbilityData> initialAbilities;
-    [ReadOnly] public CharacterController cc;
+    [ReadOnly] public Rigidbody rb;
     [ReadOnly] public Animator animator;
     [ReadOnly] public bool isGrounded;
+    [ReadOnly] public bool isLanding;
     void Awake()
     {
         TryGetComponent(out ability);
-        TryGetComponent(out cc);
+        TryGetComponent(out rb);
         TryGetComponent(out animator);
     }
 
@@ -28,6 +30,7 @@ public class CharacterControl : MonoBehaviour{
     void FixedUpdate()
     {
         isGrounded = CheckGrounded();
+        isLanding = CheckLanding();
         InputKeyboard();
     }
 
@@ -36,8 +39,14 @@ public class CharacterControl : MonoBehaviour{
             ability.Activate(AbilityFlag.Jump);
         }
     }
+
     bool CheckGrounded(){
         var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
         return Physics.Raycast(ray, 0.3f);
+    }
+
+    bool CheckLanding(){
+        var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
+        return Physics.Raycast(ray, 0.6f);
     }
 }

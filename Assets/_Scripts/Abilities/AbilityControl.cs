@@ -63,11 +63,11 @@ public class AbilityControl : MonoBehaviour
         }
     }
 
-    public void DeActivate(AbilityFlag flag){
+    public void Deactivate(AbilityFlag flag){
         foreach(var d in datas){
             if((d.Flag & flag) == flag)
             {
-                if(actives.ContainsKey(flag) == false){
+                if(!actives.ContainsKey(flag)){
                     actives[flag].Deactivate();
                     actives.Remove(flag);
                 }

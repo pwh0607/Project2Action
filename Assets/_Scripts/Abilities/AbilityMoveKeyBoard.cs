@@ -50,13 +50,18 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
 
     void Movement()
     {
-        owner.cc.Move(direction * data.movePerSec * Time.deltaTime);
+        // *50f? movePerSec와 LinearVelocity 값을 동기화 하기 위한 상수.
+        Vector3 movement = direction * data.movePerSec * 50f * Time.deltaTime;
+        Vector3 velocity = new Vector3(movement.x, owner.rb.linearVelocity.y, movement.z);
 
+        owner.rb.linearVelocity = velocity;
+        
         if(!owner.isGrounded) return;
         
-        float velocity = Vector3.Distance(Vector3.zero, owner.cc.velocity);
-        float targetSpeed = Mathf.Clamp01(velocity / data.movePerSec);
+        float v = Vector3.Distance(Vector3.zero, owner.rb.linearVelocity);
+        float targetSpeed = Mathf.Clamp01(v / data.movePerSec);
         float moveSpeed = Mathf.Lerp(owner.animator.GetFloat("moveSpeed"), targetSpeed, Time.deltaTime * 30f);
+        
         owner.animator?.SetFloat("moveSpeed", moveSpeed);
     }
 

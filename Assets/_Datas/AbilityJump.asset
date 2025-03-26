@@ -13,27 +13,27 @@ MonoBehaviour:
   m_Name: AbilityJump
   m_EditorClassIdentifier: 
   jumpForce: 10
-  jumpDuration: 0.3
+  jumpDuration: 1
   jumpCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.3
-      inSlope: 3.1006272
-      outSlope: 3.1006272
+      value: 0.4
+      inSlope: 0.6598584
+      outSlope: 0.6598584
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.039848197
+      outWeight: 0.07210629
     - serializedVersion: 3
       time: 1
-      value: 0
-      inSlope: -3.6517153
-      outSlope: -3.6517153
+      value: -0.3
+      inSlope: -2.6142678
+      outSlope: -2.6142678
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.028463006
+      inWeight: 0.037950635
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
