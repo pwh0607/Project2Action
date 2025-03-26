@@ -7,33 +7,43 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     private NavMeshPath path;
     private Vector3[] corners;
     private int next;
-    private bool isArrived = true;
-
+    private bool isArrived;
+    private float hitDistance;      //hit,point화 캐릭터 간의 거리
+    private ParticleSystem marker;
     public AbilityMoveMouse(AbilityMoveMouseData data, CharacterControl owner) : base(data, owner)
     {
         camera = Camera.main;
         path = new();
-    }
+        isArrived = true;
 
-    public override void Update(){
-        if(owner == null || owner.rb == null) return;
-        
-        InputMouse();
-        MoveAnimation();
+        this.marker = GameObject.Instantiate(data.marker).GetComponent<ParticleSystem>();
+        if(marker == null){
+            Debug.LogWarning("Marker is not existed!");
+        }
+
+        marker.gameObject.SetActive(false);
     }
 
     // 물리 연산만!
     public override void FixedUpdate()
     {
         if(owner == null || owner.rb == null) return;
+        InputMouse();
+        MoveAnimation();
         FollowPath();
     }
 
     private void InputMouse(){
         if(Input.GetMouseButtonDown(1)){
             Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-            if(Physics.Raycast(ray, out var hit))
+            if(Physics.Raycast(ray, out var hit)){
+                marker.gameObject.SetActive(true);
+                marker.transform.position = hit.point + Vector3.up * 0.1f;
+                marker.Play();
+
+                hitDistance = Vector3.Distance(hit.point, owner.rb.position);
                 SetDestiNation(hit.point);
+            }
         }
     }
 
@@ -49,20 +59,14 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     private void FollowPath(){
         if(corners == null || corners.Length <= 0 || isArrived == true) return;
 
-        // 다음 위치
-        Vector3 nextTarget = corners[next];   
-        // 최종 위치.
+        Vector3 nextTarget = corners[next];
         Vector3 finalTarget = corners[corners.Length-1];
-        
         // 다음 위치 방향.
         Vector3 direction = (nextTarget - owner.rb.transform.position).normalized;
         direction.y = 0;
         
         // 회전
-        if(direction != Vector3.zero){
-            lookrot = Quaternion.LookRotation(direction);
-        }
-
+        if(direction != Vector3.zero) lookrot = Quaternion.LookRotation(direction);
         owner.transform.rotation = Quaternion.RotateTowards(owner.transform.rotation, lookrot, data.rotatePerSec * Time.deltaTime);
 
         //이동
@@ -79,7 +83,7 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
             }
         }
 
-        if(Vector3.Distance(nextTarget, owner.rb.position) <= data.stopDistance + data.stopOffset){
+        if(hitDistance > data.stopOffset && Vector3.Distance(finalTarget, owner.rb.position) <= data.stopDistance + data.stopOffset){ 
             owner.animator?.CrossFadeInFixedTime("RUNTOSTOP", 0.1f, 0, 0f);
         }
     }

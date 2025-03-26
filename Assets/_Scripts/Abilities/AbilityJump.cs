@@ -27,7 +27,7 @@ public class AbilityJump : Ability<AbilityJumpData>
         owner.animator?.CrossFadeInFixedTime("JUMPDOWN", 0.02f, 0, 0f);
     }
 
-    public override void FixedUpdate()
+    public override void Update()
     {
         if(owner.rb == null || !jumping) return;
         elapsedTime += Time.deltaTime;
@@ -37,8 +37,7 @@ public class AbilityJump : Ability<AbilityJumpData>
         velocity.y = data.jumpCurve.Evaluate(t) * data.jumpForce;
         owner.rb.linearVelocity = velocity;
 
-        if(t >= 0.3f || owner.isGrounded){
-            owner.ability.Deactivate(AbilityFlag.Jump);
+        if(t >= 0.3f && owner.isGrounded){
             Deactivate();
         }
     }

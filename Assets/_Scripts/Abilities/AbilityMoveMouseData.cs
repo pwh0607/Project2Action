@@ -10,4 +10,7 @@ public class AbilityMoveMouseData : AbilityData
     public float stopOffset;
     public override AbilityFlag Flag => AbilityFlag.Move;
     public override Ability CreateAbility(CharacterControl owner) => new AbilityMoveMouse(this, owner);
+
+    [Space(10)]
+    public GameObject marker;           //3d 피킹 마커 오브젝트.
 }
