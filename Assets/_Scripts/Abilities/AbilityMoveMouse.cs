@@ -30,7 +30,6 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     }
 
     private void InputMouse(){
-        // 0 : Left, 1 : Right, 2 : Wheel
         if(Input.GetMouseButtonDown(1)){
             Ray ray = camera.ScreenPointToRay(Input.mousePosition);
             if(Physics.Raycast(ray, out var hit))
@@ -46,6 +45,7 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     }
     
     Quaternion lookrot;
+    float currentVelocity;
     private void FollowPath(){
         if(corners == null || corners.Length <= 0 || isArrived == true) return;
 
@@ -66,9 +66,10 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
         owner.transform.rotation = Quaternion.RotateTowards(owner.transform.rotation, lookrot, data.rotatePerSec * Time.deltaTime);
 
         //이동
-        Vector3 movement =  direction * data.movePerSec * Time.deltaTime;
-
+        //linearVelocity : Vector + Scalar
+        Vector3 movement =  direction * data.movePerSec * 50f * Time.deltaTime;
         owner.rb.linearVelocity = movement;
+        currentVelocity = Vector3.Distance(Vector3.zero, owner.rb.linearVelocity);
         
         if(Vector3.Distance(nextTarget, owner.rb.position) <= data.stopDistance){
             next++;
@@ -78,14 +79,13 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
             }
         }
 
-        //최종 위치 확인.
         if(Vector3.Distance(nextTarget, owner.rb.position) <= data.stopDistance + data.stopOffset){
             owner.animator?.CrossFadeInFixedTime("RUNTOSTOP", 0.1f, 0, 0f);
         }
     }
 
     private void MoveAnimation(){
-        float a = isArrived? 0 : data.movePerSec;
+        float a = isArrived? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
         float spd = Mathf.Lerp(owner.animator.GetFloat("moveSpeed"), a, Time.deltaTime * 10f);
         owner.animator.SetFloat("moveSpeed", spd);
     }

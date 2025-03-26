@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b78651c9a955748408fd0729c4bddd53, type: 3}
   m_Name: AbilityJump
   m_EditorClassIdentifier: 
-  jumpForce: 10
-  jumpDuration: 1
+  jumpForce: 1
+  jumpDuration: 0.5
   jumpCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.4
+      value: 0.3
       inSlope: 0.6598584
       outSlope: 0.6598584
       tangentMode: 0
@@ -28,7 +28,7 @@ MonoBehaviour:
       outWeight: 0.07210629
     - serializedVersion: 3
       time: 1
-      value: -0.3
+      value: -0.4
       inSlope: -2.6142678
       outSlope: -2.6142678
       tangentMode: 0
