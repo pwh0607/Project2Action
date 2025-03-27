@@ -3,14 +3,14 @@ using UnityEngine.InputSystem;
 
 public class AbilityJump : Ability<AbilityJumpData>
 {
-    private bool jumping = false;
     float elapsedTime = 0f;
     public AbilityJump(AbilityJumpData data, CharacterControl owner) : base(data, owner) { }
 
     public override void Activate(InputAction.CallbackContext context)
     {
         if(!owner.isGrounded || owner.rb == null) return;
-        jumping = true;
+        owner.isJumping = true;
+        owner.FixPosition();
         elapsedTime = 0;
         /*
             CrossFade
@@ -25,14 +25,14 @@ public class AbilityJump : Ability<AbilityJumpData>
 
     public override void Deactivate()
     {
-        jumping = false;
+        owner.isJumping = false;
         Debug.Log("Jump Down!");
         owner.animator?.CrossFadeInFixedTime("JUMPDOWN", 0.02f, 0, 0f);
     }
 
     public override void FixedUpdate()
     {
-        if(owner.rb == null || !jumping) return;
+        if(owner.rb == null || !owner.isJumping) return;
         elapsedTime += Time.deltaTime;
 
         float t = Mathf.Clamp01(elapsedTime / data.jumpDuration);

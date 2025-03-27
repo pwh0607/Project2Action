@@ -12,14 +12,10 @@ public class AbilityControl : MonoBehaviour
 
     [Space(20), ReadOnly] public AbilityFlag flags = AbilityFlag.None;
     
-    // 보유[잠재된 능력] 능력들 -> 아직 사용할 수 없는 능력들 보유
     [Space(10), SerializeField] List<AbilityData> datas = new List<AbilityData>();
-    
-    // <Key , Value>
-    // 사용할 수 있는 능력
+
     private readonly Dictionary<AbilityFlag, Ability> actives = new Dictionary<AbilityFlag, Ability>();
 
-    //활성화된 능력만 Update.
     private void FixedUpdate()
     {
         foreach( var a in actives.ToList())
@@ -58,7 +54,6 @@ public class AbilityControl : MonoBehaviour
             if((d.Flag & flag) == flag) {
                 if(actives.ContainsKey(flag) == false)
                     actives[flag] = d.CreateAbility(GetComponent<CharacterControl>());
-                
                 actives[flag].Activate(context);
             }
         }

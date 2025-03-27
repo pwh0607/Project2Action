@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CustomInspector;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,16 +15,22 @@ public class CharacterControl : MonoBehaviour{
     [Header("Physics")]   
     [ReadOnly] public Rigidbody rb;
     [ReadOnly] public Animator animator;
+    public Transform cameraTarget;
+    public Vector3 originalTargetPosition;
+    public float fixedY = 0f;
 
     [Header("flag")]   
     [ReadOnly] public bool isGrounded;
     [ReadOnly] public bool isArrived = true;
+    [ReadOnly] public bool isJumping = false;
 
     void Awake()
     {
         TryGetComponent(out ability);
         TryGetComponent(out rb);
         TryGetComponent(out animator);
+
+        originalTargetPosition = cameraTarget.transform.localPosition;
     }
 
     void Start()
@@ -36,8 +43,18 @@ public class CharacterControl : MonoBehaviour{
     void FixedUpdate()
     {
         isGrounded = CheckGrounded();
-    }
 
+        if(isJumping){
+            cameraTarget.transform.position = new Vector3(transform.position.x, fixedY, transform.position.z);
+        }else{
+            cameraTarget.transform.localPosition = originalTargetPosition;
+        }
+    }
+    
+    public void FixPosition(){
+        fixedY = cameraTarget.transform.position.y;
+    }
+    
     bool CheckGrounded(){
         var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
         return Physics.Raycast(ray, 0.3f);

@@ -10,11 +10,7 @@ public class AnimationEventList : MonoBehaviour
     {
         TryGetComponent(out controller);    
     }
-
-    void Start()
-    {
-    }
-
+    
     public void FootStep(string s)
     {
         if(controller.isArrived) return;

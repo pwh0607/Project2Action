@@ -17,8 +17,8 @@ public enum AbilityFlag
     MoveKeyboard = 1 << 1, // 0010
     MoveMouse = 1 << 2, 
     Jump = 1 << 3,      // 0010
-    // Dodge = 1 << 2,     // 0100
-    // Attack = 1 << 3,    // 1000
+    Dodge = 1 << 4,     // 0100
+    Attack = 1 << 5,    // 1000
 }
 
 // 데이터 담당 : 역할
@@ -30,19 +30,14 @@ public abstract class AbilityData : ScriptableObject
     public abstract Ability CreateAbility( CharacterControl owner );
 }
 
-
 // 행동 담당
 // abstract 와 virtual 차이 ? 
 // abstract (정의 - 필수) 는 자식에서 무조건 정의 해야한다.
 // virtual (정의 - 선택) 은 옵션
 public abstract class Ability{
-    // 어빌리티 활성
     public virtual void Activate(InputAction.CallbackContext context) { }
-    // 어빌리티 비활성a
     public virtual void Deactivate() { }
-    
     public virtual void Update(){ }
-    // 어빌리티를 더 빠르게 Update 수행 (주로 물리 연산에 이용)
     public virtual void FixedUpdate() { }
 }
 
