@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -22,7 +21,6 @@ public class PoolManager : BehaviourSingleton<PoolManager>
     public void ClearPool(){
         prefabs.ToList().ForEach(p => p.Value.Clear());
         prefabs.Clear();
-
 
         instances.ToList().ForEach(i => i.Value.Clear());
         instances.Clear();

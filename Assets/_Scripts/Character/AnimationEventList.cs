@@ -3,12 +3,16 @@ using UnityEngine;
 public class AnimationEventList : MonoBehaviour
 {
     private CharacterControl controller;
-    public Transform Lfoot, Rfoot;
+    public Transform Lfoot, Rfoot, Root;
     public PoolableParticle smoke;
     public PoolableParticle jumpSmoke;
     void Awake()
     {
         TryGetComponent(out controller);    
+    }
+
+    void Start()
+    {
     }
 
     public void FootStep(string s)
@@ -25,6 +29,7 @@ public class AnimationEventList : MonoBehaviour
     }
 
     public void JumpDown(){
-        PoolManager.I.Spawn(jumpSmoke, Rfoot.position, Quaternion.identity, null);
+        Vector3 offset = Vector3.up * 0.1f;
+        PoolManager.I.Spawn(jumpSmoke, Root.position + offset, Quaternion.identity, null);
     }
 }

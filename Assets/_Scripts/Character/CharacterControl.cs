@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CustomInspector;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 // GAS (Game Ability System) : 언리얼.
 // 32bit = 4byte ( int )
@@ -35,17 +36,32 @@ public class CharacterControl : MonoBehaviour{
     void FixedUpdate()
     {
         isGrounded = CheckGrounded();
-        InputKeyboard();
-    }
-
-    void InputKeyboard(){
-        if(Input.GetButtonDown("Jump")) {
-            ability.Activate(AbilityFlag.Jump);
-        }
     }
 
     bool CheckGrounded(){
         var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
         return Physics.Raycast(ray, 0.3f);
     }
+
+    #region Input System
+    public void OnMoveKeyboard(InputAction.CallbackContext context){
+        Debug.Log($"Move keyboard ...{context.phase}");
+        if(context.performed){
+            ability.Activate(AbilityFlag.Move, context);
+        }
+    }
+    public void OnMoveMouse(InputAction.CallbackContext context){
+        Debug.Log($"마우스 움직임...{context.phase}");
+
+        if(context.performed){
+            ability.Activate(AbilityFlag.Move, context);
+        }
+    }
+
+    public void OnJumpKeyboard(InputAction.CallbackContext context){
+        if(context.performed){
+            ability.Activate(AbilityFlag.Jump, context);
+        }
+    }
+    #endregion
 }

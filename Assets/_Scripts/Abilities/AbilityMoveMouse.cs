@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
 public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
 {
@@ -27,24 +28,11 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     public override void FixedUpdate()
     {
         if(owner == null || owner.rb == null) return;
-        InputMouse();
+        // InputMouse();
         MoveAnimation();
         FollowPath();
     }
 
-    private void InputMouse(){
-        if(Input.GetMouseButtonDown(1)){
-            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-            if(Physics.Raycast(ray, out var hit)){
-                marker.gameObject.SetActive(true);
-                marker.transform.position = hit.point + Vector3.up * 0.1f;
-                marker.Play();
-
-                hitDistance = Vector3.Distance(hit.point, owner.rb.position);
-                SetDestiNation(hit.point);
-            }
-        }
-    }
 
     void SetDestiNation(Vector3 destination){
         if(NavMesh.CalculatePath(owner.transform.position, destination, -1, path) == false) return;
@@ -84,6 +72,19 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
 
         if(hitDistance > data.stopOffset && Vector3.Distance(finalTarget, owner.rb.position) <= data.stopDistance + data.stopOffset){ 
             owner.animator?.CrossFadeInFixedTime("RUNTOSTOP", 0.1f, 0, 0f);
+        }
+    }
+
+
+    public override void Activate(InputAction.CallbackContext context){
+        Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        if(Physics.Raycast(ray, out var hit)){
+            marker.gameObject.SetActive(true);
+            marker.transform.position = hit.point + Vector3.up * 0.1f;
+            marker.Play();
+
+            hitDistance = Vector3.Distance(hit.point, owner.rb.position);
+            SetDestiNation(hit.point);
         }
     }
 

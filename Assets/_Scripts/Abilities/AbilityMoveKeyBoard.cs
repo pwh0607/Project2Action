@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
 {
@@ -7,7 +8,7 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
     private Vector3 camForward, camRight;
     private Vector3 direction;
     private float _velocity;
-
+    private InputAction.CallbackContext context;
     public AbilityMoveKeyBoard(AbilityMoveKeyBoardData data, CharacterControl owner) : base(data, owner)
     {
         cameraTransform = Camera.main.transform; 
@@ -16,14 +17,16 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
     
     public override void FixedUpdate()
     {
-        InputKeyboard();
         Rotate();
         Movement();
     }
 
-    public override void Activate()
+    public override void Activate(InputAction.CallbackContext context)
     {
-        base.Activate();
+        this.context= context;
+        owner.isArrived = context.canceled;
+        // context가 canceled...? => 키 up => 도착했다.
+        InputKeyboard(context);
     }
 
     public override void Deactivate()
@@ -31,11 +34,13 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
         base.Deactivate();
     }
 
-    void InputKeyboard()
+    void InputKeyboard(InputAction.CallbackContext context)
     {
-        horz = Input.GetAxisRaw("Horizontal");
-        vert = Input.GetAxisRaw("Vertical");
+        owner.isArrived = !context.performed;
+        if(context.canceled)            
+            owner.isArrived = true;
 
+        var axis = context.ReadValue<Vector2>();
         camForward = cameraTransform.forward;
         camRight = cameraTransform.right;
 
@@ -45,7 +50,7 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
         camForward.Normalize();
         camRight.Normalize();
 
-        direction = (camForward * vert + camRight * horz).normalized;
+        direction = (camForward * axis.y + camRight * axis.x).normalized;
     }
 
     void Movement()

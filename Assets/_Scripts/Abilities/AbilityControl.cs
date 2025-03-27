@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CustomInspector;
 using System.Linq;
+using UnityEngine.InputSystem;
 
 // abilityDatas : 외부에서 능력 부여/회수 인터페이스
 // abilities : abilityDatas 갱신해서 행동
@@ -51,14 +52,14 @@ public class AbilityControl : MonoBehaviour
     }
 
     // 잠재 능력 활성화 및 업데이트 활성화
-    public void Activate(AbilityFlag flag)
+    public void Activate(AbilityFlag flag, InputAction.CallbackContext context)
     {
         foreach(var d in datas){
             if((d.Flag & flag) == flag) {
                 if(actives.ContainsKey(flag) == false)
                     actives[flag] = d.CreateAbility(GetComponent<CharacterControl>());
                 
-                actives[flag].Activate();
+                actives[flag].Activate(context);
             }
         }
     }
@@ -68,6 +69,7 @@ public class AbilityControl : MonoBehaviour
             if((d.Flag & flag) == flag)
             {
                 if(!actives.ContainsKey(flag)){
+                    flags.Remove(flag, null);
                     actives[flag].Deactivate();
                     actives.Remove(flag);
                 }

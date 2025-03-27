@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class AbilityJump : Ability<AbilityJumpData>
 {
@@ -6,7 +7,7 @@ public class AbilityJump : Ability<AbilityJumpData>
     float elapsedTime = 0f;
     public AbilityJump(AbilityJumpData data, CharacterControl owner) : base(data, owner) { }
 
-    public override void Activate()
+    public override void Activate(InputAction.CallbackContext context)
     {
         if(!owner.isGrounded || owner.rb == null) return;
         jumping = true;
@@ -18,16 +19,18 @@ public class AbilityJump : Ability<AbilityJumpData>
             // layer : animator 상의 layer : baseLayer = 0 (int)
             // offset 
         */
+        Debug.Log("Jump Up!");
         owner.animator?.CrossFadeInFixedTime("JUMPUP", 0.1f, 0, 0f);
     }
 
     public override void Deactivate()
     {
         jumping = false;
+        Debug.Log("Jump Down!");
         owner.animator?.CrossFadeInFixedTime("JUMPDOWN", 0.02f, 0, 0f);
     }
 
-    public override void Update()
+    public override void FixedUpdate()
     {
         if(owner.rb == null || !jumping) return;
         elapsedTime += Time.deltaTime;

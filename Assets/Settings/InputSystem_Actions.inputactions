@@ -7,9 +7,9 @@
             "actions": [
                 {
                     "name": "Move",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "351f2ccd-1f9f-44bf-9bec-d62ac5c5f408",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -84,6 +84,24 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MoveMouse",
+                    "type": "PassThrough",
+                    "id": "d07c3359-8e87-4036-a40c-c3065797582d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "JumpKeyboard",
+                    "type": "PassThrough",
+                    "id": "1909a553-c7b6-4058-a1ef-91f2a976f771",
+                    "expectedControlType": "Key",
+                    "processors": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 }
             ],
@@ -470,6 +488,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3435c239-4c14-4fc3-b754-03c679483c6f",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;Touch",
+                    "action": "MoveMouse",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "835b4a3f-e350-46b4-ac9b-d8d9c32351c4",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "JumpKeyboard",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
