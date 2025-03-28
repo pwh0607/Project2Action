@@ -15,6 +15,12 @@ public class EventCamera : MonoBehaviour
         
         cc.mainCamera.Priority.Value -= 1;
         cameraEvent1.Priority.Value += 1;
+
+        // 플레이어 무브 어빌리티 제거
+
+        // 이벤트 플레이
+
+        // 이벤트 종료 -> 리버스 플레이
     }
 
 //임시

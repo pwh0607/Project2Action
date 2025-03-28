@@ -8,7 +8,6 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     private NavMeshPath path;
     private Vector3[] corners;
     private int next;
-    private float hitDistance;      //hit-point와 캐릭터 간의 거리
     private ParticleSystem marker;
 
 
@@ -71,12 +70,6 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
                 owner.rb.linearVelocity = Vector3.zero;
             }
         }
-
-        float d = Vector3.Distance(finalTarget, owner.rb.position);
-
-        if(hitDistance > data.runToStopDistance.x && d <= data.stopDistance + data.runToStopDistance.y){ 
-            // owner.animator?.CrossFadeInFixedTime(owner._RUNTOSTOP, 0.1f, 0, 0f);
-        }
     }
 
     public override void Activate(InputAction.CallbackContext context){
@@ -85,8 +78,6 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
             marker.gameObject.SetActive(true);
             marker.transform.position = hit.point + Vector3.up * 0.1f;
             marker.Play();
-
-            hitDistance = Vector3.Distance(hit.point, owner.rb.position);
             SetDestiNation(hit.point);
         }
     }
