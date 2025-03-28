@@ -8,7 +8,7 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     private NavMeshPath path;
     private Vector3[] corners;
     private int next;
-    private float hitDistance;      //hit,point화 캐릭터 간의 거리
+    private float hitDistance;      //hit-point와 캐릭터 간의 거리
     private ParticleSystem marker;
 
 
@@ -49,6 +49,7 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
 
         Vector3 nextTarget = corners[next];
         Vector3 finalTarget = corners[corners.Length-1];
+
         // 다음 위치 방향.
         Vector3 direction = (nextTarget - owner.rb.transform.position).normalized;
         direction.y = 0;
@@ -74,7 +75,7 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
         float d = Vector3.Distance(finalTarget, owner.rb.position);
 
         if(hitDistance > data.runToStopDistance.x && d <= data.stopDistance + data.runToStopDistance.y){ 
-            owner.animator?.CrossFadeInFixedTime(owner._RUNTOSTOP, 0.1f, 0, 0f);
+            // owner.animator?.CrossFadeInFixedTime(owner._RUNTOSTOP, 0.1f, 0, 0f);
         }
     }
 

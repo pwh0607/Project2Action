@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CustomInspector;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,11 +17,15 @@ public class CharacterControl : MonoBehaviour{
     public int _RUNTOSTOP = Animator.StringToHash("RUNTOSTOP");
     public int _JUMPUP = Animator.StringToHash("JUMPUP");
     public int _JUMPDOWN = Animator.StringToHash("JUMPDOWN");
-    
-    
+        
     [Header("Physics")]   
     [ReadOnly] public Rigidbody rb;
     [ReadOnly] public Animator animator;
+
+    //임시
+    public CinemachineVirtualCameraBase mainCamera;
+
+
     public Transform cameraTarget;
     public Vector3 originalTargetPosition;
     public float fixedY = 0f;
@@ -68,14 +73,11 @@ public class CharacterControl : MonoBehaviour{
 
     #region Input System
     public void OnMoveKeyboard(InputAction.CallbackContext context){
-        Debug.Log($"Move keyboard ...{context.phase}");
         if(context.performed){
             ability.Activate(AbilityFlag.Move, context);
         }
     }
     public void OnMoveMouse(InputAction.CallbackContext context){
-        Debug.Log($"마우스 움직임...{context.phase}");
-
         if(context.performed){
             ability.Activate(AbilityFlag.Move, context);
         }
