@@ -10,6 +10,8 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     private int next;
     private float hitDistance;      //hit,point화 캐릭터 간의 거리
     private ParticleSystem marker;
+
+
     public AbilityMoveMouse(AbilityMoveMouseData data, CharacterControl owner) : base(data, owner)
     {
         camera = Camera.main;
@@ -20,7 +22,6 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
         if(marker == null){
             Debug.LogWarning("Marker is not existed!");
         }
-
         marker.gameObject.SetActive(false);
     }
 
@@ -70,11 +71,12 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
             }
         }
 
-        if(hitDistance > data.stopOffset && Vector3.Distance(finalTarget, owner.rb.position) <= data.stopDistance + data.stopOffset){ 
-            owner.animator?.CrossFadeInFixedTime("RUNTOSTOP", 0.1f, 0, 0f);
+        float d = Vector3.Distance(finalTarget, owner.rb.position);
+
+        if(hitDistance > data.runToStopDistance.x && d <= data.stopDistance + data.runToStopDistance.y){ 
+            owner.animator?.CrossFadeInFixedTime(owner._RUNTOSTOP, 0.1f, 0, 0f);
         }
     }
-
 
     public override void Activate(InputAction.CallbackContext context){
         Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
@@ -90,7 +92,7 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
 
     private void MoveAnimation(){
         float a = owner.isArrived? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
-        float spd = Mathf.Lerp(owner.animator.GetFloat("moveSpeed"), a, Time.deltaTime * 10f);
-        owner.animator.SetFloat("moveSpeed", spd);
+        float spd = Mathf.Lerp(owner.animator.GetFloat(owner._MOVESPEED), a, Time.deltaTime * 10f);
+        owner.animator.SetFloat(owner._MOVESPEED, spd);
     }
 }

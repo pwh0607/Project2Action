@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4439d908c8dfb0a4c88fafff89d65924, type: 3}
   m_Name: AbilityMoveMouse
   m_EditorClassIdentifier: 
-  movePerSec: 2
+  movePerSec: 3
   rotatePerSec: 1080
   forceMode: 0
-  stopDistance: 0.5
-  stopOffset: 0.5
+  stopDistance: 0.25
+  runToStopDistance: {x: 1, y: 5}
   marker: {fileID: 1215210573372408, guid: f2a47a92099261641b107ca697c2c8e9, type: 3}

@@ -65,9 +65,9 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
         
         float v = Vector3.Distance(Vector3.zero, owner.rb.linearVelocity);
         float targetSpeed = Mathf.Clamp01(v / data.movePerSec);
-        float moveSpeed = Mathf.Lerp(owner.animator.GetFloat("moveSpeed"), targetSpeed, Time.deltaTime * 30f);
+        float moveSpeed = Mathf.Lerp(owner.animator.GetFloat(owner._MOVESPEED), targetSpeed, Time.deltaTime * 30f);
         
-        owner.animator?.SetFloat("moveSpeed", moveSpeed);
+        owner.animator?.SetFloat(owner._MOVESPEED, moveSpeed);
     }
 
     void Rotate()

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using CustomInspector;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +11,13 @@ public class CharacterControl : MonoBehaviour{
     [HideInInspector] public AbilityControl ability;
     public List<AbilityData> initialAbilities;
 
+    [Header("애니메이션 컨트롤")]
+    public int _MOVESPEED = Animator.StringToHash("MOVESPEED");
+    public int _RUNTOSTOP = Animator.StringToHash("RUNTOSTOP");
+    public int _JUMPUP = Animator.StringToHash("JUMPUP");
+    public int _JUMPDOWN = Animator.StringToHash("JUMPDOWN");
+    
+    
     [Header("Physics")]   
     [ReadOnly] public Rigidbody rb;
     [ReadOnly] public Animator animator;
