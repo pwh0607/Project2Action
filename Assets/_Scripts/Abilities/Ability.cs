@@ -35,7 +35,7 @@ public abstract class AbilityData : ScriptableObject
 // abstract (정의 - 필수) 는 자식에서 무조건 정의 해야한다.
 // virtual (정의 - 선택) 은 옵션
 public abstract class Ability{
-    public virtual void Activate(InputAction.CallbackContext context) { }
+    public virtual void Activate() { }
     public virtual void Deactivate() { }
     public virtual void Update(){ }
     public virtual void FixedUpdate() { }

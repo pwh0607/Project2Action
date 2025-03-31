@@ -47,15 +47,17 @@ public class AbilityControl : MonoBehaviour
         actives.Remove(d.Flag);
     }
 
-    // 잠재 능력 활성화 및 업데이트 활성화
-    public void Activate(AbilityFlag flag, InputAction.CallbackContext context)
+    public void Activate(AbilityFlag flag, bool immediate = false)
     {
         foreach(var d in datas){
             if((d.Flag & flag) == flag) {
-                if(actives.ContainsKey(flag) == false)
+                if(!actives.ContainsKey(flag))
                     actives[flag] = d.CreateAbility(GetComponent<CharacterControl>());
-                actives[flag].Activate(context);
+                actives[flag].Activate();
             }
+        }
+        if(immediate){
+            // active
         }
     }
 
@@ -63,9 +65,10 @@ public class AbilityControl : MonoBehaviour
         foreach(var d in datas){
             if((d.Flag & flag) == flag)
             {
-                if(!actives.ContainsKey(flag)){
+                if(actives.ContainsKey(flag)){
                     flags.Remove(flag, null);
                     actives[flag].Deactivate();
+                    actives[flag] = null;
                     actives.Remove(flag);
                 }
             }

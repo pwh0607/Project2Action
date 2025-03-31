@@ -1,4 +1,6 @@
+using Unity.AI.Navigation;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 
 // 관리, 이벤트 송출.
 public class GameManager : BehaviourSingleton<GameManager>

@@ -1,13 +1,16 @@
 using System.Collections.Generic;
-using CustomInspector;
-using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
+using CustomInspector;
+using Unity.Cinemachine;
+using Project2Action;
 
 // GAS (Game Ability System) : 언리얼.
 // 32bit = 4byte ( int )
 // 0000 .... 0000 0000
-public class CharacterControl : MonoBehaviour{
+public class CharacterControl : MonoBehaviour
+{
     [Header("Ability")]
     [HideInInspector] public AbilityControl ability;
     public List<AbilityData> initialAbilities;
@@ -25,7 +28,6 @@ public class CharacterControl : MonoBehaviour{
     //임시
     public CinemachineVirtualCameraBase mainCamera;
 
-
     public Transform cameraTarget;
     public Vector3 originalTargetPosition;
     public float fixedY = 0f;
@@ -34,6 +36,26 @@ public class CharacterControl : MonoBehaviour{
     [ReadOnly] public bool isGrounded;
     [ReadOnly] public bool isArrived = true;
     [ReadOnly] public bool isJumping = false;
+    [HideInInspector] public ActionGameInput actionInput;
+
+    void OnDestroy()
+    {
+        actionInput.Dispose();                              // Destroy asset object.
+    }
+
+    void OnEnable()
+    {
+        actionInput.Enable();                                // Enable all actions within map.
+    }
+
+    void OnDisable()
+    {
+        actionInput.Disable();                               // Disable all actions within map.
+    }
+
+    public void OnMove(InputAction.CallbackContext context){
+
+    }
 
     void Awake()
     {
@@ -42,6 +64,9 @@ public class CharacterControl : MonoBehaviour{
         TryGetComponent(out animator);
 
         originalTargetPosition = cameraTarget.transform.localPosition;
+
+        actionInput = new ActionGameInput();
+        actionInput.Player.Move.performed += Context => Debug.Log($"인풋{Context.ReadValue<Vector2>()} , 아웃 풋");
     }
 
     void Start()
@@ -74,18 +99,18 @@ public class CharacterControl : MonoBehaviour{
     #region Input System
     public void OnMoveKeyboard(InputAction.CallbackContext context){
         if(context.performed){
-            ability.Activate(AbilityFlag.Move, context);
+            ability.Activate(AbilityFlag.Move);
         }
     }
     public void OnMoveMouse(InputAction.CallbackContext context){
         if(context.performed){
-            ability.Activate(AbilityFlag.Move, context);
+            ability.Activate(AbilityFlag.Move);
         }
     }
 
     public void OnJumpKeyboard(InputAction.CallbackContext context){
         if(context.performed){
-            ability.Activate(AbilityFlag.Jump, context);
+            ability.Activate(AbilityFlag.Jump);
         }
     }
     #endregion

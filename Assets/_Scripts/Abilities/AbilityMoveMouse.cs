@@ -1,3 +1,4 @@
+using UnityEditor.EventSystems;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
@@ -28,14 +29,15 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     public override void FixedUpdate()
     {
         if(owner == null || owner.rb == null) return;
-        // InputMouse();
+        // InputMove();
         MoveAnimation();
         FollowPath();
     }
 
-
     void SetDestiNation(Vector3 destination){
-        if(NavMesh.CalculatePath(owner.transform.position, destination, -1, path) == false) return;
+        if(!NavMesh.CalculatePath(owner.transform.position, destination, -1, path)){
+            Debug.Log($"길 못찾음.");
+        }
         corners = path.corners;
         next = 1;
         owner.isArrived = false;
@@ -72,7 +74,22 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
         }
     }
 
-    public override void Activate(InputAction.CallbackContext context){
+    public override void Activate(){
+        owner.actionInput.Player.MoveMouse.performed += InputMove;
+    }
+
+    public override void Deactivate()
+    {
+        owner.actionInput.Player.Move.canceled -= InputMove;
+    }
+
+    private void MoveAnimation(){
+        float a = owner.isArrived? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
+        float spd = Mathf.Lerp(owner.animator.GetFloat(owner._MOVESPEED), a, Time.deltaTime * 10f);
+        owner.animator.SetFloat(owner._MOVESPEED, spd);
+    }
+
+    void InputMove(InputAction.CallbackContext context){
         Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
         if(Physics.Raycast(ray, out var hit)){
             marker.gameObject.SetActive(true);
@@ -82,9 +99,4 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
         }
     }
 
-    private void MoveAnimation(){
-        float a = owner.isArrived? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
-        float spd = Mathf.Lerp(owner.animator.GetFloat(owner._MOVESPEED), a, Time.deltaTime * 10f);
-        owner.animator.SetFloat(owner._MOVESPEED, spd);
-    }
 }

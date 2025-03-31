@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,11 +9,10 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
     private Vector3 camForward, camRight;
     private Vector3 direction;
     private float _velocity;
-    private InputAction.CallbackContext context;
     public AbilityMoveKeyBoard(AbilityMoveKeyBoardData data, CharacterControl owner) : base(data, owner)
     {
         cameraTransform = Camera.main.transform; 
-        _velocity = data.rotatePerSec;   
+        _velocity = data.rotatePerSec;
     }
     
     public override void FixedUpdate()
@@ -21,26 +21,24 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
         Movement();
     }
 
-    public override void Activate(InputAction.CallbackContext context)
+    public override void Activate()
     {
-        this.context= context;
-        owner.isArrived = context.canceled;
-        // context가 canceled...? => 키 up => 도착했다.
-        InputKeyboard(context);
+        owner.actionInput.Player.Move.performed += InputMove;
+        owner.actionInput.Player.Move.performed += InputStop;
     }
 
     public override void Deactivate()
     {
-        base.Deactivate();
+        owner.actionInput.Player.Move.performed -= InputMove;
+        owner.actionInput.Player.Move.performed -= InputStop;
     }
 
-    void InputKeyboard(InputAction.CallbackContext context)
+    void InputMove(InputAction.CallbackContext context)
     {
         owner.isArrived = !context.performed;
-        if(context.canceled)            
-            owner.isArrived = true;
-
+        
         var axis = context.ReadValue<Vector2>();
+        
         camForward = cameraTransform.forward;
         camRight = cameraTransform.right;
 
@@ -53,10 +51,22 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
         direction = (camForward * axis.y + camRight * axis.x).normalized;
     }
 
+    void InputStop(InputAction.CallbackContext context){
+        owner.isArrived = context.canceled;
+        Stop();
+    }
+
+    void Stop(){
+        if(owner.isArrived) {
+            direction = Vector3.zero;
+            owner.rb.linearVelocity = Vector3.zero;
+                    owner.animator?.SetFloat(owner._MOVESPEED, 0);
+        }
+    }
+
     void Movement()
     {
-        // *50f? movePerSec와 LinearVelocity 값을 동기화 하기 위한 상수.
-        Vector3 movement = direction * data.movePerSec * 50f * Time.deltaTime;
+        Vector3 movement = direction * data.movePerSec *150f * Time.deltaTime;
         Vector3 velocity = new Vector3(movement.x, owner.rb.linearVelocity.y, movement.z);
 
         owner.rb.linearVelocity = velocity;
