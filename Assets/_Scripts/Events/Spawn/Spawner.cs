@@ -29,6 +29,7 @@ public class Spawner : MonoBehaviour
 
         eventPlayerSpawnAfter.eyePoint = character.eyePoint;
         eventPlayerSpawnAfter.cursorPoint = cursor.CursorPoint;
+        Debug.Log("OnEventPlayerSpawnBefore 세팅");
         eventPlayerSpawnBefore?.Raise();
     }
 

@@ -26,11 +26,18 @@ public class StageLogicManager : BehaviourSingleton<StageLogicManager>
     }
 
     public bool UseKey(Door door, AnswerKey answerKey){
+        Debug.Log($"StageLogicManager : {door} = {answerKey} CHECK!");
         var targetKey = logics.Find(pair => pair.key == answerKey);
         if(targetKey == null) return false;
 
         return door == targetKey.door;
     }
+
+
+    #region Test-Code
+    
+
+    #endregion
 }
 
 [Serializable]

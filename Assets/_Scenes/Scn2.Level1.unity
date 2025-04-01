@@ -441,9 +441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventPlayerSpawnBefore: {fileID: 11400000, guid: f67387aa066b09540ae705f014376428, type: 2}
-  playerPrefab: {fileID: 5679736799722811503, guid: 2c863d22710c72046a0bcbb17b23503b, type: 3}
-  playerCursor: {fileID: 6881519493202298620, guid: 1d22620292dd95f4ba7fbea847dfc910, type: 3}
-  playerCamera: {fileID: 5769044078156347023, guid: 7681c725dc71cff4c8912e971cc725bf, type: 3}
+  eventPlayerSpawnAfter: {fileID: 11400000, guid: dc969804fc864c940a147df9dd852e32, type: 2}
   radius: 3
 --- !u!114 &145119358
 MonoBehaviour:

@@ -9,8 +9,8 @@ public abstract class GameEvent<T> : ScriptableObject where T : GameEvent<T>
     public UnityAction<T> OnEventRaised;
 
     public void Raise(){
-        OnEventRaised?.Invoke(Item);
         Debug.Log($"이벤트 발동 : {Item.name}");
+        OnEventRaised?.Invoke(Item);
     }
     public void Register(UnityAction<T> listener){
         OnEventRaised += listener;    

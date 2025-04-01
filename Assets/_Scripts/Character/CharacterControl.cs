@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using CustomInspector;
 using Unity.Cinemachine;
 using Project2Action;
+using System.Collections;
 
 // GAS (Game Ability System) : 언리얼.
 // 32bit = 4byte ( int )
@@ -31,7 +32,8 @@ public class CharacterControl : MonoBehaviour
     public Transform cameraTarget;
     public Vector3 originalTargetPosition;
     public float fixedY = 0f;
-    public Transform eyePoint;
+    [ReadOnly] public Transform eyePoint;
+    [ReadOnly] public Transform model;
 
     [Header("flag")]   
     [ReadOnly] public bool isGrounded;
@@ -44,18 +46,23 @@ public class CharacterControl : MonoBehaviour
         TryGetComponent(out ability);
         TryGetComponent(out rb);
         TryGetComponent(out animator);
-
+        
+        model = GameObject.Find("_MODEL_").transform;
         originalTargetPosition = cameraTarget.transform.localPosition;
-
+        
         actionInput = new ActionGameInput();
         actionInput.Player.Move.performed += Context => Debug.Log($"인풋{Context.ReadValue<Vector2>()} , 아웃 풋");
     }
 
     void Start()
     {
+        Visible(false);
+
+        #region TMPCode
         foreach( var data in initialAbilities){
             ability.Add(data, true);
         }
+        #endregion
     }
 
     void FixedUpdate()
@@ -93,7 +100,7 @@ public class CharacterControl : MonoBehaviour
     }
     #endregion
 
-    #region LogicSystem
-    
-    #endregion
+    public void Visible(bool b){
+        model.gameObject.SetActive(b);
+    }
 }

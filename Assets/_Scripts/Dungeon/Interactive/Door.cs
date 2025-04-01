@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public class Door : InteractiveObject
 {
     [SerializeField] Collider blockDoor;
     [SerializeField] Transform leftDoor;
@@ -19,5 +19,9 @@ public class Door : MonoBehaviour
 
         leftDoor.DOLocalRotate(new Vector3(0, 100f, 0), 1, RotateMode.FastBeyond360);
         rightDoor.DOLocalRotate(new Vector3(0, -100f, 0), 1, RotateMode.FastBeyond360);
+    }
+
+    void CloseDoor(){
+        isLocked = true;
     }
 }
