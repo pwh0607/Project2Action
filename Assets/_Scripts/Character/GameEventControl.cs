@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GameEventControl : MonoBehaviour
 {
-    [SerializeField] GameEventCameraSwitch eventCameraSwitch;
+    [SerializeField] EventCameraSwitch eventCameraSwitch;
     private CharacterControl cc;
 
     void Start()
@@ -20,7 +20,7 @@ public class GameEventControl : MonoBehaviour
         eventCameraSwitch.UnRegister(OnEventCameraSwitch);
     }
 
-    void OnEventCameraSwitch(GameEventCameraSwitch e){
+    void OnEventCameraSwitch(EventCameraSwitch e){
         if(e.inout){
             cc.ability.Deactivate(AbilityFlag.MoveKeyboard);
         }

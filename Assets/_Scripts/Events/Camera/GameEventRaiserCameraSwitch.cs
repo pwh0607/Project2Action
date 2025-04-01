@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameEventRaiserCameraSwitch : MonoBehaviour
 {
-    [SerializeField] GameEventCameraSwitch eventCameraSwitch;
+    [SerializeField] EventCameraSwitch eventCameraSwitch;
 
     void OnTriggerEnter(Collider other)
     {

@@ -31,31 +31,13 @@ public class CharacterControl : MonoBehaviour
     public Transform cameraTarget;
     public Vector3 originalTargetPosition;
     public float fixedY = 0f;
+    public Transform eyePoint;
 
     [Header("flag")]   
     [ReadOnly] public bool isGrounded;
     [ReadOnly] public bool isArrived = true;
     [ReadOnly] public bool isJumping = false;
     [HideInInspector] public ActionGameInput actionInput;
-
-    // void OnDestroy()
-    // {
-    //     actionInput.Dispose();                              // Destroy asset object.
-    // }
-
-    // void OnEnable()
-    // {
-    //     actionInput.Enable();                                // Enable all actions within map.
-    // }
-
-    // void OnDisable()
-    // {
-    //     actionInput.Disable();                               // Disable all actions within map.
-    // }
-
-    // public void OnMove(InputAction.CallbackContext context){
-
-    // }
 
     void Awake()
     {
@@ -86,10 +68,6 @@ public class CharacterControl : MonoBehaviour
             cameraTarget.transform.localPosition = originalTargetPosition;
         }
     }
-    
-    // public void FixPosition(){
-    //     fixedY = cameraTarget.transform.position.y;
-    // }
     
     bool CheckGrounded(){
         var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);

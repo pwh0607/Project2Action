@@ -8,7 +8,7 @@ public abstract class GameEvent<T> : ScriptableObject where T : GameEvent<T>
     //UnityAction은 Action에서 파생된 Unity 전용 Delegate(대리자)
     public UnityAction<T> OnEventRaised;
 
-    public void Raise (){
+    public void Raise(){
         OnEventRaised?.Invoke(Item);
         Debug.Log($"이벤트 발동 : {Item.name}");
     }

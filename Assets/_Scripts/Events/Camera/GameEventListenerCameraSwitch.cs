@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameEventListenerCameraSwitch : MonoBehaviour
 {
-    [SerializeField] GameEventCameraSwitch eventCameraSwitch;
+    [SerializeField] EventCameraSwitch eventCameraSwitch;
 
     [SerializeField] CinemachineVirtualCameraBase virtualCamera;
 
@@ -20,7 +20,7 @@ public class GameEventListenerCameraSwitch : MonoBehaviour
         eventCameraSwitch.UnRegister(OnEventCameraSwitch);
     }
 
-    private void OnEventCameraSwitch(GameEventCameraSwitch e){
+    private void OnEventCameraSwitch(EventCameraSwitch e){
         Debug.Log(" 카메라 이벤트...");
         SwtichCamera(e.inout);
     }  

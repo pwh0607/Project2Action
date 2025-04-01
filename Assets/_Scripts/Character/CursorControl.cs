@@ -9,26 +9,29 @@ public class CursorControl : MonoBehaviour
     // eyePoint : 플레이어 눈 위치.
     // hitPoint : 마우스와 레벨 충돌 위치.
     // cursorPoint : 마우스와 레벨 충돌 위치를 플레이어 눈높이 맞게 수정.
-    [Space(20), SerializeField] Transform eyePoint, hitPoint, cursorPoint;
+    [Space(20), SerializeField] Transform hitPoint, cursorPoint; 
+    public Transform eyePoint;
+    public Transform CursorPoint {get =>eyePoint; set => eyePoint = value;}
     private LineRenderer line;
 
-    private Camera camera;
+    private Camera cam;
 
     void Start()
     {       
-        camera = Camera.main;
-            if(!TryGetComponent(out line)){
-                Debug.Log("LineRenderer 없음");
-            }
+        cam = Camera.main;
+        if(!TryGetComponent(out line)){
+            Debug.Log("LineRenderer 없음");
+        }
 
-            line.enabled = IsShow;
-            hitPoint.GetComponent<MeshRenderer>().enabled = IsShow;
-            cursorPoint.GetComponent<MeshRenderer>().enabled = IsShow;
+        line.enabled = IsShow;
+        hitPoint.GetComponent<MeshRenderer>().enabled = IsShow;
+        cursorPoint.GetComponent<MeshRenderer>().enabled = IsShow;
     }
 
     void Update()
     {
-        Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        if(cam == null || eyePoint == null) return;
+        Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
         if(Physics.Raycast(ray, out var hit)) {
             hitPoint.position = hit.point;
             cursorPoint.position = new Vector3(hit.point.x, eyePoint.position.y, hit.point.z);
