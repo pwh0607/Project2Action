@@ -2,15 +2,12 @@ using UnityEngine;
 
 public class AnswerKey : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void Use(){
+        // bool complete = StageLogicManager.I.UseKey(this);
+        // if(complete){
+        //     Debug.Log("문 열기 성공!!");
+        // }else{
+        //     Debug.Log("옳지 못한 key 입니다.");    
+        // }
     }
 }

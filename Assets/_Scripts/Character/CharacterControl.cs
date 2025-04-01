@@ -38,24 +38,24 @@ public class CharacterControl : MonoBehaviour
     [ReadOnly] public bool isJumping = false;
     [HideInInspector] public ActionGameInput actionInput;
 
-    void OnDestroy()
-    {
-        actionInput.Dispose();                              // Destroy asset object.
-    }
+    // void OnDestroy()
+    // {
+    //     actionInput.Dispose();                              // Destroy asset object.
+    // }
 
-    void OnEnable()
-    {
-        actionInput.Enable();                                // Enable all actions within map.
-    }
+    // void OnEnable()
+    // {
+    //     actionInput.Enable();                                // Enable all actions within map.
+    // }
 
-    void OnDisable()
-    {
-        actionInput.Disable();                               // Disable all actions within map.
-    }
+    // void OnDisable()
+    // {
+    //     actionInput.Disable();                               // Disable all actions within map.
+    // }
 
-    public void OnMove(InputAction.CallbackContext context){
+    // public void OnMove(InputAction.CallbackContext context){
 
-    }
+    // }
 
     void Awake()
     {
@@ -87,9 +87,9 @@ public class CharacterControl : MonoBehaviour
         }
     }
     
-    public void FixPosition(){
-        fixedY = cameraTarget.transform.position.y;
-    }
+    // public void FixPosition(){
+    //     fixedY = cameraTarget.transform.position.y;
+    // }
     
     bool CheckGrounded(){
         var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
@@ -113,5 +113,9 @@ public class CharacterControl : MonoBehaviour
             ability.Activate(AbilityFlag.Jump);
         }
     }
+    #endregion
+
+    #region LogicSystem
+    
     #endregion
 }
