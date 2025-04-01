@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Door : InteractiveObject
 {
+    public Vector3 doorPos {get; private set;}
     [SerializeField] Collider blockDoor;
     [SerializeField] Transform leftDoor;
     [SerializeField] Transform rightDoor;

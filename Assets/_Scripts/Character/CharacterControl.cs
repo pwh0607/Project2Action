@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 using CustomInspector;
 using Unity.Cinemachine;
 using Project2Action;
-using System.Collections;
 
 // GAS (Game Ability System) : 언리얼.
 // 32bit = 4byte ( int )
