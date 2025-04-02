@@ -5,9 +5,7 @@ using UnityEngine.InputSystem;
 using CustomInspector;
 using Unity.Cinemachine;
 using Project2Action;
-using System.Runtime.InteropServices;
 using System.Collections;
-using DungeonArchitect.Flow.Domains.Layout.Tasks;
 
 // GAS (Game Ability System) : 언리얼.
 // 32bit = 4byte ( int )
@@ -54,12 +52,11 @@ public class CharacterControl : MonoBehaviour
         originalTargetPosition = cameraTarget.transform.localPosition;
         
         actionInput = new ActionGameInput();
-        actionInput.Player.Move.performed += Context => Debug.Log($"인풋{Context.ReadValue<Vector2>()} , 아웃 풋");
     }
 
     void Start()
     {
-        Visible(false);
+        // Visible(false);      //test
 
         #region TMPCode
         foreach( var data in initialAbilities){
@@ -107,7 +104,7 @@ public class CharacterControl : MonoBehaviour
         model.gameObject.SetActive(b);
     }
 
-    public void Animate(int hash, float duration, int layer = 0)
+    public void PlayeAnimation(int hash, float duration, int layer = 0)
     {
         animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
     }
@@ -117,6 +114,6 @@ public class CharacterControl : MonoBehaviour
         PoolManager.I.Spawn(e.spawnParticle, transform.position, Quaternion.identity, transform);
         yield return new WaitForSeconds(0.3f);
         Visible(true);
-        Animate(_SPAWN, 0f);
+        PlayeAnimation(_SPAWN, 0f);
     }
 }

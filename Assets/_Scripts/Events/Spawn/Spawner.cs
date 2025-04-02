@@ -28,7 +28,7 @@ public class Spawner : MonoBehaviour
     void OnEventPlayerSpawnBefore(EventPlayerSpawnBefore e){
         CameraControl camera = Instantiate(e.playerCamera);
     
-        CharacterControl character = Instantiate(e.playerPrefab);
+        CharacterControl character = Instantiate(e.player);
         character.transform.SetPositionAndRotation(spawnPosition.position, Quaternion.LookRotation(transform.forward));
 
         CursorControl cursor = Instantiate(e.playerCursor);
@@ -36,8 +36,7 @@ public class Spawner : MonoBehaviour
 
         eventPlayerSpawnAfter.eyePoint = character.eyePoint;
         eventPlayerSpawnAfter.cursorPoint = cursor.CursorPoint;
-        Debug.Log("OnEventPlayerSpawnBefore 세팅");
-        eventPlayerSpawnBefore?.Raise();
+        eventPlayerSpawnAfter?.Raise();            
     }
 
     void OnDrawGizmos(){

@@ -11,7 +11,7 @@ public class CursorControl : MonoBehaviour
     // cursorPoint : 마우스와 레벨 충돌 위치를 플레이어 눈높이 맞게 수정.
     [Space(20), SerializeField] Transform hitPoint, cursorPoint; 
     public Transform eyePoint;
-    public Transform CursorPoint {get =>eyePoint; set => eyePoint = value;}
+    public Transform CursorPoint {get => transform; set => eyePoint = value;}
     private LineRenderer line;
 
     private Camera cam;

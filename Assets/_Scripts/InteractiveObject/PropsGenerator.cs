@@ -21,9 +21,10 @@ public class PropsGenerator : MonoBehaviour
  
     void Start()
     {
+        Debug.Log("sdf");
         InitGraphData();
         InitDoor();
-        MakeDoor();
+        // MakeDoor();
     }
 
     void MakeDoor(){
@@ -40,15 +41,9 @@ public class PropsGenerator : MonoBehaviour
     }
 
     List<int> RandomIndex(int count){
-        List<int> res = new();
-        for(int i=0;i<lockCount;i++){
-            int rnd = -1;
-            do{
-                rnd = UnityEngine.Random.Range(0, count);
-            }while(!res.Contains(rnd) && rnd != -1);
-            res.Add(rnd);        
-        }
-
+        List<int> res = new List<int>();
+        res.Add(1);
+        res.Add(3);
         return res;
     }
     void InitGraphData(){

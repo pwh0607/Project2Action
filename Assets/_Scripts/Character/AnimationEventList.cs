@@ -10,7 +10,13 @@ public class AnimationEventList : MonoBehaviour
     {
         TryGetComponent(out controller);    
     }
-    
+
+    void OnValidate()
+    {
+        // test용.
+        transform.Find("...");
+    }
+
     public void FootStep(string s)
     {
         if(controller.isArrived) return;

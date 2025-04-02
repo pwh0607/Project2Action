@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5769a8f4025a12a448e002184be7bdd4, type: 3}
   m_Name: EventPlayerSpawnBefore
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 5679736799722811503, guid: 2c863d22710c72046a0bcbb17b23503b, type: 3}
+  player: {fileID: 5679736799722811503, guid: 2c863d22710c72046a0bcbb17b23503b, type: 3}
   playerCursor: {fileID: 6881519493202298620, guid: 1d22620292dd95f4ba7fbea847dfc910, type: 3}
   playerCamera: {fileID: -4996535222861771060, guid: cf3bb698daec20c49a48ae5b4d713155, type: 3}
