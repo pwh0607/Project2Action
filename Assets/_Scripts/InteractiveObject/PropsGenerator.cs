@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DungeonArchitect;
 using DungeonArchitect.Builders.GridFlow;
-using System.Linq;
-using TMPro.EditorUtilities;
 
 public class PropsGenerator : MonoBehaviour
 {
@@ -18,7 +16,7 @@ public class PropsGenerator : MonoBehaviour
     //Test
     public DoorData doorData;
  
-    public float offset = 8f;          //cellSize * 2f;
+    public Vector3 offset = new Vector3(5f,0,5f);
         
  
     void Start()
@@ -29,17 +27,15 @@ public class PropsGenerator : MonoBehaviour
     }
 
     void MakeDoor(){
-        Debug.Log($"Link Count : {links.Count}");
-
-        foreach(var link in links){
-            Instantiate(tmpPrefab, link.linkPosition, Quaternion.identity);
+        foreach(var room in rooms){
+            Instantiate(tmpPrefab, room.roomPosition, Quaternion.identity);
         }
     }
 
     void InitDoor(){
         List<int> indexes = new();
         for(int i=0;i<lockCount;i++){
-            int idx = -1;       //UnityEngine.Random.Range(0,links.Count);
+            // int idx = -1;       //UnityEngine.Random.Range(0,links.Count);
             // Find로 값 찾기.
         }
     }
@@ -65,7 +61,7 @@ public class PropsGenerator : MonoBehaviour
         {
             if(node.active){
                 // room 위치 측정하기.          ( O )
-                Vector3 nodePosition = new Vector3(node.coord.x * 16 + offset, 0, node.coord.y * 16 + offset);
+                Vector3 nodePosition = new Vector3(node.coord.x * 20, 0, node.coord.y * 20) + offset;
 
                 Room room = new Room(node.nodeId.ToString(), nodePosition);
                 rooms.Add(room);
@@ -82,10 +78,10 @@ public class PropsGenerator : MonoBehaviour
 
             //이 두 포지션의 중심이 link의 위치.
             Vector3 center = (startNodePosition + endNodePosition) / 2;
-            Link newLink = new(startNodeId, endNodeId, center + Vector3.right * 2);
+            Link newLink = new(startNodeId, endNodeId, center);
 
             // newLink 양옆에 Wall이 없으면 유효한 door의 위치가 아니므로 제거.
-            if(!CheckWall(Physics.OverlapSphere(newLink.linkPosition, 1f))) continue;
+            // if(!CheckWall(Physics.OverlapSphere(newLink.linkPosition, 1f))) continue;
             links.Add(newLink);
         }
     }
@@ -95,11 +91,8 @@ public class PropsGenerator : MonoBehaviour
         foreach(var col in colliders){
             if(col.tag == "Wall") count++;
         }
-
-        if(count>=2){
-            Debug.Log("True");
-        }
-        return count >= 2;
+        Debug.Log($"count : {count}");
+        return count >= 1;
     }
 }
 
@@ -119,7 +112,7 @@ public class Link{
     public string startNodeId;
     public string endNodeId;
     public Vector3 linkPosition;
-
+    public Vector3 linkRotation;
     public Link(string startNodeId, string endNodeId, Vector3 linkPosition){
         this.startNodeId = startNodeId;
         this.endNodeId = endNodeId;

@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class GameEventRaiserCameraSwitch : MonoBehaviour
+public class EventRaiserCameraSwitch : MonoBehaviour
 {
     [SerializeField] EventCameraSwitch eventCameraSwitch;
 

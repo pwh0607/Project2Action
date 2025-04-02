@@ -1,7 +1,7 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class GameEventListenerCameraSwitch : MonoBehaviour
+public class EventListenerCameraSwitch : MonoBehaviour
 {
     [SerializeField] EventCameraSwitch eventCameraSwitch;
 

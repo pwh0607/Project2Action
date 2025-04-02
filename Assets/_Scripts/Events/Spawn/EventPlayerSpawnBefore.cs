@@ -1,4 +1,5 @@
 using UnityEngine;
+using CustomInspector;
 
 [CreateAssetMenu(menuName = "GameEvent/EventPlayerSpawnBefore")]
 public class EventPlayerSpawnBefore : GameEvent<EventPlayerSpawnBefore>
