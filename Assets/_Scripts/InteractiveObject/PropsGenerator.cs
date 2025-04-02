@@ -4,6 +4,7 @@ using UnityEngine;
 using DungeonArchitect;
 using DungeonArchitect.Builders.GridFlow;
 using System.Linq;
+using TMPro.EditorUtilities;
 
 public class PropsGenerator : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class PropsGenerator : MonoBehaviour
     Dictionary<string, Vector3> roomPosition = new();
     public Dungeon dungeon;
     public int lockCount = 2;
+    public GameObject tmpPrefab;
     //Test
     public DoorData doorData;
  
@@ -23,6 +25,15 @@ public class PropsGenerator : MonoBehaviour
     {
         InitGraphData();
         InitDoor();
+        MakeDoor();
+    }
+
+    void MakeDoor(){
+        Debug.Log($"Link Count : {links.Count}");
+
+        foreach(var link in links){
+            Instantiate(tmpPrefab, link.linkPosition, Quaternion.identity);
+        }
     }
 
     void InitDoor(){
@@ -72,8 +83,23 @@ public class PropsGenerator : MonoBehaviour
             //이 두 포지션의 중심이 link의 위치.
             Vector3 center = (startNodePosition + endNodePosition) / 2;
             Link newLink = new(startNodeId, endNodeId, center + Vector3.right * 2);
+
+            // newLink 양옆에 Wall이 없으면 유효한 door의 위치가 아니므로 제거.
+            if(!CheckWall(Physics.OverlapSphere(newLink.linkPosition, 1f))) continue;
             links.Add(newLink);
         }
+    }
+
+    bool CheckWall(Collider[] colliders){
+        int count = 0;
+        foreach(var col in colliders){
+            if(col.tag == "Wall") count++;
+        }
+
+        if(count>=2){
+            Debug.Log("True");
+        }
+        return count >= 2;
     }
 }
 
