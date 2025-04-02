@@ -21,7 +21,6 @@ public class PropsGenerator : MonoBehaviour
  
     void Start()
     {
-        Debug.Log("sdf");
         InitGraphData();
         InitDoor();
         // MakeDoor();

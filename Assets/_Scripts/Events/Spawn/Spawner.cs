@@ -30,6 +30,7 @@ public class Spawner : MonoBehaviour
     
         CharacterControl character = Instantiate(e.player);
         character.transform.SetPositionAndRotation(spawnPosition.position, Quaternion.LookRotation(transform.forward));
+        StartCoroutine(character.SpawnSequence());
 
         CursorControl cursor = Instantiate(e.playerCursor);
         cursor.eyePoint = character.eyePoint;

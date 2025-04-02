@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,6 +22,7 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
 
     public override void Activate()
     {
+        owner.actionInput.Player.Enable();
         owner.actionInput.Player.Move.performed += InputMove;
         owner.actionInput.Player.Move.performed += InputStop;
     }
@@ -31,6 +31,7 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
     {
         owner.actionInput.Player.Move.performed -= InputMove;
         owner.actionInput.Player.Move.performed -= InputStop;
+        owner.actionInput.Player.Disable();
     }
 
     void InputMove(InputAction.CallbackContext context)

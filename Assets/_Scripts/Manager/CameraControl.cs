@@ -14,14 +14,12 @@ public class CameraControl : MonoBehaviour
 
     void OnDisable()
     {
-        
         eventPlayerSpawnAfter.UnRegister(OnEventPlayerSpawnAfter);
     }
 
     void OnEventPlayerSpawnAfter(EventPlayerSpawnAfter e){
         targetGroup.Targets.Clear();
 
-        Debug.Log($"target E:{e.eyePoint}, {e.cursorPoint}");
         CinemachineTargetGroup.Target main = new CinemachineTargetGroup.Target();
         main.Object = e.eyePoint;
         main.Weight= 0.8f;
@@ -32,6 +30,5 @@ public class CameraControl : MonoBehaviour
 
         targetGroup.Targets.Add(main);
         targetGroup.Targets.Add(sub);
-        Debug.Log("target 추가 완료!");
     }
 }

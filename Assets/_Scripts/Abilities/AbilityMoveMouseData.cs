@@ -12,7 +12,7 @@ public class AbilityMoveMouseData : AbilityData
     [Tooltip("min : runtoStop 모션 발동 지점, max : runtoStop 무시 지점")]
     [AsRange(0, 15)] public Vector2 runToStopDistance;
 
-    public override AbilityFlag Flag => AbilityFlag.Move;
+    public override AbilityFlag Flag => AbilityFlag.MoveMouse;
     public override Ability CreateAbility(CharacterControl owner) => new AbilityMoveMouse(this, owner);
 
     [Space(10)]

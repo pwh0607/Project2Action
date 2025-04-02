@@ -17,7 +17,8 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
         path = new();
         owner.isArrived = true;
 
-        this.marker = GameObject.Instantiate(data.marker).GetComponent<ParticleSystem>();
+        marker = GameObject.Instantiate(data.marker).GetComponent<ParticleSystem>();
+        
         if(marker == null){
             Debug.LogWarning("Marker is not existed!");
         }
@@ -28,7 +29,7 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     public override void FixedUpdate()
     {
         if(owner == null || owner.rb == null) return;
-        // InputMove();
+        
         MoveAnimation();
         FollowPath();
     }
@@ -74,12 +75,14 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     }
 
     public override void Activate(){
+        owner.actionInput.Player.Enable();
         owner.actionInput.Player.MoveMouse.performed += InputMove;
     }
 
     public override void Deactivate()
     {
         owner.actionInput.Player.Move.canceled -= InputMove;
+        owner.actionInput.Player.Disable();
     }
 
     private void MoveAnimation(){
@@ -97,5 +100,4 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
             SetDestiNation(hit.point);
         }
     }
-
 }

@@ -21,7 +21,7 @@ public class CharacterControl : MonoBehaviour
     public int _RUNTOSTOP = Animator.StringToHash("RUNTOSTOP");
     public int _JUMPUP = Animator.StringToHash("JUMPUP");
     public int _JUMPDOWN = Animator.StringToHash("JUMPDOWN");
-    public int _SPAWN = Animator.StringToHash("Spawn");
+    public int _SPAWN = Animator.StringToHash("STANDUP");
         
     [Header("Physics")]   
     [ReadOnly] public Rigidbody rb;
@@ -30,7 +30,6 @@ public class CharacterControl : MonoBehaviour
     //임시
     public CinemachineVirtualCameraBase mainCamera;
 
-    public Transform cameraTarget;
     public Vector3 originalTargetPosition;
     public float fixedY = 0f;
     [ReadOnly] public Transform eyePoint;
@@ -41,7 +40,7 @@ public class CharacterControl : MonoBehaviour
     [ReadOnly] public bool isArrived = true;
     [ReadOnly] public bool isJumping = false;
     [HideInInspector] public ActionGameInput actionInput;
-
+    [ReadOnly] EventPlayerSpawnAfter eventPlayerSpawnAfter;
     void Awake()
     {
         TryGetComponent(out ability);
@@ -49,14 +48,13 @@ public class CharacterControl : MonoBehaviour
         TryGetComponent(out animator);
         
         model = GameObject.Find("_MODEL_").transform;
-        originalTargetPosition = cameraTarget.transform.localPosition;
         
         actionInput = new ActionGameInput();
     }
 
     void Start()
     {
-        // Visible(false);      //test
+        Visible(false);      //test
 
         #region TMPCode
         foreach( var data in initialAbilities){
@@ -68,37 +66,12 @@ public class CharacterControl : MonoBehaviour
     void FixedUpdate()
     {
         isGrounded = CheckGrounded();
-
-        if(isJumping){
-            cameraTarget.transform.position = new Vector3(transform.position.x, fixedY, transform.position.z);
-        }else{
-            cameraTarget.transform.localPosition = originalTargetPosition;
-        }
     }
     
     bool CheckGrounded(){
         var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
         return Physics.Raycast(ray, 0.3f);
     }
-
-    #region Input System
-    public void OnMoveKeyboard(InputAction.CallbackContext context){
-        if(context.performed){
-            ability.Activate(AbilityFlag.Move);
-        }
-    }
-    public void OnMoveMouse(InputAction.CallbackContext context){
-        if(context.performed){
-            ability.Activate(AbilityFlag.Move);
-        }
-    }
-
-    public void OnJumpKeyboard(InputAction.CallbackContext context){
-        if(context.performed){
-            ability.Activate(AbilityFlag.Jump);
-        }
-    }
-    #endregion
 
     public void Visible(bool b){
         model.gameObject.SetActive(b);
@@ -109,11 +82,17 @@ public class CharacterControl : MonoBehaviour
         animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
     }
 
-    IEnumerator SpawnSequence(EventPlayerSpawnAfter e){
-        yield return new WaitForSeconds(1f);
-        PoolManager.I.Spawn(e.spawnParticle, transform.position, Quaternion.identity, transform);
+    public IEnumerator SpawnSequence(){
+        // yield return new WaitForSeconds(2f);
         yield return new WaitForSeconds(0.3f);
         Visible(true);
-        PlayeAnimation(_SPAWN, 0f);
+        PlayeAnimation(_SPAWN, 2f);
+        if(eventPlayerSpawnAfter.spawnParticle == null){
+            Debug.LogWarning("파티클 없음...");
+        }
+        PoolManager.I.Spawn(eventPlayerSpawnAfter.spawnParticle, transform.position, Quaternion.identity, transform);
+
+        //particle 생성
+
     }
 }
