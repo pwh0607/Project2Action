@@ -60,7 +60,7 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
         if(owner.isArrived) {
             direction = Vector3.zero;
             owner.rb.linearVelocity = Vector3.zero;
-                    owner.animator?.SetFloat(owner._MOVESPEED, 0);
+            owner.animator?.SetFloat(owner._MOVESPEED, 0);
         }
     }
 

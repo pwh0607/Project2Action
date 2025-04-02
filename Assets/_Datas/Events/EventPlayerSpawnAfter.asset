@@ -12,3 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5231af4fb8b916a41b3f181697cc1410, type: 3}
   m_Name: EventPlayerSpawnAfter
   m_EditorClassIdentifier: 
+  eyePoint: {fileID: 0}
+  cursorPoint: {fileID: 0}
+  spawnParticle: {fileID: 2437908735955747314, guid: 41d59553783d6ee4faa5e77cd0a43adc, type: 3}

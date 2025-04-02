@@ -7918,7 +7918,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 409905736}
-  - component: {fileID: 409905737}
   m_Layer: 0
   m_Name: RandomGenerator
   m_TagString: Untagged
@@ -7941,24 +7940,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1743385756}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &409905737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 409905735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 552bb3c3c1e31f142bca5c37941c78ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rooms: []
-  dungeon: {fileID: 114048669819686570}
-  lockCount: 2
-  tmpPrefab: {fileID: 5140901987906456057, guid: f32c14498b39b6a449692c52499faa25, type: 3}
-  doorData: {fileID: 0}
-  offset: 8
 --- !u!1001 &410337905
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33574,9 +33555,9 @@ MonoBehaviour:
   rooms: []
   dungeon: {fileID: 114048669819686570}
   lockCount: 2
-  tmpPrefab: {fileID: 0}
-  doorData: {fileID: 0}
-  offset: 8
+  tmpPrefab: {fileID: 5140901987906456057, guid: f32c14498b39b6a449692c52499faa25, type: 3}
+  doorData: {fileID: 11400000, guid: 34fba6aac6a55ef4ea7be475b9882ead, type: 2}
+  offset: {x: 10, y: 0, z: 10}
 --- !u!1001 &1732305077
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34058,7 +34039,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1743385756}
   m_Layer: 0
-  m_Name: Level
+  m_Name: '******Level'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41875,8 +41856,8 @@ SceneRoots:
   - {fileID: 1504567903}
   - {fileID: 2115152102}
   - {fileID: 1599693134}
-  - {fileID: 1448892695}
   - {fileID: 1743385756}
+  - {fileID: 1448892695}
   - {fileID: 1197724510}
   - {fileID: 362791821}
   - {fileID: 1722488499}

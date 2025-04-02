@@ -20,9 +20,9 @@ public class StageLogicManager : BehaviourSingleton<StageLogicManager>
     //test
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space)){
-            OnOpenLogicCompleted?.Invoke();
-        }
+        // if(Input.GetKeyDown(KeyCode.Space)){
+        //     OnOpenLogicCompleted?.Invoke();
+        // }
     }
 
     public bool UseKey(Door door, AnswerKey answerKey){

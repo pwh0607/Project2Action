@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38dd4df0c787d204990c84ef4868d926, type: 3}
+  m_Name: DoorData
+  m_EditorClassIdentifier: 
+  lockedDoor: {fileID: 1143446859910886728, guid: ea24ab2f910a8e242a26da89b62938ac, type: 3}
+  openedDoor: {fileID: 1654554159615204505, guid: 019280c434579f54aa36535d03c483a0, type: 3}

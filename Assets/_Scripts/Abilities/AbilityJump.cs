@@ -35,12 +35,12 @@ public class AbilityJump : Ability<AbilityJumpData>
         if(owner.rb == null || !owner.isGrounded) return;
         owner.isJumping = true;
         elapsedTime = 0;
-        owner.animator?.CrossFadeInFixedTime(owner._JUMPUP, 0.1f, 0, 0f);
+        owner.Animate(owner._JUMPUP, 0.1f, 0);
     }
 
     private void JumpDown(){
         owner.isJumping = false;
-        owner.animator?.CrossFadeInFixedTime(owner._JUMPDOWN, 0.02f, 0, 0f);
+        owner.Animate(owner._JUMPDOWN, 0.02f, 0);
     }
 
     private void InputJump(InputAction.CallbackContext context){

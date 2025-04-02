@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 using CustomInspector;
 using Unity.Cinemachine;
 using Project2Action;
+using System.Runtime.InteropServices;
+using System.Collections;
+using DungeonArchitect.Flow.Domains.Layout.Tasks;
 
 // GAS (Game Ability System) : 언리얼.
 // 32bit = 4byte ( int )
@@ -20,6 +23,7 @@ public class CharacterControl : MonoBehaviour
     public int _RUNTOSTOP = Animator.StringToHash("RUNTOSTOP");
     public int _JUMPUP = Animator.StringToHash("JUMPUP");
     public int _JUMPDOWN = Animator.StringToHash("JUMPDOWN");
+    public int _SPAWN = Animator.StringToHash("Spawn");
         
     [Header("Physics")]   
     [ReadOnly] public Rigidbody rb;
@@ -101,5 +105,18 @@ public class CharacterControl : MonoBehaviour
 
     public void Visible(bool b){
         model.gameObject.SetActive(b);
+    }
+
+    public void Animate(int hash, float duration, int layer = 0)
+    {
+        animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
+    }
+
+    IEnumerator SpawnSequence(EventPlayerSpawnAfter e){
+        yield return new WaitForSeconds(1f);
+        PoolManager.I.Spawn(e.spawnParticle, transform.position, Quaternion.identity, transform);
+        yield return new WaitForSeconds(0.3f);
+        Visible(true);
+        Animate(_SPAWN, 0f);
     }
 }

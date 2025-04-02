@@ -1,22 +1,22 @@
 using UnityEngine;
 using Cysharp.Threading.Tasks;
+using System.Collections;
 
-public class CharacterEventControl : MonoBehaviour
+public class controllerEventControl : MonoBehaviour
 {
     #region Event
     [SerializeField] EventCameraSwitch eventCameraSwitch;
     [SerializeField] EventPlayerSpawnAfter eventPlayerSpawnAfter;
     #endregion
     
-    private CharacterControl character;
+    private CharacterControl controller;
     void Start()
     {
-        if(!TryGetComponent(out character)) Debug.LogWarning("GameEventControl - CharacterControl 없음...");
+        if(!TryGetComponent(out controller)) Debug.LogWarning("GameEventControl - controllerControl 없음...");
     }
 
     void OnEnable()
     {
-
         eventPlayerSpawnAfter.Register(OnEventPlayerSpawnAfter);
         eventCameraSwitch.Register(OnEventCameraSwitch);
     }
@@ -31,15 +31,27 @@ public class CharacterEventControl : MonoBehaviour
 
     void OnEventCameraSwitch(EventCameraSwitch e){
         if(e.inout){
-            character.ability.Deactivate(AbilityFlag.MoveKeyboard);
+            controller.ability.Deactivate(AbilityFlag.MoveKeyboard);
         }
         else{
-            character.ability.Activate(AbilityFlag.MoveKeyboard);
+            controller.ability.Activate(AbilityFlag.MoveKeyboard);
         }
     }
 
     void OnEventPlayerSpawnAfter(EventPlayerSpawnAfter e){
-        GameManager.I.DelayCallAsync(1000, ()=> character.Visible(true)).Forget();             // 비동기 호출 : 동기호출.Forget();
+        StartCoroutine(SpawnSequence(e));
+
+        GameManager.I.DelayCallAsync(1000, () => 
+        {
+            controller.Visible(true);
+        }).Forget();             // 비동기 호출 : 동기호출.Forget();
+    }
+
+    IEnumerator SpawnSequence(EventPlayerSpawnAfter e){
+        yield return new WaitForSeconds(1f);
+        PoolManager.I.Spawn(e.spawnParticle, transform.position, Quaternion.identity, transform);
+        yield return new WaitForSeconds(0.2f);
+        controller.Visible(true);
     }
 }
 
