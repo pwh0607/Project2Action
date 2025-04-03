@@ -2,7 +2,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Collections;
 
-public class controllerEventControl : MonoBehaviour
+public class CharacterEventControl : MonoBehaviour
 {
     #region Event
     [SerializeField] EventCameraSwitch eventCameraSwitch;
@@ -13,6 +13,7 @@ public class controllerEventControl : MonoBehaviour
     void Start()
     {
         if(!TryGetComponent(out controller)) Debug.LogWarning("GameEventControl - controllerControl 없음...");
+        controller.Visible(false);
     }
 
     void OnEnable()
@@ -23,35 +24,42 @@ public class controllerEventControl : MonoBehaviour
 
     void OnDisable()
     {
-
         eventPlayerSpawnAfter.UnRegister(OnEventPlayerSpawnAfter);
         eventCameraSwitch.UnRegister(OnEventCameraSwitch);
     }
 
 
     void OnEventCameraSwitch(EventCameraSwitch e){
-        if(e.inout){
+        if(e.inout)
             controller.ability.Deactivate(AbilityFlag.MoveKeyboard);
-        }
-        else{
+        else
             controller.ability.Activate(AbilityFlag.MoveKeyboard);
-        }
     }
 
     void OnEventPlayerSpawnAfter(EventPlayerSpawnAfter e){
         StartCoroutine(SpawnSequence(e));
-
-        GameManager.I.DelayCallAsync(1000, () => 
-        {
-            controller.Visible(true);
-        }).Forget();             // 비동기 호출 : 동기호출.Forget();
     }
-
+    
     IEnumerator SpawnSequence(EventPlayerSpawnAfter e){
+        yield return new WaitUntil(() => e.actorProfile.avatar != null && e.actorProfile.model != null);
+
+        // 플레이어 모델 생성후 하위 항목인 Model에 설정
+        if(e.actorProfile.model == null)
+            Debug.LogError("CharacterEventControl ] model 없음.");
+
+        Instantiate(e.actorProfile.model, controller.model);
+
+        if(e.actorProfile.avatar == null)
+            Debug.LogError("CharacterEventControl ] avatar 없음.");
+
+        controller.animator.avatar = e.actorProfile.avatar;
+
         yield return new WaitForSeconds(1f);
         PoolManager.I.Spawn(e.spawnParticle, transform.position, Quaternion.identity, transform);
+
         yield return new WaitForSeconds(0.2f);
         controller.Visible(true);
+        controller.PlayeAnimation(controller._SPAWN, 0.2f);
     }
 }
 

@@ -11,8 +11,7 @@ public class EventCamera : MonoBehaviour
 
         var cc = other.GetComponentInParent<CharacterControl>();
         if(cc == null) return;
-        
-        cc.mainCamera.Priority.Value -= 1;
+
         cameraEvent1.Priority.Value += 1;
 
         // 플레이어 무브 어빌리티 제거
@@ -29,8 +28,6 @@ public class EventCamera : MonoBehaviour
         var cc = other.GetComponentInParent<CharacterControl>();
         
         if(cc == null) return;
-    
-        cc.mainCamera.Priority.Value += 1;
         cameraEvent1.Priority.Value -= 1;
     }
 }

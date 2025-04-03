@@ -26,11 +26,15 @@ public class GameManager : BehaviourSingleton<GameManager>
     CancellationTokenSource cts = new CancellationTokenSource();
     public async UniTaskVoid DelayCallAsync(int millisec, Action onComplete){
         try{
-            await UniTask.Delay(1000, cancellationToken:cts.Token);         //취소 명령이 떨어지면 이 작업도 취소하라 [할당 받기를 대기하지않고 취소할 것]
+            await UniTask.Delay(millisec, cancellationToken:cts.Token);         //취소 명령이 떨어지면 이 작업도 취소하라 [할당 받기를 대기하지않고 취소할 것]
             onComplete?.Invoke();
         }
         catch(Exception e){
             Debug.LogException(e);
+        }        
+        finally
+        {
+            cts.Cancel();
         }
     }
 

@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 using CustomInspector;
 using Unity.Cinemachine;
@@ -14,21 +12,20 @@ public class CharacterControl : MonoBehaviour
 {
     [Header("Ability")]
     [HideInInspector] public AbilityControl ability;
-    public List<AbilityData> initialAbilities;
-
-    [Header("애니메이션 컨트롤")]
-    public int _MOVESPEED = Animator.StringToHash("MOVESPEED");
-    public int _RUNTOSTOP = Animator.StringToHash("RUNTOSTOP");
-    public int _JUMPUP = Animator.StringToHash("JUMPUP");
-    public int _JUMPDOWN = Animator.StringToHash("JUMPDOWN");
-    public int _SPAWN = Animator.StringToHash("STANDUP");
-        
+    [ReadOnly] ActorProfile profile;
+    
+    
     [Header("Physics")]   
     [ReadOnly] public Rigidbody rb;
     [ReadOnly] public Animator animator;
 
-    //임시
-    public CinemachineVirtualCameraBase mainCamera;
+#region Animator HashSet
+    [HideInInspector] public int _MOVESPEED = Animator.StringToHash("MOVESPEED");
+    [HideInInspector] public int _RUNTOSTOP = Animator.StringToHash("RUNTOSTOP");
+    [HideInInspector] public int _JUMPUP = Animator.StringToHash("JUMPUP");
+    [HideInInspector] public int _JUMPDOWN = Animator.StringToHash("JUMPDOWN");
+    [HideInInspector] public int _SPAWN = Animator.StringToHash("STANDUP");
+#endregion
 
     public Vector3 originalTargetPosition;
     public float fixedY = 0f;
@@ -40,7 +37,7 @@ public class CharacterControl : MonoBehaviour
     [ReadOnly] public bool isArrived = true;
     [ReadOnly] public bool isJumping = false;
     [HideInInspector] public ActionGameInput actionInput;
-    [ReadOnly] EventPlayerSpawnAfter eventPlayerSpawnAfter;
+    
     void Awake()
     {
         TryGetComponent(out ability);
@@ -54,13 +51,7 @@ public class CharacterControl : MonoBehaviour
 
     void Start()
     {
-        Visible(false);      //test
-
-        #region TMPCode
-        foreach( var data in initialAbilities){
-            ability.Add(data, true);
-        }
-        #endregion
+        Visible(false); 
     }
 
     void FixedUpdate()
@@ -80,19 +71,5 @@ public class CharacterControl : MonoBehaviour
     public void PlayeAnimation(int hash, float duration, int layer = 0)
     {
         animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
-    }
-
-    public IEnumerator SpawnSequence(){
-        // yield return new WaitForSeconds(2f);
-        yield return new WaitForSeconds(0.3f);
-        Visible(true);
-        PlayeAnimation(_SPAWN, 2f);
-        if(eventPlayerSpawnAfter.spawnParticle == null){
-            Debug.LogWarning("파티클 없음...");
-        }
-        PoolManager.I.Spawn(eventPlayerSpawnAfter.spawnParticle, transform.position, Quaternion.identity, transform);
-
-        //particle 생성
-
     }
 }

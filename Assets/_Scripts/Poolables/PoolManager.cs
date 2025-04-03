@@ -46,8 +46,7 @@ public class PoolManager : BehaviourSingleton<PoolManager>
             actionOnDestroy: (v) => {
                 Destroy(v.gameObject);
             },
-            maxSize: size
-        );
+            maxSize: size);
         prefabs[pb] = pool;
     }
 

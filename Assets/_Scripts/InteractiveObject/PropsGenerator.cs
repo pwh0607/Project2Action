@@ -77,15 +77,15 @@ public class PropsGenerator : MonoBehaviour
         }
 
         foreach(var link in graphLinks){
-            string startNodeId = link.source.ToString();
-            string endNodeId = link.destination.ToString();
+            Room startNode = rooms[link.source.ToString()];
+            Room endNode = rooms[link.destination.ToString()];
 
             // 인접 노드 생성.
-            rooms[startNodeId].n_Node.Add(rooms[endNodeId]);
-            rooms[endNodeId].n_Node.Add(rooms[startNodeId]);
+            startNode.n_Node.Add(endNode);
+            endNode.n_Node.Add(startNode);
 
-            Vector3 startNodePosition = rooms[startNodeId].roomPosition;
-            Vector3 endNodePosition = rooms[endNodeId].roomPosition;
+            Vector3 startNodePosition = startNode.roomPosition;
+            Vector3 endNodePosition = endNode.roomPosition;
 
             //Rotation Check.
             Vector3 vec = startNodePosition - endNodePosition;
@@ -93,18 +93,49 @@ public class PropsGenerator : MonoBehaviour
 
             //이 두 포지션의 중심이 link의 위치.
             Vector3 center = (startNodePosition + endNodePosition) / 2;
-            Link newLink = new(startNodeId, endNodeId, center, Quaternion.Euler(new Vector3(0,y,0)));
+            Link newLink = new(startNode, endNode, center, Quaternion.Euler(new Vector3(0,y,0)));
 
             links.Add(newLink);
             
             //Dictionary형 그래프 생성.
-            dungeonGraph[(startNodeId, endNodeId)] = newLink;
+            // dungeonGraph[(startNode, endNode)] = newLink;
         }
     }
 
+
+
     #region 그래프 탐색
     string spawnNodeId = "startNode";             // 탐색 시작 노드.
-    public List<Room> visitedRoom;
+
+    // 활성화된 노드들 중 선택하여 Key를 설치한다.
+    public Dictionary<Room, bool> visited = new();
+    public List<Room> activeRooms = new();
+    void InitVisited(){
+        foreach(var room in rooms){
+            visited[room.Value] = false;
+        }
+    }
+
+    void StartSearch(){
+        InitVisited();
+        Queue<Room> queue = new();
+        Room startRoom = rooms[spawnNodeId];
+        activeRooms.Add(startRoom);
+        queue.Enqueue(startRoom);
+        visited[startRoom] = true;
+
+        while(queue.Count >= 1){
+            Room r = queue.Dequeue();
+            
+            foreach(var node in r.n_Node){
+                Link link = links.Find(v => v.node.Item1.Equals(r) && v.node.Item2.Equals(node));
+
+                if(visited[node] || link == null || link.isLocked) continue;
+                queue.Enqueue(node);
+                visited[node] = true;
+            }
+        }
+    }
 
     #endregion
 
@@ -136,15 +167,13 @@ public class Room{
 }
 
 public class Link{
-    public string startNodeId;
-    public string endNodeId;
+    public (Room, Room) node;
     public Vector3 linkPosition;
     public Quaternion quaternion;
     public bool isLocked;
-    public Link(string startNodeId, string endNodeId, Vector3 linkPosition, Quaternion quaternion, bool isLocked = false){
-        this.startNodeId = startNodeId;
-        this.endNodeId = endNodeId;
-
+    public Link(Room startNodeId, Room endNodeId, Vector3 linkPosition, Quaternion quaternion, bool isLocked = false){
+        this.node = (startNodeId,endNodeId);
+        
         this.linkPosition = linkPosition;
         this.quaternion = quaternion;
         
