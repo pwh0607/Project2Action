@@ -32855,12 +32855,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1722488498}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 552bb3c3c1e31f142bca5c37941c78ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rooms: []
   dungeon: {fileID: 114048669819686570}
   lockCount: 2
   tmpPrefab: {fileID: 5140901987906456057, guid: f32c14498b39b6a449692c52499faa25, type: 3}

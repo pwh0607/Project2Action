@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using DungeonArchitect;
 using DungeonArchitect.Builders.GridFlow;
+using System.Linq;
 
 public class PropsGenerator : MonoBehaviour
 {
-    public List<Room> rooms = new();
+    public Dictionary<string, Room> rooms = new();
     public List<Link> links = new();
+    
+    public Dictionary<(string, string), Link> dungeonGraph = new();
+    // Dictionary<string, Vector3> roomPosition = new();
 
-    Dictionary<string, Vector3> roomPosition = new();
     public Dungeon dungeon;
     public int lockCount = 2;
     public GameObject tmpPrefab;
@@ -17,25 +20,25 @@ public class PropsGenerator : MonoBehaviour
     public DoorData doorData;
  
     public Vector3 offset = new Vector3(5f,0,5f);
-        
  
     void Start()
     {
         InitGraphData();
         InitDoor();
-        // MakeDoor();
-    }
-
-    void MakeDoor(){
-        foreach(var link in links){
-            Instantiate(doorData.lockedDoor, link.linkPosition, link.quaternion);
-        }
     }
 
     void InitDoor(){
         List<int> indexes = RandomIndex(links.Count);
-        foreach(int i in indexes){
-            Debug.Log(i);
+        for(int i=0;i<links.Count;i++){
+            // link 양옆에 Wall이 없으면 유효한 door의 위치가 아니므로 제거.
+            if(!CheckWall(Physics.OverlapSphere(links[i].linkPosition, 5f))) continue;
+            
+            if(indexes.Contains(i)){
+               Instantiate(doorData.lockedGate, links[i].linkPosition, links[i].quaternion);
+               links[i].isLocked = true;          //잠김.
+            }else{
+               Instantiate(doorData.openedGate, links[i].linkPosition, links[i].quaternion);    
+            }
         }
     }
 
@@ -69,8 +72,7 @@ public class PropsGenerator : MonoBehaviour
                 Vector3 nodePosition = new Vector3(node.coord.x * 20, 0, node.coord.y * 20) + offset;
 
                 Room room = new Room(node.nodeId.ToString(), nodePosition);
-                rooms.Add(room);
-                roomPosition[room.roomId] = room.roomPosition;
+                rooms[node.nodeId.ToString()] = room;
             }
         }
 
@@ -78,8 +80,12 @@ public class PropsGenerator : MonoBehaviour
             string startNodeId = link.source.ToString();
             string endNodeId = link.destination.ToString();
 
-            Vector3 startNodePosition = roomPosition[startNodeId];
-            Vector3 endNodePosition = roomPosition[endNodeId];
+            // 인접 노드 생성.
+            rooms[startNodeId].n_Node.Add(rooms[endNodeId]);
+            rooms[endNodeId].n_Node.Add(rooms[startNodeId]);
+
+            Vector3 startNodePosition = rooms[startNodeId].roomPosition;
+            Vector3 endNodePosition = rooms[endNodeId].roomPosition;
 
             //Rotation Check.
             Vector3 vec = startNodePosition - endNodePosition;
@@ -89,11 +95,20 @@ public class PropsGenerator : MonoBehaviour
             Vector3 center = (startNodePosition + endNodePosition) / 2;
             Link newLink = new(startNodeId, endNodeId, center, Quaternion.Euler(new Vector3(0,y,0)));
 
-            // newLink 양옆에 Wall이 없으면 유효한 door의 위치가 아니므로 제거.
-            if(!CheckWall(Physics.OverlapSphere(newLink.linkPosition, 5f))) continue;
             links.Add(newLink);
+            
+            //Dictionary형 그래프 생성.
+            dungeonGraph[(startNodeId, endNodeId)] = newLink;
         }
     }
+
+    #region 그래프 탐색
+    string spawnNodeId = "startNode";             // 탐색 시작 노드.
+    public List<Room> visitedRoom;
+
+    #endregion
+
+
 
     bool CheckWall(Collider[] colliders){
         int count = 0;
@@ -105,14 +120,18 @@ public class PropsGenerator : MonoBehaviour
 }
 
 
+
+
 //일종의 Node
 [Serializable]              
 public class Room{
     public string roomId;
     public Vector3 roomPosition;
+    public List<Room> n_Node;           //인접 노드.
     public Room(string id, Vector3 position){
         this.roomId = id;
         this.roomPosition = position;
+        n_Node = new();
     }
 }
 
@@ -121,10 +140,14 @@ public class Link{
     public string endNodeId;
     public Vector3 linkPosition;
     public Quaternion quaternion;
-    public Link(string startNodeId, string endNodeId, Vector3 linkPosition, Quaternion quaternion){
+    public bool isLocked;
+    public Link(string startNodeId, string endNodeId, Vector3 linkPosition, Quaternion quaternion, bool isLocked = false){
         this.startNodeId = startNodeId;
         this.endNodeId = endNodeId;
+
         this.linkPosition = linkPosition;
         this.quaternion = quaternion;
+        
+        this.isLocked = isLocked;
     }
 }

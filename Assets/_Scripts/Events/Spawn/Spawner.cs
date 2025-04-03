@@ -35,7 +35,7 @@ public class Spawner : MonoBehaviour
         cursor.eyePoint = character.eyePoint;
 
         eventPlayerSpawnAfter.eyePoint = character.eyePoint;
-        eventPlayerSpawnAfter.cursorPoint = cursor.CursorPoint;
+        eventPlayerSpawnAfter.CursorFixedPoint = cursor.CursorFixedPoint;
         eventPlayerSpawnAfter?.Raise();
     }
 

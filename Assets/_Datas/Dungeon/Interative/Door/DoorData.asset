@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38dd4df0c787d204990c84ef4868d926, type: 3}
   m_Name: DoorData
   m_EditorClassIdentifier: 
-  lockedDoor: {fileID: 1143446859910886728, guid: ea24ab2f910a8e242a26da89b62938ac, type: 3}
-  openedDoor: {fileID: 1654554159615204505, guid: 019280c434579f54aa36535d03c483a0, type: 3}
+  lockedGate: {fileID: 1143446859910886728, guid: 39b6b5c06bf1bc6459db0a569b8ab201, type: 3}
+  openedGate: {fileID: 1654554159615204505, guid: 59bffb4916065b8449e821defac746d3, type: 3}
