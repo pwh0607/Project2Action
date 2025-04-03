@@ -34,12 +34,9 @@ public class Spawner : MonoBehaviour
         CursorControl cursor = Instantiate(e.playerCursor);
         cursor.eyePoint = character.eyePoint;
 
-        GameManager.I.DelayCallAsync(500, ()=>{
-            eventPlayerSpawnAfter.eyePoint = character.eyePoint;
-            eventPlayerSpawnAfter.CursorFixedPoint = cursor.CursorFixedPoint;
-            eventPlayerSpawnAfter.actorProfile = actorProfile;
-            eventPlayerSpawnAfter?.Raise();
-        }).Forget();
-
+        eventPlayerSpawnAfter.eyePoint = character.eyePoint;
+        eventPlayerSpawnAfter.CursorFixedPoint = cursor.CursorFixedPoint;
+        eventPlayerSpawnAfter.actorProfile = actorProfile;
+        eventPlayerSpawnAfter?.Raise();
     }
 }

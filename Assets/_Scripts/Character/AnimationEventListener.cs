@@ -8,13 +8,12 @@ public class AnimationEventListener : MonoBehaviour
     public PoolableParticle smoke;
     public PoolableParticle jumpSmoke;
     [ReadOnly] public Transform modelRoot;
-    [ReadOnly] Transform footLeft, footRight;
+    [SerializeField, ReadOnly] Transform footLeft, footRight;
 
     [HorizontalLine("Event-Spawn"), HideField] public bool h_s_01;
     [SerializeField] EventPlayerSpawnAfter eventPlayerSpawnAfter;
 
     [HorizontalLine(color:FixedColor.Cyan), HideField] public bool h_e_01;
-
 
     void OnEnable()
     {
@@ -27,14 +26,14 @@ public class AnimationEventListener : MonoBehaviour
     }
 
     void OnEventPlayerSpawnAfter(EventPlayerSpawnAfter e){
-        modelRoot = transform.FindSlot("_model_");
-
-        if(modelRoot == null) Debug.LogWarning("Model Root 없음...");
-        StartCoroutine(WaitFind());
+        StartCoroutine(DelayFind());
     }
     
-    IEnumerator WaitFind(){
-        yield return new WaitForSeconds(1f);
+    IEnumerator DelayFind(){
+        modelRoot = transform.FindSlot("_model");
+        if(modelRoot == null) Debug.LogWarning("AnimationEventListener ] Model Root 없음...");
+        
+        yield return new WaitForEndOfFrame();
         
         footLeft = modelRoot.FindSlot("leftfoot");
         footRight = modelRoot.FindSlot("rightfoot");
