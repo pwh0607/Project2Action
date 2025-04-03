@@ -7,8 +7,7 @@ using System.Linq;
 // abilities : abilityDatas 갱신해서 행동
 public class AbilityControl : MonoBehaviour
 {
-    [Space(20), Title("ABILITY SYSTEM", underlined:true, fontSize = 15, alignment = TextAlignment.Center), HideField] public bool _t0;
-
+    [HorizontalLine("Current-Abilities"), HideField] public bool h_s_02;
     [Space(20), ReadOnly] public AbilityFlag flags = AbilityFlag.None;
     
     [Space(10), SerializeField] List<AbilityData> datas = new List<AbilityData>();

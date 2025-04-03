@@ -14,6 +14,12 @@ public class AnimationEventListener : MonoBehaviour
     [SerializeField] EventPlayerSpawnAfter eventPlayerSpawnAfter;
 
     [HorizontalLine(color:FixedColor.Cyan), HideField] public bool h_e_01;
+    void Awake()
+    {
+        TryGetComponent(out controller);    
+
+        modelRoot = transform.FindSlot("_model_");
+    }
 
     void OnEnable()
     {
@@ -26,23 +32,17 @@ public class AnimationEventListener : MonoBehaviour
     }
 
     void OnEventPlayerSpawnAfter(EventPlayerSpawnAfter e){
+        if(modelRoot == null) Debug.LogWarning("AnimationEventListener ] Model Root 없음...");
         StartCoroutine(DelayFind());
     }
     
     IEnumerator DelayFind(){
-        modelRoot = transform.FindSlot("_model");
-        if(modelRoot == null) Debug.LogWarning("AnimationEventListener ] Model Root 없음...");
-        
         yield return new WaitForEndOfFrame();
-        
+
         footLeft = modelRoot.FindSlot("leftfoot");
         footRight = modelRoot.FindSlot("rightfoot");
     }
 
-    void Awake()
-    {
-        TryGetComponent(out controller);    
-    }
 
 
     public void FootStep(string s)

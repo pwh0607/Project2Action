@@ -1,9 +1,6 @@
 using UnityEngine;
-
 using CustomInspector;
-using Unity.Cinemachine;
 using Project2Action;
-using System.Collections;
 
 // GAS (Game Ability System) : 언리얼.
 // 32bit = 4byte ( int )
@@ -13,48 +10,61 @@ public class CharacterControl : MonoBehaviour
     [Header("Ability")]
     [HideInInspector] public AbilityControl ability;
     [ReadOnly] ActorProfile profile;
-    
+    [ReadOnly] public ActorType actorType;
     
     [Header("Physics")]   
     [ReadOnly] public Rigidbody rb;
     [ReadOnly] public Animator animator;
 
+
 #region Animator HashSet
-    [HideInInspector] public int _MOVESPEED = Animator.StringToHash("MOVESPEED");
-    [HideInInspector] public int _RUNTOSTOP = Animator.StringToHash("RUNTOSTOP");
-    [HideInInspector] public int _JUMPUP = Animator.StringToHash("JUMPUP");
-    [HideInInspector] public int _JUMPDOWN = Animator.StringToHash("JUMPDOWN");
-    [HideInInspector] public int _SPAWN = Animator.StringToHash("STANDUP");
+    [ReadOnly] public int _MOVESPEED = Animator.StringToHash("MOVESPEED");
+    [ReadOnly] public int _RUNTOSTOP = Animator.StringToHash("RUNTOSTOP");
+    [ReadOnly] public int _JUMPUP = Animator.StringToHash("JUMPUP");
+    [ReadOnly] public int _JUMPDOWN = Animator.StringToHash("JUMPDOWN");
+    [ReadOnly] public int _SPAWN = Animator.StringToHash("SPAWN");
 #endregion
 
-    public Vector3 originalTargetPosition;
-    public float fixedY = 0f;
     [ReadOnly] public Transform eyePoint;
     [ReadOnly] public Transform model;
 
     [Header("flag")]   
     [ReadOnly] public bool isGrounded;
     [ReadOnly] public bool isArrived = true;
-    [ReadOnly] public bool isJumping = false;
     [HideInInspector] public ActionGameInput actionInput;
     
     void Awake()
     {
+        actionInput = new ActionGameInput();
         TryGetComponent(out ability);
         TryGetComponent(out rb);
         TryGetComponent(out animator);
-        
-        model = GameObject.Find("_MODEL_").transform;
-        
-        actionInput = new ActionGameInput();
+
+        model = transform.Find("_MODEL_").transform;
+    }
+
+    void OnDestroy()
+    {
+        actionInput.Dispose();
+    }
+    
+    void OnEnable()
+    {
+        actionInput.Enable();
+    }
+    
+    void OnDisable()
+    {
+        actionInput.Disable();
     }
 
     void Start()
     {
+        actorType = ActorType.PLAYER;
         Visible(false); 
     }
 
-    void FixedUpdate()
+    void Update()
     {
         isGrounded = CheckGrounded();
     }
@@ -68,8 +78,14 @@ public class CharacterControl : MonoBehaviour
         model.gameObject.SetActive(b);
     }
 
-    public void PlayeAnimation(int hash, float duration, int layer = 0)
+    public void PlayeAnimation(int hash, float duration = 0f, int layer = 0)
     {
         animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
     }
+
+    public void PlayeAnimation(string state, float duration = 0f, int layer = 0)
+    {
+        animator?.CrossFadeInFixedTime(state, duration, layer, 0f);
+    }
+    
 }

@@ -1,13 +1,12 @@
 using UnityEngine;
-using Cysharp.Threading.Tasks;
 using System.Collections;
 
 public class CharacterEventControl : MonoBehaviour
 {
-    #region Event
+#region Events
     [SerializeField] EventCameraSwitch eventCameraSwitch;
     [SerializeField] EventPlayerSpawnAfter eventPlayerSpawnAfter;
-    #endregion
+#endregion
     
     private CharacterControl controller;
     void Start()
@@ -37,6 +36,7 @@ public class CharacterEventControl : MonoBehaviour
     }
 
     void OnEventPlayerSpawnAfter(EventPlayerSpawnAfter e){
+        if(e.actorProfile.type != controller.actorType) return;
         StartCoroutine(SpawnSequence(e));
     }
     
@@ -54,12 +54,22 @@ public class CharacterEventControl : MonoBehaviour
 
         controller.animator.avatar = e.actorProfile.avatar;
 
+        // 플레이어 어빌리티 연결
+        
+        
         yield return new WaitForSeconds(1f);
         PoolManager.I.Spawn(e.spawnParticle, transform.position, Quaternion.identity, transform);
-
+        
         yield return new WaitForSeconds(0.2f);
+        
         controller.Visible(true);
-        controller.PlayeAnimation(controller._SPAWN, 0.2f);
+        controller.PlayeAnimation("SPAWN", 0f);
+
+        yield return new WaitForSeconds(1f);
+        
+        foreach(var abilityData in e.actorProfile.abilities){
+            controller.ability.Add(abilityData, true);
+        }
     }
 }
 

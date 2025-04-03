@@ -38926,3 +38926,10 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
+  - time: 0.46666667
+    functionName: FootStep
+    data: 
+    objectReferenceParameter: {fileID: 11500000, guid: 9df58b6b5e25da244b72182702afb403, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

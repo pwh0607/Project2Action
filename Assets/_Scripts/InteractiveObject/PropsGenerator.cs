@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using DungeonArchitect;
 using DungeonArchitect.Builders.GridFlow;
-using System.Linq;
+using CustomInspector;
 
 public class PropsGenerator : MonoBehaviour
 {
-    public Dictionary<string, Room> rooms = new();
+    public Dictionary<string, Room> roomDic = new();
+
+
+    //Inspector Check.
+    public List<Room> rooms = new();
     public List<Link> links = new();
-    
-    public Dictionary<(string, string), Link> dungeonGraph = new();
-    // Dictionary<string, Vector3> roomPosition = new();
 
     public Dungeon dungeon;
     public int lockCount = 2;
@@ -25,6 +26,8 @@ public class PropsGenerator : MonoBehaviour
     {
         InitGraphData();
         InitDoor();
+
+        StartSearch();
     }
 
     void InitDoor(){
@@ -48,6 +51,7 @@ public class PropsGenerator : MonoBehaviour
         res.Add(3);
         return res;
     }
+
     void InitGraphData(){
         if (dungeon == null)
         {
@@ -64,6 +68,13 @@ public class PropsGenerator : MonoBehaviour
 
         var graphNodes = gridFlowModel.LayoutGraph.Nodes;
         var graphLinks = gridFlowModel.LayoutGraph.Links;
+        
+        foreach(var node in graphNodes){
+            if(node.active){
+                spawnNodeId = node.nodeId.ToString();
+                break;
+            }
+        }
 
         foreach (var node in graphNodes)
         {
@@ -72,13 +83,14 @@ public class PropsGenerator : MonoBehaviour
                 Vector3 nodePosition = new Vector3(node.coord.x * 20, 0, node.coord.y * 20) + offset;
 
                 Room room = new Room(node.nodeId.ToString(), nodePosition);
-                rooms[node.nodeId.ToString()] = room;
+                roomDic[node.nodeId.ToString()] = room;
+                rooms.Add(room);
             }
         }
 
         foreach(var link in graphLinks){
-            Room startNode = rooms[link.source.ToString()];
-            Room endNode = rooms[link.destination.ToString()];
+            Room startNode = roomDic[link.source.ToString()];
+            Room endNode = roomDic[link.destination.ToString()];
 
             // 인접 노드 생성.
             startNode.n_Node.Add(endNode);
@@ -96,30 +108,29 @@ public class PropsGenerator : MonoBehaviour
             Link newLink = new(startNode, endNode, center, Quaternion.Euler(new Vector3(0,y,0)));
 
             links.Add(newLink);
-            
-            //Dictionary형 그래프 생성.
-            // dungeonGraph[(startNode, endNode)] = newLink;
         }
     }
 
 
 
     #region 그래프 탐색
-    string spawnNodeId = "startNode";             // 탐색 시작 노드.
+    [ReadOnly] public string spawnNodeId;             // 탐색 시작 노드.
 
     // 활성화된 노드들 중 선택하여 Key를 설치한다.
     public Dictionary<Room, bool> visited = new();
     public List<Room> activeRooms = new();
     void InitVisited(){
-        foreach(var room in rooms){
+        foreach(var room in roomDic){
             visited[room.Value] = false;
         }
     }
 
     void StartSearch(){
+        Debug.Log("그래프 탐색 시작.");
         InitVisited();
+        
         Queue<Room> queue = new();
-        Room startRoom = rooms[spawnNodeId];
+        Room startRoom = roomDic[spawnNodeId];
         activeRooms.Add(startRoom);
         queue.Enqueue(startRoom);
         visited[startRoom] = true;
@@ -128,18 +139,34 @@ public class PropsGenerator : MonoBehaviour
             Room r = queue.Dequeue();
             
             foreach(var node in r.n_Node){
-                Link link = links.Find(v => v.node.Item1.Equals(r) && v.node.Item2.Equals(node));
+                Link link = links.Find(v => (v.node.Item1.Equals(r) && v.node.Item2.Equals(node)) || (v.node.Item1.Equals(node) && v.node.Item2.Equals(r)));
 
-                if(visited[node] || link == null || link.isLocked) continue;
+                if(link == null || visited[node] || link.isLocked) continue;
                 queue.Enqueue(node);
+                activeRooms.Add(node);
                 visited[node] = true;
             }
         }
+        Debug.Log("그래프 탐색 종료.");
+
+        MakeMark();
+
+        //탐색 완료 후, 랜덤한 방에 키를 설치.
+        MakeKey();
     }
 
+    void MakeMark(){
+        foreach(var room in activeRooms){
+            Instantiate(tmpPrefab, room.roomPosition, Quaternion.identity);
+        }
+    }
+
+    public GameObject keyPrefab;
+    void MakeKey(){
+        int rnd = UnityEngine.Random.Range(0,activeRooms.Count);
+        Instantiate(keyPrefab, activeRooms[rnd].roomPosition + (Vector3.up *2), Quaternion.identity);
+    }
     #endregion
-
-
 
     bool CheckWall(Collider[] colliders){
         int count = 0;
@@ -150,10 +177,6 @@ public class PropsGenerator : MonoBehaviour
     }
 }
 
-
-
-
-//일종의 Node
 [Serializable]              
 public class Room{
     public string roomId;
@@ -166,10 +189,14 @@ public class Room{
     }
 }
 
+[Serializable]   
 public class Link{
     public (Room, Room) node;
     public Vector3 linkPosition;
     public Quaternion quaternion;
+    
+    //Door 설치
+
     public bool isLocked;
     public Link(Room startNodeId, Room endNodeId, Vector3 linkPosition, Quaternion quaternion, bool isLocked = false){
         this.node = (startNodeId,endNodeId);

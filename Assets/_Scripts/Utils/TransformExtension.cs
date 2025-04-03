@@ -8,7 +8,6 @@ public static class TransformExtension
     // rig slot을 이름으로 찾기.
     public static Transform FindSlot(this Transform root, string slotname){
         List<Transform> children = root.GetComponentsInChildren<Transform>().ToList();
-        Debug.Log($"자식 수 : {children.Count}");
         foreach(Transform t in children)
             if(t.name.ToLower().Contains(slotname)) return t;
 

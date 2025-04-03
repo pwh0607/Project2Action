@@ -1,12 +1,15 @@
+using CustomInspector;
 using Unity.Cinemachine;
 using UnityEngine;
 
 public class CameraControl : MonoBehaviour
 {
-    // 타겟 그룹 알기
+    
+    [HorizontalLine("Event-Spawn"), HideField] public bool h_s_01;
     [SerializeField] EventPlayerSpawnAfter eventPlayerSpawnAfter;
+    [HorizontalLine(color:FixedColor.Cyan), HideField] public bool h_e_01;
     [SerializeField] CinemachineTargetGroup targetGroup;
-
+    
     void OnEnable()
     {
         eventPlayerSpawnAfter.Register(OnEventPlayerSpawnAfter);
@@ -18,6 +21,8 @@ public class CameraControl : MonoBehaviour
     }
 
     void OnEventPlayerSpawnAfter(EventPlayerSpawnAfter e){
+
+
         targetGroup.Targets.Clear();
 
         CinemachineTargetGroup.Target main = new CinemachineTargetGroup.Target();

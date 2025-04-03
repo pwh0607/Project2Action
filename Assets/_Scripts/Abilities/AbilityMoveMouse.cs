@@ -17,12 +17,18 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
         path = new();
         owner.isArrived = true;
 
-        marker = GameObject.Instantiate(data.marker).GetComponent<ParticleSystem>();
+        marker = GameObject.Instantiate(data.marker);
         
         if(marker == null){
             Debug.LogWarning("Marker is not existed!");
         }
         marker.gameObject.SetActive(false);
+    }
+    public override void Update(){
+        if ( owner == null || owner.rb == null)
+            return;
+
+        MoveAnimation();
     }
 
     // 물리 연산만!
@@ -30,7 +36,6 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     {
         if(owner == null || owner.rb == null) return;
         
-        MoveAnimation();
         FollowPath();
     }
 
@@ -49,7 +54,6 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
         if(corners == null || corners.Length <= 0 || owner.isArrived == true) return;
 
         Vector3 nextTarget = corners[next];
-        Vector3 finalTarget = corners[corners.Length-1];
 
         // 다음 위치 방향.
         Vector3 direction = (nextTarget - owner.rb.transform.position).normalized;
