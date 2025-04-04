@@ -55,13 +55,10 @@ public class AbilityControl : MonoBehaviour
 
     public void Activate(AbilityFlag flag, bool immediate = false)
     {
-        Debug.Log($" Activate 실행! ");
         foreach(var d in datas){
             if((d.Flag & flag) == flag) {
                 if(!actives.ContainsKey(flag))
                     actives[flag] = d.CreateAbility(GetComponent<CharacterControl>());
-                
-                Debug.Log($"Ability Control] Activate => {flag} : {actives[flag]}");
                 actives[flag].Activate();
             }
         }

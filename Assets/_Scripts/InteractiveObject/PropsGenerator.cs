@@ -7,15 +7,17 @@ using DungeonArchitect.Builders.GridFlow;
 
 public class PropsGenerator : MonoBehaviour
 {
+
+    public int lockCount = 2;
+
+    [HorizontalLine("DungeonGraph"), HideInInspector] public bool h_s1;
+    public Dungeon dungeon;
     public Dictionary<string, Room> roomDic = new();
-
-
-    //Inspector Check.
     public List<Room> rooms = new();
     public List<Link> links = new();
-
-    public Dungeon dungeon;
-    public int lockCount = 2;
+    [HorizontalLine(color:FixedColor.Cyan), HideInInspector] public bool h_e1;
+    
+    [Space(20)]
     public GameObject tmpPrefab;
     //Test
     public DoorData doorData;
@@ -25,31 +27,9 @@ public class PropsGenerator : MonoBehaviour
     void Start()
     {
         InitGraphData();
-        InitDoor();
+        InitGate();
 
         StartSearch();
-    }
-
-    void InitDoor(){
-        List<int> indexes = RandomIndex(links.Count);
-        for(int i=0;i<links.Count;i++){
-            // link 양옆에 Wall이 없으면 유효한 door의 위치가 아니므로 제거.
-            if(!CheckWall(Physics.OverlapSphere(links[i].linkPosition, 5f))) continue;
-            
-            if(indexes.Contains(i)){
-               Instantiate(doorData.lockedGate, links[i].linkPosition, links[i].quaternion);
-               links[i].door.type = GateType.LOCK;
-            }else{
-               Instantiate(doorData.openedGate, links[i].linkPosition, links[i].quaternion);    
-            }
-        }
-    }
-
-    List<int> RandomIndex(int count){
-        List<int> res = new List<int>();
-        res.Add(1);
-        res.Add(3);
-        return res;
     }
 
     void InitGraphData(){
@@ -70,6 +50,7 @@ public class PropsGenerator : MonoBehaviour
         var graphLinks = gridFlowModel.LayoutGraph.Links;
         
         foreach(var node in graphNodes){
+            // 첫번째 노드 찾기.
             if(node.active){
                 spawnNodeId = node.nodeId.ToString();
                 break;
@@ -111,6 +92,26 @@ public class PropsGenerator : MonoBehaviour
         }
     }
 
+    void InitGate(){
+        List<int> indexes = RandomIndex(links.Count);
+
+        for(int i=0;i<links.Count;i++){
+            Link link = links[i];
+            if(!CheckWall(Physics.OverlapSphere(link.linkPosition, 5f))) continue;
+            
+            GameObject gatePrefab = indexes.Contains(i) ? doorData.lockedGate : doorData.openedGate;
+            InterActiveGate gate = Instantiate(gatePrefab, link.linkPosition, link.quaternion).GetComponent<InterActiveGate>();
+            link.gate = gate;
+        }
+    }
+
+    List<int> RandomIndex(int count){
+        List<int> res = new List<int>();
+        res.Add(1);
+        res.Add(3);
+        return res;
+    }
+
     #region 그래프 탐색
     [ReadOnly] public string spawnNodeId;             // 탐색 시작 노드.
 
@@ -123,6 +124,10 @@ public class PropsGenerator : MonoBehaviour
         }
     }
 
+    // 1. StartSearch를 통해 첫번째로 발견한 잠긴 문과, key를 설치할 수 있는 노드들을 찾는다.
+    // 2. StartSeach를 통해 activeRooms에 key를 설치할 수 있는 key를 설치한다.
+    // 3. key를 설치 완료후, StartSearch를 시작하여 Gate 개수만큼 위 과정을 반복한다.
+
     void StartSearch(){
         Debug.Log("그래프 탐색 시작.");
         InitVisited();
@@ -133,22 +138,29 @@ public class PropsGenerator : MonoBehaviour
         queue.Enqueue(startRoom);
         visited[startRoom] = true;
 
+        InterActiveGate targetGate = null;         //이 게이트에 해당하는 키를 설치!
+
         while(queue.Count >= 1){
             Room r = queue.Dequeue();
             
             foreach(var node in r.n_Node){
                 Link link = links.Find(v => (v.node.Item1.Equals(r) && v.node.Item2.Equals(node)) || (v.node.Item1.Equals(node) && v.node.Item2.Equals(r)));
 
-                if(link == null || visited[node] || link.door.type == GateType.LOCK) continue;
+                if(link == null || visited[node]) continue;
+                //Gate가 없는 경우를 고려한다. => Gate는 nullable 이다.
+                if(link.gate != null && link.gate.type == GateType.LOCK) {
+                    if(targetGate == null){
+                        targetGate = link.gate;
+                    }
+                    continue;
+                }
                 queue.Enqueue(node);
                 activeRooms.Add(node);
                 visited[node] = true;
             }
         }
         Debug.Log("그래프 탐색 종료.");
-
         MakeMark();
-
         //탐색 완료 후, 랜덤한 방에 키를 설치.
         MakeKey();
     }
@@ -196,14 +208,12 @@ public class Link{
     public Quaternion quaternion;
     
     //Door 설치
-    public InterActiveGate door;
+    public InterActiveGate gate;
 
-    public Link(Room startNodeId, Room endNodeId, Vector3 linkPosition, Quaternion quaternion, GateType type = GateType.NONE){
+    public Link(Room startNodeId, Room endNodeId, Vector3 linkPosition, Quaternion quaternion){
         this.node = (startNodeId,endNodeId);
         
         this.linkPosition = linkPosition;
         this.quaternion = quaternion;
-        
-        this.door.type = type;
     }
 }
