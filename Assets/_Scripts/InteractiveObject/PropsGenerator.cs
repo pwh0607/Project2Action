@@ -196,7 +196,7 @@ public class Link{
     public Quaternion quaternion;
     
     //Door 설치
-    public Door door;
+    public InterActiveGate door;
 
     public Link(Room startNodeId, Room endNodeId, Vector3 linkPosition, Quaternion quaternion, GateType type = GateType.NONE){
         this.node = (startNodeId,endNodeId);

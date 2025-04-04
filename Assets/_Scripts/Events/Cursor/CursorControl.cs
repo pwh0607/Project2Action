@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CustomInspector;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +12,7 @@ public class CursorData{
     public Vector2 offset;
 }
 
-public enum CursorType {NORMAL, MOVE, ATTACK, INTERACT}
+public enum CursorType {NORMALE, INTERACT, ATTACK, DIALOGUE}
 
 public class CursorControl : MonoBehaviour
 {
@@ -42,20 +43,38 @@ public class CursorControl : MonoBehaviour
         cursorFixedPoint.GetComponent<MeshRenderer>().enabled = IsShowDebugCursor;
 
         // 커스텀 커서 적용
-        SetCursor(cursorType);
+        SetCursor(CursorType.NORMALE);
     }
+
+    
+    [ReadOnly] public GameObject currentHover;            // 현재 호버 되어있는 아이템...
+    [ReadOnly] public GameObject previousHover;
 
     void Update()
     {
         if(cam == null || eyePoint == null) return;
 
+        previousHover = currentHover;
+
         Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
+
         if(Physics.Raycast(ray, out var hit)) {
+            currentHover = hit.collider.gameObject;
+        
+            if(currentHover != previousHover)
+                OnHoverEnter();
+
             cursorPoint.position = hit.point;
             cursorFixedPoint.position = new Vector3(hit.point.x, eyePoint.position.y, hit.point.z);
-            transform.position = hit.point;
+            transform.position = hit.point;      
+
+            DrawLine();
+        }else{
+            if(previousHover != null) OnHoverExit();
+
+            currentHover = null;
         }
-        DrawLine();
+
     }
 
     void DrawLine(){
@@ -67,8 +86,29 @@ public class CursorControl : MonoBehaviour
 
     // 커서 이미지 변경
     public void SetCursor(CursorType type){
-        var cursor = cursors.Find( v => v.type == cursorType);
+        var cursor = cursors.Find( v => v.type == type);
         if(cursor != null)
             Cursor.SetCursor(cursor.texture, cursor.offset, CursorMode.Auto);
+    }
+
+    private void OnHoverEnter(){
+        if(previousHover != null){
+            previousHover.layer = LayerMask.NameToLayer("Default");
+            SetCursor(CursorType.NORMALE);
+        }
+        
+        // Selecteable 가능한 오브젝트와만 커서-상호작용을 한다.
+        var sel = currentHover.GetComponentInParent<CursorSelectable>();;
+        if(sel == null) return;
+
+        if(currentHover != null){
+            currentHover.layer = LayerMask.NameToLayer("Outline");
+            SetCursor(sel.type);
+        }
+    }
+
+    private void OnHoverExit(){
+        if(previousHover != null)
+            previousHover.layer = LayerMask.NameToLayer("Default");
     }
 }

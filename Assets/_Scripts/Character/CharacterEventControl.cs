@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
+using CustomInspector;
 
 public class CharacterEventControl : MonoBehaviour
 {
@@ -48,7 +50,10 @@ public class CharacterEventControl : MonoBehaviour
         if(e.actorProfile.model == null)
             Debug.LogError("CharacterEventControl ] model 없음.");
 
-        Instantiate(e.actorProfile.model, controller.model);
+        var clone = Instantiate(e.actorProfile.model, controller.model);
+        clone.GetComponentsInChildren<SkinnedMeshRenderer>().ToList().ForEach( m =>{
+            m.gameObject.layer = LayerMask.NameToLayer("Silhouette");
+        });
 
         if(e.actorProfile.avatar == null)
             Debug.LogError("CharacterEventControl ] avatar 없음.");

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class AnswerKey : InteractiveObject
 {
-    public void Use(Door door){
-        bool complete = StageLogicManager.I.UseKey(door, this);
+    public void Use(InterActiveGate gate){
+        bool complete = StageLogicManager.I.UseKey(gate, this);
         if(complete){
             Debug.Log("문 열기 성공!!");
             Destroy(this.gameObject);

@@ -9,12 +9,12 @@ public class StageLogicManager : BehaviourSingleton<StageLogicManager>
     
     public List<DoorLogic> logics = new ();
     public UnityAction OnOpenLogicCompleted;
-    [SerializeField] List<Door> doors = new();
+    [SerializeField] List<InterActiveGate> gates = new();
 
     void Start()
     {
-        doors.Clear();
-        doors = new List<Door>(FindObjectsByType<Door>(FindObjectsSortMode.None));
+        gates.Clear();
+        gates = new List<InterActiveGate>(FindObjectsByType<InterActiveGate>(FindObjectsSortMode.None));
     }
 
     //test
@@ -25,12 +25,12 @@ public class StageLogicManager : BehaviourSingleton<StageLogicManager>
         // }
     }
 
-    public bool UseKey(Door door, AnswerKey answerKey){
-        Debug.Log($"StageLogicManager : {door} = {answerKey} CHECK!");
+    public bool UseKey(InterActiveGate gate, AnswerKey answerKey){
+        Debug.Log($"StageLogicManager : {gate} = {answerKey} CHECK!");
         var targetKey = logics.Find(pair => pair.key == answerKey);
         if(targetKey == null) return false;
 
-        return door == targetKey.door;
+        return gate == targetKey.gate;
     }
 
 
@@ -42,6 +42,6 @@ public class StageLogicManager : BehaviourSingleton<StageLogicManager>
 
 [Serializable]
 public class DoorLogic{
-    public Door door;
+    public InterActiveGate gate;
     public AnswerKey key;
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class Door : InteractiveObject
+public class InterActiveGate : InteractiveObject
 {
     public GateType type;
     public Vector3 doorPos {get; private set;}

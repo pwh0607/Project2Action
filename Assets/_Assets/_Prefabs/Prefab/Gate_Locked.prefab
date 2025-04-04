@@ -95,6 +95,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4144735544318936923}
+  - component: {fileID: -4773941996577786190}
   m_Layer: 0
   m_Name: Gate_Locked
   m_TagString: Untagged
@@ -120,6 +121,22 @@ Transform:
   - {fileID: 4144735546036073077}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-4773941996577786190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143446859910886728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dac3b193bdd76774eab624a80a75c107, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  blockDoor: {fileID: 0}
+  leftDoor: {fileID: 0}
+  rightDoor: {fileID: 0}
 --- !u!1 &1143446860226233868
 GameObject:
   m_ObjectHideFlags: 0

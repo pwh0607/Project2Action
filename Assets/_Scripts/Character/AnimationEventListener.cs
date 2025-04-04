@@ -6,7 +6,6 @@ public class AnimationEventListener : MonoBehaviour
 {
     [HorizontalLine("Event-Spawn"), HideField] public bool h_s_01;
     [SerializeField] EventPlayerSpawnAfter eventPlayerSpawnAfter;
-
     [HorizontalLine(color:FixedColor.Cyan), HideField] public bool h_e_01;
     public PoolableParticle smoke, jumpSmoke;
     [ReadOnly] public Transform modelRoot;
