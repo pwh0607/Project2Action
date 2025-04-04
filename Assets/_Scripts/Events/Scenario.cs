@@ -12,6 +12,6 @@ public class Scenario : MonoBehaviour
     IEnumerator Start()
     {
         yield return new WaitForEndOfFrame();
-        playerSpawnerBefore?.Raise();
+        // playerSpawnerBefore?.Raise();
     }
 }

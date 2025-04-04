@@ -4,21 +4,24 @@ using UnityEngine;
 using CustomInspector;
 using DungeonArchitect;
 using DungeonArchitect.Builders.GridFlow;
+using System.Linq;
 
 public class PropsGenerator : MonoBehaviour
 {
-
-    public int lockCount = 2;
-
     [HorizontalLine("DungeonGraph"), HideInInspector] public bool h_s1;
+    private int searchCount = 0;
+    public int lockCount = 2;
+    [HorizontalLine(color:FixedColor.Cyan), HideInInspector] public bool h_e1;
+
+    [HorizontalLine("DungeonGraph"), HideInInspector] public bool h_s2;
     public Dungeon dungeon;
     public Dictionary<string, Room> roomDic = new();
     public List<Room> rooms = new();
     public List<Link> links = new();
-    [HorizontalLine(color:FixedColor.Cyan), HideInInspector] public bool h_e1;
+    [HorizontalLine(color:FixedColor.Cyan), HideInInspector] public bool h_e2;
     
     [Space(20)]
-    public GameObject tmpPrefab;
+    public List<GameObject> tmpPrefab;
     //Test
     public DoorData doorData;
  
@@ -27,11 +30,17 @@ public class PropsGenerator : MonoBehaviour
     void Start()
     {
         InitGraphData();
-        InitGate();
+        InitGate();        
+        InitVisited();
 
-        StartSearch();
+        while(lockCount > 0){
+            // activeRooms.Clear();
+            SearchGraph();
+            lockCount--;
+        }
     }
 
+#region InitDatas
     void InitGraphData(){
         if (dungeon == null)
         {
@@ -49,14 +58,6 @@ public class PropsGenerator : MonoBehaviour
         var graphNodes = gridFlowModel.LayoutGraph.Nodes;
         var graphLinks = gridFlowModel.LayoutGraph.Links;
         
-        foreach(var node in graphNodes){
-            // 첫번째 노드 찾기.
-            if(node.active){
-                spawnNodeId = node.nodeId.ToString();
-                break;
-            }
-        }
-
         foreach (var node in graphNodes)
         {
             if(node.active){
@@ -111,13 +112,18 @@ public class PropsGenerator : MonoBehaviour
         res.Add(3);
         return res;
     }
+#endregion
 
-    #region 그래프 탐색
-    [ReadOnly] public string spawnNodeId;             // 탐색 시작 노드.
+
+
+#region 그래프 탐색
+    [ReadOnly] public string startNodeId;             // 탐색 시작 노드.
 
     // 활성화된 노드들 중 선택하여 Key를 설치한다.
     public Dictionary<Room, bool> visited = new();
+    public List<Room> visitedRoom = new();
     public List<Room> activeRooms = new();
+
     void InitVisited(){
         foreach(var room in roomDic){
             visited[room.Value] = false;
@@ -127,48 +133,98 @@ public class PropsGenerator : MonoBehaviour
     // 1. StartSearch를 통해 첫번째로 발견한 잠긴 문과, key를 설치할 수 있는 노드들을 찾는다.
     // 2. StartSeach를 통해 activeRooms에 key를 설치할 수 있는 key를 설치한다.
     // 3. key를 설치 완료후, StartSearch를 시작하여 Gate 개수만큼 위 과정을 반복한다.
+    
+    InterActiveGate targetGate = null; 
+    public List<InterActiveGate> gates = new();
+    void SearchGraph(){
+        SearchNode();
+        Debug.Log($"그래프 탐색 시작");
 
-    void StartSearch(){
-        Debug.Log("그래프 탐색 시작.");
-        InitVisited();
-        
         Queue<Room> queue = new();
-        Room startRoom = roomDic[spawnNodeId];
+        Room startRoom = roomDic[startNodeId];
         activeRooms.Add(startRoom);
         queue.Enqueue(startRoom);
+        
         visited[startRoom] = true;
+        visitedRoom.Add(startRoom);
 
-        InterActiveGate targetGate = null;         //이 게이트에 해당하는 키를 설치!
-
+        Debug.Log($"[ 시작 : {startRoom.roomId} ] => ");
         while(queue.Count >= 1){
             Room r = queue.Dequeue();
             
             foreach(var node in r.n_Node){
                 Link link = links.Find(v => (v.node.Item1.Equals(r) && v.node.Item2.Equals(node)) || (v.node.Item1.Equals(node) && v.node.Item2.Equals(r)));
 
-                if(link == null || visited[node]) continue;
-                //Gate가 없는 경우를 고려한다. => Gate는 nullable 이다.
-                if(link.gate != null && link.gate.type == GateType.LOCK) {
-                    if(targetGate == null){
-                        targetGate = link.gate;
-                    }
-                    continue;
+                if(visited[node] || link == null) continue;
+
+                // Gate가 없는 경우를 고려한다. => Gate : nullable
+                // 무시해도 되는 node의 조건.
+                if(link.gate != null){
+                    if(link.gate.type == GateType.LOCK) {
+                        if(targetGate == null){              //아직 찾지 못한 Gate에 대해서만 설정한다.
+                            targetGate = link.gate;
+                            gates.Add(link.gate);
+                        }else{
+                            Debug.Log("이미 발견한 문이 있으므로 이번 루프에서는 넘어간다.");
+                        }
+                        continue;
+                    }    
                 }
+
+                Debug.Log($"[ {node.roomId} ]=> ");
                 queue.Enqueue(node);
                 activeRooms.Add(node);
                 visited[node] = true;
+                visitedRoom.Add(node);
             }
         }
         Debug.Log("그래프 탐색 종료.");
         MakeMark();
         //탐색 완료 후, 랜덤한 방에 키를 설치.
-        MakeKey();
+        
+        // MakeKey();
     }
 
     void MakeMark(){
         foreach(var room in activeRooms){
-            Instantiate(tmpPrefab, room.roomPosition, Quaternion.identity);
+            Instantiate(tmpPrefab[searchCount], room.roomPosition, Quaternion.identity);
         }
+        searchCount++;
+    }
+
+    public int spawnNodeNumber = 3;                 //test용
+
+    // 다음에 탐색할 노드를 찾는다.
+    void SearchNode(){
+        Debug.Log($"탐색 시작할 노드 찾기...");
+        if(targetGate == null){
+            Debug.Log("최초 노드 찾기/...");
+            // 그래프 탐색의 최초 시행
+            // 그래프의 스폰위치(방)은 나중에 인스펙터에서 추가한다.
+            
+            var key = roomDic.Keys.ToList();
+            startNodeId = roomDic[key[spawnNodeNumber]].roomId;     
+            return;
+        }
+        
+        Link link = links.Find(v => v.gate == targetGate);
+        if(link == null){
+            Debug.Log("link 없음...");
+        }
+        //해당 링크의 두개의 룸에 대하여 아직 방문하지 않은 노드가 시작 노드이다.
+        var room1 = link.node.Item1;
+        var room2 = link.node.Item2;
+
+        if(!visited[room1]){
+            startNodeId = room1.roomId;
+            return;
+        }
+        
+        if(!visited[room2]){
+            startNodeId = room2.roomId;
+            return;
+        }
+        targetGate = null;
     }
 
     public GameObject keyPrefab;
@@ -176,7 +232,7 @@ public class PropsGenerator : MonoBehaviour
         int rnd = UnityEngine.Random.Range(0,activeRooms.Count);
         Instantiate(keyPrefab, activeRooms[rnd].roomPosition + (Vector3.up *2), Quaternion.identity);
     }
-    #endregion
+#endregion
 
     bool CheckWall(Collider[] colliders){
         int count = 0;

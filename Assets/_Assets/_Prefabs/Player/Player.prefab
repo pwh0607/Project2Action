@@ -276,7 +276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ability: {fileID: 0}
-  actorType: 0
+  profile: {fileID: 0}
   rb: {fileID: 0}
   animator: {fileID: 0}
   _MOVESPEED: 413772982
@@ -284,13 +284,10 @@ MonoBehaviour:
   _JUMPUP: 1184341671
   _JUMPDOWN: 745124790
   _SPAWN: 1372578019
-  originalTargetPosition: {x: 0, y: 0, z: 0}
-  fixedY: 0
   eyePoint: {fileID: 2910737957155279010}
   model: {fileID: 0}
   isGrounded: 1
   isArrived: 1
-  isJumping: 0
 --- !u!114 &4379074896331929005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,14 +315,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9df58b6b5e25da244b72182702afb403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  h_s_01: 0
+  eventPlayerSpawnAfter: {fileID: 11400000, guid: dc969804fc864c940a147df9dd852e32, type: 2}
+  h_e_01: 0
   smoke: {fileID: 2629689706300806626, guid: 0d879c6f654b17e4e8b87b32da426228, type: 3}
   jumpSmoke: {fileID: -3041555348497599386, guid: 9c39fbcfdd2562143b816b99c1ea418b, type: 3}
   modelRoot: {fileID: 6366712871683737439}
   footLeft: {fileID: 0}
   footRight: {fileID: 0}
-  h_s_01: 0
-  eventPlayerSpawnAfter: {fileID: 11400000, guid: dc969804fc864c940a147df9dd852e32, type: 2}
-  h_e_01: 0
 --- !u!114 &750402350895046784
 MonoBehaviour:
   m_ObjectHideFlags: 0
