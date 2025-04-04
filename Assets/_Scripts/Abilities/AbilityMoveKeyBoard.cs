@@ -7,11 +7,14 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
     private Transform cameraTransform;
     private Vector3 camForward, camRight;
     private Vector3 direction;
-    private float _velocity;
     public AbilityMoveKeyBoard(AbilityMoveKeyBoardData data, CharacterControl owner) : base(data, owner)
     {
-        cameraTransform = Camera.main.transform; 
-        _velocity = data.rotatePerSec;
+        cameraTransform = Camera.main.transform;
+
+        if(owner.profile == null) return;
+
+        data.movePerSec = owner.profile.moveSpeed;
+        data.rotatePerSec = owner.profile.rotateSpeed;
     }
     
     public override void FixedUpdate()
@@ -86,7 +89,7 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
         if (direction == Vector3.zero) return;
         
         float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-        float smoothAngle = Mathf.SmoothDampAngle(owner.transform.eulerAngles.y, angle, ref _velocity, 0.1f);
+        float smoothAngle = Mathf.SmoothDampAngle(owner.transform.eulerAngles.y, angle, ref data.rotatePerSec, 0.1f);
         owner.transform.rotation = Quaternion.Euler(0f, angle, 0f);
     }
 }

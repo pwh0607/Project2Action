@@ -1,19 +1,28 @@
 using System.Collections.Generic;
-using CustomInspector;
 using UnityEngine;
+using CustomInspector;
 
 public enum ActorType{ NONE = 0, PLAYER, NPC, ENEMY, BOSS, ITEM }
 
 [CreateAssetMenu(menuName = "Datas/ActorProfile")]
 public class ActorProfile : ScriptableObject
 {
-    [HorizontalLine("Properties", color:FixedColor.Cyan), HideField] public bool _h_s0;
+    [HorizontalLine("Prefabs", color:FixedColor.Cyan), HideField] public bool _h_s0;
     public ActorType type;
     public string alias;
     [Preview(Size.medium)] public Sprite portrait;
     [Preview(Size.medium)] public GameObject model;
     [Preview(Size.medium)] public Avatar avatar;
 
-    [Space(10), HorizontalLine("Abilities"), HideField] public bool _h_e0;
+    [Space(20)]
+    [HorizontalLine("Attribute", color:FixedColor.Cyan), HideField] public bool _h_s1;
+    [Tooltip("체력")] public int health;              
+    [Tooltip("초당 이동 속도")] public float moveSpeed;
+    [Tooltip("초당 회전 속도")] public float rotateSpeed;
+    [Tooltip("점프 파워")] public float jumpForce; 
+    [Tooltip("점프 체공 시간")] public float jumpDuration;
+
+    [Space(20)]
+    [HorizontalLine("Abilities"), HideField] public bool _h_s2;
     public List<AbilityData> abilities;
 }

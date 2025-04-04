@@ -1,6 +1,6 @@
 using System.Collections;
-using CustomInspector;
 using UnityEngine;
+using CustomInspector;
 
 public class Spawner : MonoBehaviour
 {

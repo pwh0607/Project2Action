@@ -4,8 +4,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Abilities/Move Mouse")]
 public class AbilityMoveMouseData : AbilityData
 {
-    public float movePerSec = 5f;
-    public float rotatePerSec = 1080f;
+    [ReadOnly] public float movePerSec = 5f;
+    [ReadOnly] public float rotatePerSec = 1080f;
     public ForceMode forceMode;
     public float stopDistance;
 

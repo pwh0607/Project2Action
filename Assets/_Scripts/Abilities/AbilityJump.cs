@@ -5,7 +5,12 @@ public class AbilityJump : Ability<AbilityJumpData>
 {
     private bool isJumping = false;
     float elapsedTime = 0f;
-    public AbilityJump(AbilityJumpData data, CharacterControl owner) : base(data, owner) { }
+    public AbilityJump(AbilityJumpData data, CharacterControl owner) : base(data, owner) {
+        if(owner.profile == null) return;
+        
+        data.jumpForce = owner.profile.jumpForce;
+        data.jumpDuration = owner.profile.jumpDuration;
+    }
 
     public override void Activate()
     {

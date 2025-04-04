@@ -1,13 +1,13 @@
-using DG.Tweening;
 using UnityEngine;
+using DG.Tweening;
 
 public class Door : InteractiveObject
 {
+    public GateType type;
     public Vector3 doorPos {get; private set;}
     [SerializeField] Collider blockDoor;
     [SerializeField] Transform leftDoor;
     [SerializeField] Transform rightDoor;
-    public bool isLocked{get; private set;} = true;
 
     void Start()
     {
@@ -15,7 +15,7 @@ public class Door : InteractiveObject
     }
 
     void OpenDoor(){
-        isLocked = false;
+        type = GateType.OPEN;
         if(blockDoor.gameObject.activeSelf) Destroy(blockDoor.gameObject);
 
         leftDoor.DOLocalRotate(new Vector3(0, 100f, 0), 1, RotateMode.FastBeyond360);
@@ -23,6 +23,6 @@ public class Door : InteractiveObject
     }
 
     void CloseDoor(){
-        isLocked = true;
+        type = GateType.LOCK;
     }
 }

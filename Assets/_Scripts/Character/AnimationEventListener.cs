@@ -1,24 +1,25 @@
 using System.Collections;
-using CustomInspector;
 using UnityEngine;
+using CustomInspector;
 
 public class AnimationEventListener : MonoBehaviour
 {
-    private CharacterControl controller;
-    public PoolableParticle smoke;
-    public PoolableParticle jumpSmoke;
-    [ReadOnly] public Transform modelRoot;
-    [SerializeField, ReadOnly] Transform footLeft, footRight;
-
     [HorizontalLine("Event-Spawn"), HideField] public bool h_s_01;
     [SerializeField] EventPlayerSpawnAfter eventPlayerSpawnAfter;
 
     [HorizontalLine(color:FixedColor.Cyan), HideField] public bool h_e_01;
+    public PoolableParticle smoke, jumpSmoke;
+    [ReadOnly] public Transform modelRoot;
+    [ReadOnly] public Transform footLeft, footRight;
+
+    private CharacterControl controller;
+
     void Awake()
     {
         TryGetComponent(out controller);    
 
         modelRoot = transform.FindSlot("_model_");
+        if(modelRoot == null) Debug.LogWarning("AnimationEventListener ] Model Root 없음...");
     }
 
     void OnEnable()
@@ -32,7 +33,6 @@ public class AnimationEventListener : MonoBehaviour
     }
 
     void OnEventPlayerSpawnAfter(EventPlayerSpawnAfter e){
-        if(modelRoot == null) Debug.LogWarning("AnimationEventListener ] Model Root 없음...");
         StartCoroutine(DelayFind());
     }
     

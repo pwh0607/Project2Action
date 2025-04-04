@@ -9,8 +9,7 @@ public class CharacterControl : MonoBehaviour
 {
     [Header("Ability")]
     [HideInInspector] public AbilityControl ability;
-    [ReadOnly] ActorProfile profile;
-    [ReadOnly] public ActorType actorType;
+    [ReadOnly] public ActorProfile profile;
     
     [Header("Physics")]   
     [ReadOnly] public Rigidbody rb;
@@ -58,11 +57,7 @@ public class CharacterControl : MonoBehaviour
         actionInput.Disable();
     }
 
-    void Start()
-    {
-        actorType = ActorType.PLAYER;
-        Visible(false); 
-    }
+    void Start() { }
 
     void Update()
     {
@@ -80,12 +75,13 @@ public class CharacterControl : MonoBehaviour
 
     public void PlayeAnimation(int hash, float duration = 0f, int layer = 0)
     {
+        Debug.Log($"anim : {hash.GetType()}");
         animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
     }
 
     public void PlayeAnimation(string state, float duration = 0f, int layer = 0)
     {
+        Debug.Log($"anim : {state}");
         animator?.CrossFadeInFixedTime(state, duration, layer, 0f);
     }
-    
 }

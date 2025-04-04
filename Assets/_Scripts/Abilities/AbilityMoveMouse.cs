@@ -9,7 +9,7 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     private Vector3[] corners;
     private int next;
     private ParticleSystem marker;
-
+    float currentVelocity;
 
     public AbilityMoveMouse(AbilityMoveMouseData data, CharacterControl owner) : base(data, owner)
     {
@@ -19,11 +19,16 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
 
         marker = GameObject.Instantiate(data.marker);
         
-        if(marker == null){
+        if(marker == null)
             Debug.LogWarning("Marker is not existed!");
-        }
+        
         marker.gameObject.SetActive(false);
+
+        if(owner.profile == null) return;
+        data.movePerSec = owner.profile.moveSpeed;
+        data.rotatePerSec = owner.profile.rotateSpeed;
     }
+
     public override void Update(){
         if ( owner == null || owner.rb == null)
             return;
@@ -40,16 +45,14 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     }
 
     void SetDestiNation(Vector3 destination){
-        if(!NavMesh.CalculatePath(owner.transform.position, destination, -1, path)){
-            Debug.Log($"길 못찾음.");
-        }
+        if(!NavMesh.CalculatePath(owner.transform.position, destination, -1, path)) return;
+
         corners = path.corners;
         next = 1;
         owner.isArrived = false;
     }
     
     Quaternion lookrot;
-    float currentVelocity;
     private void FollowPath(){
         if(corners == null || corners.Length <= 0 || owner.isArrived == true) return;
 
@@ -90,7 +93,7 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     }
 
     private void MoveAnimation(){
-        float a = owner.isArrived? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
+        float a = owner.isArrived ? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
         float spd = Mathf.Lerp(owner.animator.GetFloat(owner._MOVESPEED), a, Time.deltaTime * 10f);
         owner.animator.SetFloat(owner._MOVESPEED, spd);
     }

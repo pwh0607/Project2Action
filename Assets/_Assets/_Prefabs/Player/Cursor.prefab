@@ -140,10 +140,10 @@ MonoBehaviour:
   line: {fileID: 4541590223717864133}
   cursors:
   - type: 0
-    texture: {fileID: 2800000, guid: 6c8903799a9454b4294fc52ba1674eae, type: 3}
+    texture: {fileID: 2800000, guid: 87d28997275f30943a4bf1cdc156bb73, type: 3}
     offset: {x: 0, y: 0}
   - type: 3
-    texture: {fileID: 2800000, guid: 54f1556e958e63d42baf8daddc0947fb, type: 3}
+    texture: {fileID: 2800000, guid: 0f45821c9378469498c0044ff9068ea2, type: 3}
     offset: {x: 0, y: 0}
   cursorType: 0
 --- !u!120 &4541590223717864133

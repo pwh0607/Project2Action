@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CustomInspector;
 using DungeonArchitect;
 using DungeonArchitect.Builders.GridFlow;
-using CustomInspector;
 
 public class PropsGenerator : MonoBehaviour
 {
@@ -38,7 +38,7 @@ public class PropsGenerator : MonoBehaviour
             
             if(indexes.Contains(i)){
                Instantiate(doorData.lockedGate, links[i].linkPosition, links[i].quaternion);
-               links[i].isLocked = true;          //잠김.
+               links[i].door.type = GateType.LOCK;
             }else{
                Instantiate(doorData.openedGate, links[i].linkPosition, links[i].quaternion);    
             }
@@ -111,8 +111,6 @@ public class PropsGenerator : MonoBehaviour
         }
     }
 
-
-
     #region 그래프 탐색
     [ReadOnly] public string spawnNodeId;             // 탐색 시작 노드.
 
@@ -141,7 +139,7 @@ public class PropsGenerator : MonoBehaviour
             foreach(var node in r.n_Node){
                 Link link = links.Find(v => (v.node.Item1.Equals(r) && v.node.Item2.Equals(node)) || (v.node.Item1.Equals(node) && v.node.Item2.Equals(r)));
 
-                if(link == null || visited[node] || link.isLocked) continue;
+                if(link == null || visited[node] || link.door.type == GateType.LOCK) continue;
                 queue.Enqueue(node);
                 activeRooms.Add(node);
                 visited[node] = true;
@@ -189,6 +187,8 @@ public class Room{
     }
 }
 
+public enum GateType{ NONE = 0, LOCK, OPEN}
+
 [Serializable]   
 public class Link{
     public (Room, Room) node;
@@ -196,14 +196,14 @@ public class Link{
     public Quaternion quaternion;
     
     //Door 설치
+    public Door door;
 
-    public bool isLocked;
-    public Link(Room startNodeId, Room endNodeId, Vector3 linkPosition, Quaternion quaternion, bool isLocked = false){
+    public Link(Room startNodeId, Room endNodeId, Vector3 linkPosition, Quaternion quaternion, GateType type = GateType.NONE){
         this.node = (startNodeId,endNodeId);
         
         this.linkPosition = linkPosition;
         this.quaternion = quaternion;
         
-        this.isLocked = isLocked;
+        this.door.type = type;
     }
 }
