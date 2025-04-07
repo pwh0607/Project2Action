@@ -4,6 +4,7 @@ using CustomInspector;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 [Serializable]
 public class CursorData{
@@ -47,8 +48,8 @@ public class CursorControl : MonoBehaviour
     }
 
     
-    [ReadOnly] public GameObject currentHover;            // 현재 호버 되어있는 아이템...
-    [ReadOnly] public GameObject previousHover;
+    [ReadOnly] public CursorSelectable currentHover;            // 현재 호버 되어있는 아이템...
+    [ReadOnly] public CursorSelectable previousHover;
 
     void Update()
     {
@@ -59,7 +60,7 @@ public class CursorControl : MonoBehaviour
         Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
 
         if(Physics.Raycast(ray, out var hit)) {
-            currentHover = hit.collider.gameObject;
+            currentHover = hit.collider.gameObject.GetComponent<CursorSelectable>();
         
             if(currentHover != previousHover)
                 OnHoverEnter();
@@ -93,22 +94,25 @@ public class CursorControl : MonoBehaviour
 
     private void OnHoverEnter(){
         if(previousHover != null){
-            previousHover.layer = LayerMask.NameToLayer("Default");
+            previousHover.gameObject.layer = LayerMask.NameToLayer("Default");
+            previousHover.Select(false);
             SetCursor(CursorType.NORMALE);
         }
+
+        if(currentHover == null) return;
         
         // Selecteable 가능한 오브젝트와만 커서-상호작용을 한다.
         var sel = currentHover.GetComponentInParent<CursorSelectable>();;
         if(sel == null) return;
 
         if(currentHover != null){
-            currentHover.layer = LayerMask.NameToLayer("Outline");
+            currentHover.gameObject.layer = LayerMask.NameToLayer("Outline");
             SetCursor(sel.type);
         }
     }
 
     private void OnHoverExit(){
         if(previousHover != null)
-            previousHover.layer = LayerMask.NameToLayer("Default");
+            previousHover.gameObject.layer = LayerMask.NameToLayer("Default");
     }
 }

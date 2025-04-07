@@ -26,34 +26,39 @@ public class PoolManager : BehaviourSingleton<PoolManager>
         instances.Clear();
     }
 
-    public void WarmPool(PoolBehaviour pb, int size = 10){
-        if(prefabs.ContainsKey(pb)){
-            Debug.LogWarning($"이미 생성한 프리팹입니다. {pb.name}");
-        }
+    public void WarmPool(PoolBehaviour pb, int size = 10)
+    {
+        if (prefabs.ContainsKey(pb))
+            Debug.LogWarning($"이미 생성한 프리팹 : {pb.name}");
 
         var pool = new ObjectPool<PoolBehaviour>(
-            createFunc: () => {
+            createFunc: () =>
+            {
                 PoolBehaviour p = Instantiate(pb);
                 p.poolManager = this;
                 return p;
             },
-            actionOnGet: (v) => {
+            actionOnGet: (v) =>
+            {
                 v.gameObject.SetActive(true);
             },
-            actionOnRelease : (v) =>{
+            actionOnRelease: (v) =>
+            {
                 v.gameObject.SetActive(false);
             },
-            actionOnDestroy: (v) => {
+            actionOnDestroy: (v) =>
+            {
                 Destroy(v.gameObject);
             },
             maxSize: size);
-        prefabs[pb] = pool;
+
+        prefabs[pb] = pool;        
     }
 
+
     public PoolBehaviour Spawn(PoolBehaviour pb, Vector3 pos, Quaternion rot, Transform parent){
-        if(!prefabs.ContainsKey(pb)){
+        if (!prefabs.ContainsKey(pb))
             WarmPool(pb);
-        }
 
         var pool = prefabs[pb];
         

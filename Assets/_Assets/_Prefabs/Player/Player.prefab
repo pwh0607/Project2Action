@@ -203,8 +203,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5264368567590646377}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 28.835, y: 0.2, z: 13.493}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -318,7 +318,7 @@ MonoBehaviour:
   h_s_01: 0
   eventPlayerSpawnAfter: {fileID: 11400000, guid: dc969804fc864c940a147df9dd852e32, type: 2}
   h_e_01: 0
-  smoke: {fileID: 2629689706300806626, guid: 0d879c6f654b17e4e8b87b32da426228, type: 3}
+  footSmoke: {fileID: 2629689706300806626, guid: 0d879c6f654b17e4e8b87b32da426228, type: 3}
   jumpSmoke: {fileID: -3041555348497599386, guid: 9c39fbcfdd2562143b816b99c1ea418b, type: 3}
   modelRoot: {fileID: 6366712871683737439}
   footLeft: {fileID: 0}

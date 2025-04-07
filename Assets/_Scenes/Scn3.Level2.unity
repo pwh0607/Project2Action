@@ -32804,7 +32804,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1722488498}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 552bb3c3c1e31f142bca5c37941c78ff, type: 3}
   m_Name: 
@@ -32824,7 +32824,9 @@ MonoBehaviour:
   doorData: {fileID: 11400000, guid: 34fba6aac6a55ef4ea7be475b9882ead, type: 2}
   offset: {x: 10, y: 0, z: 10}
   startNodeId: 
+  visitedRoom: []
   activeRooms: []
+  gates: []
   spawnNodeNumber: 3
   keyPrefab: {fileID: 7687632049814388318, guid: 196cb606a4722884994bd7ac92403011, type: 3}
 --- !u!1001 &1736439870
