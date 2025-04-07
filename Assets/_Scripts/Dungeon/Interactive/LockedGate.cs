@@ -17,7 +17,7 @@ public class LockedGate : InterActiveGate
 
     void OpenDoor(){
         type = GateType.OPEN;
-        if(blockDoor.gameObject.activeSelf) Destroy(blockDoor.gameObject);
+        if(blockDoor.gameObject.activeSelf) blockDoor.gameObject.SetActive(false);
 
         leftDoor.DOLocalRotate(new Vector3(0, 100f, 0), 1, RotateMode.FastBeyond360);
         rightDoor.DOLocalRotate(new Vector3(0, -100f, 0), 1, RotateMode.FastBeyond360);
@@ -25,5 +25,6 @@ public class LockedGate : InterActiveGate
     
     void CloseDoor(){
         type = GateType.LOCK;
+        blockDoor.gameObject.SetActive(true);
     }
 }
