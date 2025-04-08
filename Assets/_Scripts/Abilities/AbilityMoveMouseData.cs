@@ -13,7 +13,7 @@ public class AbilityMoveMouseData : AbilityData
     [AsRange(0, 15)] public Vector2 runToStopDistance;
 
     public override AbilityFlag Flag => AbilityFlag.MoveMouse;
-    public override Ability CreateAbility(CharacterControl owner) => new AbilityMoveMouse(this, owner);
+    public override Ability CreateAbility(IActorControl owner) => new AbilityMoveMouse(this, owner);
 
     [Space(10)]
     public ParticleSystem marker;           //3d 피킹 마커 오브젝트.

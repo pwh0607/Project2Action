@@ -44,7 +44,7 @@ public class CharacterEventControl : MonoBehaviour
     IEnumerator SpawnSequence(EventPlayerSpawnAfter e){
         yield return new WaitUntil(() => e.actorProfile.avatar != null && e.actorProfile.model != null);
 
-        controller.profile = e.actorProfile;
+        controller.Profile = e.actorProfile;
 
         // 플레이어 모델 생성후 하위 항목인 Model에 설정
         if(e.actorProfile.model == null)

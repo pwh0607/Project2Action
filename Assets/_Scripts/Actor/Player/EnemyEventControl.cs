@@ -33,7 +33,7 @@ public class EnemyEventControl : MonoBehaviour
         Debug.Log("Enemy : SpawnAfter");
         yield return new WaitUntil(() => e.actorProfile.avatar != null && e.actorProfile.model != null);
 
-        enemyController.profile = e.actorProfile;
+        enemyController.Profile = e.actorProfile;
         
         // Enemy 모델 생성 후 하위 항목인 Model에 설정
         if(e.actorProfile.model == null)

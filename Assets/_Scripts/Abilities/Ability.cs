@@ -13,12 +13,14 @@ using UnityEngine.InputSystem;
 public enum AbilityFlag
 {
     None = 0,
-    Move = 1 << 0,      // 0001
-    MoveKeyboard = 1 << 1, // 0010
-    MoveMouse = 1 << 2, 
-    Jump = 1 << 3,      // 0010
-    Dodge = 1 << 4,     // 0100
-    Attack = 1 << 5,    // 1000
+
+    // Player
+    MoveKeyboard = 1 << 0,  // 0001
+    MoveMouse = 1 << 1,     // 0010
+    Jump = 1 << 2,          // 0100
+    
+    // Enemy
+    Wandor = 1 << 3,        // 1000
 }
 
 // 데이터 담당 : 역할
@@ -27,7 +29,7 @@ public enum AbilityFlag
 public abstract class AbilityData : ScriptableObject
 {
     public abstract AbilityFlag Flag { get; }
-    public abstract Ability CreateAbility( CharacterControl owner );
+    public abstract Ability CreateAbility( IActorControl owner );
 }
 
 // 행동 담당
@@ -45,9 +47,9 @@ public abstract class Ability<D> : Ability where D : AbilityData
 {    
     public D data;
 
-    protected CharacterControl owner;
+    protected IActorControl owner;
 
-    public Ability(D data, CharacterControl owner){             // data와 data가 적용된 controller
+    public Ability(D data, IActorControl owner){             // data와 data가 적용된 controller
         this.data = data;
         this.owner = owner;
     }

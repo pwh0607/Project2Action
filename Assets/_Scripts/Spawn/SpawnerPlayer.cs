@@ -9,7 +9,7 @@ public class SpawnerPlayer : Spawner
     
     void OnEnable()
     {
-        // 이벤트가 등록 되면 발동, 등록 안하면 작동 안함.  [트리거ㄴ]
+        // 이벤트가 등록 되면 발동, 등록 안하면 작동 안함.  [트리거]
         eventPlayerSpawnBefore?.Register(OnEventPlayerSpawnBefore);
     }
 
@@ -41,6 +41,7 @@ public class SpawnerPlayer : Spawner
         eventPlayerSpawnAfter.CursorFixedPoint = _cursor.CursorFixedPoint;
         eventPlayerSpawnAfter.actorProfile = actorProfile;
         eventPlayerSpawnAfter?.Raise();
+        _character.Visible(true);
     }
 
 }

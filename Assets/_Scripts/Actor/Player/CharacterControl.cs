@@ -5,11 +5,16 @@ using Project2Action;
 // GAS (Game Ability System) : 언리얼.
 // 32bit = 4byte ( int )
 // 0000 .... 0000 0000
-public class CharacterControl : MonoBehaviour
+public class CharacterControl : MonoBehaviour, IActorControl
 {
     [Header("Ability")]
     [HideInInspector] public AbilityControl ability;
-    [ReadOnly] public ActorProfile profile;
+    
+    [ReadOnly, SerializeField] private ActorProfile profile;
+    public ActorProfile Profile { 
+        get => profile;
+        set => profile = value; 
+    }
     
     [Header("Physics")]   
     [ReadOnly] public Rigidbody rb;
@@ -31,7 +36,7 @@ public class CharacterControl : MonoBehaviour
     [ReadOnly] public bool isGrounded;
     [ReadOnly] public bool isArrived = true;
     [HideInInspector] public ActionGameInput actionInput;
-    
+
     void Awake()
     {
         actionInput = new ActionGameInput();

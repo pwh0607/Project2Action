@@ -5,7 +5,6 @@ public class EventPlayerSpawnBefore : GameEvent<EventPlayerSpawnBefore>
 {
     public override EventPlayerSpawnBefore Item => this;
 
-    
     [Space(20)]
     public CharacterControl player;
     public CursorControl playerCursor;
