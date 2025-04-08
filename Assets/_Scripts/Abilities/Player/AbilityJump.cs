@@ -44,12 +44,12 @@ public class AbilityJump : Ability<AbilityJumpData>
         if(control.rb == null || control.isGrounded) return;
         isJumping = true;
         elapsedTime = 0;
-        control.PlayeAnimation(control._JUMPUP, 0.1f);
+        control.PlayeAnimation(AnimationClipHashSet._JUMPUP, 0.1f);
     }
 
     private void JumpDown(){
         isJumping = false;
-        control.PlayeAnimation(control._JUMPDOWN, 0.02f);
+        control.PlayeAnimation(AnimationClipHashSet._JUMPDOWN, 0.02f);
     }
 
     private void InputJump(InputAction.CallbackContext context){

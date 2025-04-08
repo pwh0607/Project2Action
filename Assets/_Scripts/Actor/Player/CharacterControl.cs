@@ -21,13 +21,7 @@ public class CharacterControl : MonoBehaviour, IActorControl
     [ReadOnly] public Animator animator;
 
 
-#region Animator HashSet
-    [ReadOnly] public int _MOVESPEED = Animator.StringToHash("MOVESPEED");
-    [ReadOnly] public int _RUNTOSTOP = Animator.StringToHash("RUNTOSTOP");
-    [ReadOnly] public int _JUMPUP = Animator.StringToHash("JUMPUP");
-    [ReadOnly] public int _JUMPDOWN = Animator.StringToHash("JUMPDOWN");
-    [ReadOnly] public int _SPAWN = Animator.StringToHash("SPAWN");
-#endregion
+
 
     [ReadOnly] public Transform eyePoint;
     [ReadOnly] public Transform model;
@@ -45,21 +39,6 @@ public class CharacterControl : MonoBehaviour, IActorControl
         TryGetComponent(out animator);
 
         model = transform.Find("_MODEL_").transform;
-    }
-
-    void OnDestroy()
-    {
-        actionInput.Dispose();
-    }
-    
-    void OnEnable()
-    {
-        actionInput.Enable();
-    }
-    
-    void OnDisable()
-    {
-        actionInput.Disable();
     }
 
     void Start() { }

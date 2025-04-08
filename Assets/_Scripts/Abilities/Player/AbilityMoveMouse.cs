@@ -24,13 +24,13 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
         
         marker.gameObject.SetActive(false);
 
-        if(control.Profile == null) return;
 
         control = owner as CharacterControl;
         control.isArrived = true;
 
-        data.movePerSec = owner.Profile.moveSpeed;
-        data.rotatePerSec = owner.Profile.rotateSpeed;
+        if(control.Profile == null) return;
+        data.movePerSec = control.Profile.moveSpeed;
+        data.rotatePerSec = control.Profile.rotateSpeed;
     }
 
     public override void Update(){
@@ -98,8 +98,8 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
 
     private void MoveAnimation(){
         float a = control.isArrived ? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
-        float spd = Mathf.Lerp(control.animator.GetFloat(control._MOVESPEED), a, Time.deltaTime * 10f);
-        control.animator.SetFloat(control._MOVESPEED, spd);
+        float spd = Mathf.Lerp(control.animator.GetFloat(AnimationClipHashSet._MOVESPEED), a, Time.deltaTime * 10f);
+        control.animator.SetFloat(AnimationClipHashSet._MOVESPEED, spd);
     }
 
     void InputMove(InputAction.CallbackContext context){

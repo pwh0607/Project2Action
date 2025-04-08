@@ -41,7 +41,6 @@ public class SpawnerPlayer : Spawner
         eventPlayerSpawnAfter.CursorFixedPoint = _cursor.CursorFixedPoint;
         eventPlayerSpawnAfter.actorProfile = actorProfile;
         eventPlayerSpawnAfter?.Raise();
-        _character.Visible(true);
     }
 
 }

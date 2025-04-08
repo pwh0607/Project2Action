@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using CustomInspector;
 
 public class CharacterEventControl : MonoBehaviour
 {
@@ -51,6 +50,7 @@ public class CharacterEventControl : MonoBehaviour
             Debug.LogError("CharacterEventControl ] model 없음.");
 
         var clone = Instantiate(e.actorProfile.model, controller.model);
+
         clone.GetComponentsInChildren<SkinnedMeshRenderer>().ToList().ForEach( m =>{
             m.gameObject.layer = LayerMask.NameToLayer("Silhouette");
         });
@@ -59,6 +59,9 @@ public class CharacterEventControl : MonoBehaviour
             Debug.LogError("CharacterEventControl ] avatar 없음.");
 
         controller.animator.avatar = e.actorProfile.avatar;
+        // controller.Visible(true);
+
+        // PoolManager.I.Spawn(e.spawnParticle, Vector3.)
     }
 }
 

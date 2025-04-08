@@ -6,7 +6,6 @@ public class AbilityMoveMouseData : AbilityData
 {
     [ReadOnly] public float movePerSec = 5f;
     [ReadOnly] public float rotatePerSec = 1080f;
-    public ForceMode forceMode;
     public float stopDistance;
 
     [Tooltip("min : runtoStop 모션 발동 지점, max : runtoStop 무시 지점")]

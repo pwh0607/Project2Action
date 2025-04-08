@@ -67,7 +67,7 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
         if(control.isArrived) {
             direction = Vector3.zero;
             control.rb.linearVelocity = Vector3.zero;
-            control.animator?.SetFloat(control._MOVESPEED, 0);
+            control.animator?.SetFloat(AnimationClipHashSet._MOVESPEED, 0);
         }
     }
 
@@ -82,9 +82,9 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
         
         float v = Vector3.Distance(Vector3.zero, control.rb.linearVelocity);
         float targetSpeed = Mathf.Clamp01(v / data.movePerSec);
-        float moveSpeed = Mathf.Lerp(control.animator.GetFloat(control._MOVESPEED), targetSpeed, Time.deltaTime * 30f);
+        float moveSpeed = Mathf.Lerp(control.animator.GetFloat(AnimationClipHashSet._MOVESPEED), targetSpeed, Time.deltaTime * 30f);
         
-        control.animator?.SetFloat(control._MOVESPEED, moveSpeed);
+        control.animator?.SetFloat(AnimationClipHashSet._MOVESPEED, moveSpeed);
     }
 
     void Rotate()

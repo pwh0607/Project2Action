@@ -20,6 +20,7 @@ public class Scenario : MonoBehaviour
     
         // 적 스폰
         enemySpawn?.Raise();
+
         //아이템 스폰
     }
 }

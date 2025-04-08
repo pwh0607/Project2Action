@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
+
 // MVC : Model(데이터) , View(UI) , Control(행동)
 
 // abstract     : 부모,자식 - 변수(O)

@@ -52,13 +52,13 @@ public class EnemyEventControl : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         
         enemyController.Visible(true);
-        // enemyController.PlayeAnimation(enemyController._SPAWN, 0f);
+        enemyController.PlayeAnimation(AnimationClipHashSet._SPAWN, 0f);
 
-        // yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f);
         
-        // foreach(var abilityData in e.actorProfile.abilities){
-        //     controller.ability.Add(abilityData, true);
-        // }
+        foreach(var abilityData in e.actorProfile.abilities){
+            enemyController.ability.Add(abilityData, true);
+        }
     }
 }
 
