@@ -140,7 +140,6 @@ public class PropsGenerator : MonoBehaviour
     void SearchGraph(){
         SearchNode();
         activeRooms.Clear();
-        Debug.Log($"그래프 탐색 시작");
 
         Queue<Room> queue = new();
         Room startRoom = roomDic[startNodeId];
@@ -150,7 +149,6 @@ public class PropsGenerator : MonoBehaviour
         visited[startRoom] = true;
         visitedRoom.Add(startRoom);
 
-        // Debug.Log($"[ 시작 : {startRoom.roomId} ] => ");
         while(queue.Count >= 1){
             Room r = queue.Dequeue();
             
@@ -172,14 +170,12 @@ public class PropsGenerator : MonoBehaviour
                     }    
                 }
 
-                // Debug.Log($"[ {node.roomId} ]=> ");
                 queue.Enqueue(node);
                 activeRooms.Add(node);
                 visited[node] = true;
                 visitedRoom.Add(node);
             }
         }
-        Debug.Log("그래프 탐색 종료.");
         MakeMark();
         
         //탐색 완료 후, 랜덤한 방에 키를 설치.
