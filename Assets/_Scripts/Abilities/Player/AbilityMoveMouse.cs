@@ -10,9 +10,7 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     private int next;
     private ParticleSystem marker;
     float currentVelocity;
-
-    private CharacterControl control;
-    public AbilityMoveMouse(AbilityMoveMouseData data, IActorControl owner) : base(data, owner)
+    public AbilityMoveMouse(AbilityMoveMouseData data, CharacterControl owner) : base(data, owner)
     {
         camera = Camera.main;
         path = new();
@@ -24,17 +22,15 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
         
         marker.gameObject.SetActive(false);
 
+        owner.isArrived = true;
 
-        control = owner as CharacterControl;
-        control.isArrived = true;
-
-        if(control.Profile == null) return;
-        data.movePerSec = control.Profile.moveSpeed;
-        data.rotatePerSec = control.Profile.rotateSpeed;
+        if(owner.Profile == null) return;
+        data.movePerSec = owner.Profile.moveSpeed;
+        data.rotatePerSec = owner.Profile.rotateSpeed;
     }
 
     public override void Update(){
-        if (control == null || control.rb == null)
+        if (owner == null || owner.rb == null)
             return;
 
         MoveAnimation();
@@ -43,63 +39,66 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
     // 물리 연산만!
     public override void FixedUpdate()
     {
-        if(control == null || control.rb == null) return;
+        if(owner == null || owner.rb == null) return;
         
         FollowPath();
     }
 
     void SetDestiNation(Vector3 destination){
-        if(!NavMesh.CalculatePath(control.transform.position, destination, -1, path)) return;
+        if(!NavMesh.CalculatePath(owner.transform.position, destination, -1, path)) return;
 
         corners = path.corners;
         next = 1;
-        control.isArrived = false;
+        owner.isArrived = false;
     }
     
     Quaternion lookrot;
     private void FollowPath(){
-        if(corners == null || corners.Length <= 0 || control.isArrived == true) return;
+        if(corners == null || corners.Length <= 0 || owner.isArrived == true) return;
 
         Vector3 nextTarget = corners[next];
 
         // 다음 위치 방향.
-        Vector3 direction = (nextTarget - control.rb.transform.position).normalized;
+        Vector3 direction = (nextTarget - owner.rb.transform.position).normalized;
         direction.y = 0;
         
         // 회전
         if(direction != Vector3.zero) lookrot = Quaternion.LookRotation(direction);
-        control.transform.rotation = Quaternion.RotateTowards(control.transform.rotation, lookrot, data.rotatePerSec * Time.deltaTime);
+        owner.transform.rotation = Quaternion.RotateTowards(owner.transform.rotation, lookrot, data.rotatePerSec * Time.deltaTime);
 
         //이동
         //linearVelocity : Vector + Scalar
         Vector3 movement =  direction * data.movePerSec * 50f * Time.deltaTime;
-        control.rb.linearVelocity = movement;
-        currentVelocity = Vector3.Distance(Vector3.zero, control.rb.linearVelocity);
+        owner.rb.linearVelocity = movement;
+        currentVelocity = Vector3.Distance(Vector3.zero, owner.rb.linearVelocity);
         
-        if(Vector3.Distance(nextTarget, control.rb.position) <= data.stopDistance){
+        if(Vector3.Distance(nextTarget, owner.rb.position) <= data.stopDistance){
             next++;
             if(next >= corners.Length){
-                control.isArrived = true;
-                control.rb.linearVelocity = Vector3.zero;
+                owner.isArrived = true;
+                owner.rb.linearVelocity = Vector3.zero;
             }
         }
     }
 
     public override void Activate(){
-        control.actionInput.Player.Enable();
-        control.actionInput.Player.MoveMouse.performed += InputMove;
+        if(owner.TryGetComponent<InputControl>(out var input)){
+            input.actionInput.Player.MoveMouse.performed += InputMove;
+        }
     }
 
     public override void Deactivate()
     {
-        control.actionInput.Player.Move.canceled -= InputMove;
-        control.actionInput.Player.Disable();
+        if(owner.TryGetComponent<InputControl>(out var input)){
+            input.actionInput.Player.Move.canceled -= InputMove;
+        }
+
     }
 
     private void MoveAnimation(){
-        float a = control.isArrived ? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
-        float spd = Mathf.Lerp(control.animator.GetFloat(AnimationClipHashSet._MOVESPEED), a, Time.deltaTime * 10f);
-        control.animator.SetFloat(AnimationClipHashSet._MOVESPEED, spd);
+        float a = owner.isArrived ? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
+        float spd = Mathf.Lerp(owner.animator.GetFloat(AnimationClipHashSet._MOVESPEED), a, Time.deltaTime * 10f);
+        owner.animator.SetFloat(AnimationClipHashSet._MOVESPEED, spd);
     }
 
     void InputMove(InputAction.CallbackContext context){

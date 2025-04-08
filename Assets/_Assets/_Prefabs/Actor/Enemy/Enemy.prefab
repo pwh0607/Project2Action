@@ -184,9 +184,9 @@ GameObject:
   - component: {fileID: 2463776489038679421}
   - component: {fileID: 4902868891841119678}
   - component: {fileID: 8981880355421327764}
-  - component: {fileID: 5189623864081559267}
   - component: {fileID: 5751397563990564394}
   - component: {fileID: 6122278346836665987}
+  - component: {fileID: 1880474463011480214}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Player
@@ -262,25 +262,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5189623864081559267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6943699192755661008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 372bbf2851c04064d92ed5324b6f8427, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ability: {fileID: 0}
-  profile: {fileID: 0}
-  rb: {fileID: 0}
-  animator: {fileID: 0}
-  eyePoint: {fileID: 0}
-  model: {fileID: 0}
-  isArrived: 1
 --- !u!114 &5751397563990564394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,3 +290,23 @@ MonoBehaviour:
   h_s_02: 0
   flags: 0
   datas: []
+--- !u!114 &1880474463011480214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6943699192755661008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58d9bb32c75eb1c43b7f305b5d50e3ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability: {fileID: 0}
+  profile: {fileID: 0}
+  rb: {fileID: 0}
+  animator: {fileID: 0}
+  eyePoint: {fileID: 0}
+  model: {fileID: 0}
+  isGrounded: 0
+  isArrived: 1

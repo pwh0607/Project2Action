@@ -7,11 +7,11 @@ public class EnemyEventControl : MonoBehaviour
     [SerializeField] EventEnemySpawnAfter eventEnemySpawnAfter;
 #endregion
     
-    private EnemyControl enemyController;
+    private CharacterControl control;
     void Start()
     {
-        if(!TryGetComponent(out enemyController)) Debug.LogWarning("GameEventControl - controllerControl 없음...");
-        enemyController.Visible(false);
+        if(!TryGetComponent(out control)) Debug.LogWarning("GameEventControl - controllerControl 없음...");
+        control.Visible(false);
     }
 
     void OnEnable()
@@ -33,31 +33,31 @@ public class EnemyEventControl : MonoBehaviour
         Debug.Log("Enemy : SpawnAfter");
         yield return new WaitUntil(() => e.actorProfile.avatar != null && e.actorProfile.model != null);
 
-        enemyController.Profile = e.actorProfile;
+        control.Profile = e.actorProfile;
         
         // Enemy 모델 생성 후 하위 항목인 Model에 설정
         if(e.actorProfile.model == null)
             Debug.LogError("CharacterEventControl ] model 없음.");
 
-        var clone = Instantiate(e.actorProfile.model, enemyController.model);
+        var clone = Instantiate(e.actorProfile.model, control.model);
         
         if(e.actorProfile.avatar == null)
             Debug.LogError("CharacterEventControl ] avatar 없음.");
 
-        enemyController.animator.avatar = e.actorProfile.avatar;
+        control.animator.avatar = e.actorProfile.avatar;
                
         yield return new WaitForSeconds(1f);
         PoolManager.I.Spawn(e.spawnParticle, transform.position, Quaternion.identity, transform);
         
         yield return new WaitForSeconds(0.2f);
         
-        enemyController.Visible(true);
-        enemyController.PlayeAnimation(AnimationClipHashSet._SPAWN, 0f);
+        control.Visible(true);
+        control.PlayeAnimation(AnimationClipHashSet._SPAWN, 0f);
 
         yield return new WaitForSeconds(1f);
         
         foreach(var abilityData in e.actorProfile.abilities){
-            enemyController.ability.Add(abilityData, true);
+            control.ability.Add(abilityData, true);
         }
     }
 }

@@ -8,13 +8,11 @@ public class AbilityWandorData : AbilityData
     [ReadOnly] public float movePerSec = 5f;
     [ReadOnly] public float rotatePerSec = 1080f;
     public float stopDistance;
-    public override Ability CreateAbility(IActorControl owner) => new AbilityWandor(this, owner);
+    public override Ability CreateAbility(CharacterControl owner) => new AbilityWandor(this, owner);
 
     [Tooltip("배회할 범위")]
     public float wandorRadius = 5f;
 
     [Tooltip("도착 후 대기 시간")]
     public float wandorStay = 2f;
-
-    
 }

@@ -18,12 +18,12 @@ public class SpawnerEnemy : Spawner
         eventEnemySpawnBefore?.UnRegister(OnEventEnemySpawn);
     }
 
-    EnemyControl _enemyControl;
+    CharacterControl control;
 
     void OnEventEnemySpawn(EventEnemySpawnBefore e){
         Debug.Log("적 생성!");
-        _enemyControl = Instantiate(e.enemyCharacter).GetComponent<EnemyControl>();
-        _enemyControl.transform.SetPositionAndRotation(spawnPoint.position, Quaternion.LookRotation(transform.forward));
+        control = Instantiate(e.enemyCharacter).GetComponent<CharacterControl>();
+        control.transform.SetPositionAndRotation(spawnPoint.position, Quaternion.LookRotation(transform.forward));
 
         StartCoroutine(SpawnAfter());
     }
@@ -31,7 +31,7 @@ public class SpawnerEnemy : Spawner
     IEnumerator SpawnAfter(){
         yield return new WaitForEndOfFrame();
 
-        eventEnemySpawnAfter.eyePoint = _enemyControl.eyePoint;
+        eventEnemySpawnAfter.eyePoint = control.eyePoint;
         eventEnemySpawnAfter.actorProfile = actorProfile;
         eventEnemySpawnAfter?.Raise();
     }

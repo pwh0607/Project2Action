@@ -34,7 +34,7 @@ public class AbilityControl : MonoBehaviour
         flags.Add(d.Flag, null);
 
         datas.Add(d);
-        var ability = d.CreateAbility(GetComponent<IActorControl>());
+        var ability = d.CreateAbility(GetComponent<CharacterControl>());
         
         if(immediate){
             actives[d.Flag] = ability;      

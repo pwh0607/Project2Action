@@ -1,11 +1,15 @@
-using CustomInspector;
 using UnityEngine;
+using CustomInspector;
+using Project2Action;
 
-public class EnemyControl : MonoBehaviour, IActorControl
+// GAS (Game Ability System) : 언리얼.
+// 32bit = 4byte ( int )
+// 0000 .... 0000 0000
+public class CharacterControl : MonoBehaviour, IActorControl
 {
     [Header("Ability")]
     [HideInInspector] public AbilityControl ability;
-
+    
     [ReadOnly, SerializeField] private ActorProfile profile;
     public ActorProfile Profile { 
         get => profile;
@@ -19,8 +23,10 @@ public class EnemyControl : MonoBehaviour, IActorControl
     [ReadOnly] public Transform eyePoint;
     [ReadOnly] public Transform model;
 
-    [Header("flag")]
+    [Header("flag")]   
+    [ReadOnly] public bool isGrounded;
     [ReadOnly] public bool isArrived = true;
+
     void Awake()
     {
         TryGetComponent(out ability);
@@ -34,7 +40,7 @@ public class EnemyControl : MonoBehaviour, IActorControl
 
     void Update()
     {
-
+        isGrounded = CheckGrounded();
     }
     
     bool CheckGrounded(){

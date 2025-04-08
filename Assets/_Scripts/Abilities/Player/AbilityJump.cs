@@ -5,51 +5,51 @@ public class AbilityJump : Ability<AbilityJumpData>
 {
     private bool isJumping = false;
     float elapsedTime = 0f;
-    private CharacterControl control;
-    public AbilityJump(AbilityJumpData data, IActorControl owner) : base(data, owner) {
+    public AbilityJump(AbilityJumpData data, CharacterControl owner) : base(data, owner) {
         if(owner.Profile == null) return;
         
-        control = owner as CharacterControl;
 
         data.jumpForce = owner.Profile.jumpForce;
         data.jumpDuration = owner.Profile.jumpDuration;
     }
 
     public override void Activate()
-    {
-        control.actionInput.Player.Jump.performed += InputJump;
+    {        
+        if(!owner.TryGetComponent<InputControl>(out var input)) return;
+        input.actionInput.Player.Jump.performed += InputJump;
     }
 
     public override void Deactivate()
     {
-        control.actionInput.Player.Jump.performed -= InputJump;
+        if(!owner.TryGetComponent<InputControl>(out var input)) return;
+        input.actionInput.Player.Jump.performed -= InputJump;
     }
 
     public override void FixedUpdate()
     {
-        if(control.rb == null || !isJumping) return;
+        if(owner.rb == null || !isJumping) return;
         elapsedTime += Time.deltaTime;
 
         float t = Mathf.Clamp01(elapsedTime / data.jumpDuration);
         
-        Vector3 velocity = control.rb.linearVelocity;
+        Vector3 velocity = owner.rb.linearVelocity;
         velocity.y = data.jumpCurve.Evaluate(t) * data.jumpForce;
-        control.rb.linearVelocity = velocity;
+        owner.rb.linearVelocity = velocity;
 
-        if(t >= 0.3f && control.isGrounded)
+        if(t >= 0.3f && owner.isGrounded)
             JumpDown();
     }
 
     private void JumpUp(){
-        if(control.rb == null || control.isGrounded) return;
+        if(owner.rb == null || owner.isGrounded) return;
         isJumping = true;
         elapsedTime = 0;
-        control.PlayeAnimation(AnimationClipHashSet._JUMPUP, 0.1f);
+        owner.PlayeAnimation(AnimationClipHashSet._JUMPUP, 0.1f);
     }
 
     private void JumpDown(){
         isJumping = false;
-        control.PlayeAnimation(AnimationClipHashSet._JUMPDOWN, 0.02f);
+        owner.PlayeAnimation(AnimationClipHashSet._JUMPDOWN, 0.02f);
     }
 
     private void InputJump(InputAction.CallbackContext context){

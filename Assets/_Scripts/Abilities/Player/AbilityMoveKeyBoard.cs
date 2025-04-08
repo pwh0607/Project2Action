@@ -8,16 +8,14 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
     private Vector3 camForward, camRight;
     private Vector3 direction;
 
-    private CharacterControl control;
-
-    public AbilityMoveKeyBoard(AbilityMoveKeyBoardData data, IActorControl control) : base(data, control)
+    public AbilityMoveKeyBoard(AbilityMoveKeyBoardData data, CharacterControl owner) : base(data, owner)
     {
         cameraTransform = Camera.main.transform;
 
-        if(control.Profile == null) return;
-        control = control as CharacterControl;
-        data.movePerSec = control.Profile.moveSpeed;
-        data.rotatePerSec = control.Profile.rotateSpeed;
+        if(owner.Profile == null) return;
+
+        data.movePerSec = owner.Profile.moveSpeed;
+        data.rotatePerSec = owner.Profile.rotateSpeed;
     }
     
     public override void FixedUpdate()
@@ -28,21 +26,21 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
 
     public override void Activate()
     {
-        control.actionInput.Player.Enable();
-        control.actionInput.Player.Move.performed += InputMove;
-        control.actionInput.Player.Move.performed += InputStop;
+        if(!owner.TryGetComponent<InputControl>(out var input)) return;
+        input.actionInput.Player.Move.performed += InputMove;
+        input.actionInput.Player.Move.performed += InputStop;
     }
 
     public override void Deactivate()
-    {
-        control.actionInput.Player.Move.performed -= InputMove;
-        control.actionInput.Player.Move.performed -= InputStop;
-        control.actionInput.Player.Disable();
+    {   
+        if(!owner.TryGetComponent<InputControl>(out var input)) return;
+        input.actionInput.Player.Move.performed -= InputMove;
+        input.actionInput.Player.Move.performed -= InputStop;
     }
 
     void InputMove(InputAction.CallbackContext context)
     {
-        control.isArrived = !context.performed;
+        owner.isArrived = !context.performed;
         
         var axis = context.ReadValue<Vector2>();
         
@@ -59,32 +57,32 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
     }
 
     void InputStop(InputAction.CallbackContext context){
-        control.isArrived = context.canceled;
+        owner.isArrived = context.canceled;
         Stop();
     }
 
     void Stop(){
-        if(control.isArrived) {
+        if(owner.isArrived) {
             direction = Vector3.zero;
-            control.rb.linearVelocity = Vector3.zero;
-            control.animator?.SetFloat(AnimationClipHashSet._MOVESPEED, 0);
+            owner.rb.linearVelocity = Vector3.zero;
+            owner.animator?.SetFloat(AnimationClipHashSet._MOVESPEED, 0);
         }
     }
 
     void Movement()
     {
         Vector3 movement = direction * data.movePerSec *150f * Time.deltaTime;
-        Vector3 velocity = new Vector3(movement.x, control.rb.linearVelocity.y, movement.z);
+        Vector3 velocity = new Vector3(movement.x, owner.rb.linearVelocity.y, movement.z);
 
-        control.rb.linearVelocity = velocity;
+        owner.rb.linearVelocity = velocity;
         
-        if(!control.isGrounded) return;
+        if(!owner.isGrounded) return;
         
-        float v = Vector3.Distance(Vector3.zero, control.rb.linearVelocity);
+        float v = Vector3.Distance(Vector3.zero, owner.rb.linearVelocity);
         float targetSpeed = Mathf.Clamp01(v / data.movePerSec);
-        float moveSpeed = Mathf.Lerp(control.animator.GetFloat(AnimationClipHashSet._MOVESPEED), targetSpeed, Time.deltaTime * 30f);
+        float moveSpeed = Mathf.Lerp(owner.animator.GetFloat(AnimationClipHashSet._MOVESPEED), targetSpeed, Time.deltaTime * 10f);
         
-        control.animator?.SetFloat(AnimationClipHashSet._MOVESPEED, moveSpeed);
+        owner.animator?.SetFloat(AnimationClipHashSet._MOVESPEED, moveSpeed);
     }
 
     void Rotate()
@@ -92,7 +90,7 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
         if (direction == Vector3.zero) return;
         
         float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-        float smoothAngle = Mathf.SmoothDampAngle(control.transform.eulerAngles.y, angle, ref data.rotatePerSec, 0.1f);
-        control.transform.rotation = Quaternion.Euler(0f, angle, 0f);
+        float smoothAngle = Mathf.SmoothDampAngle(owner.transform.eulerAngles.y, angle, ref data.rotatePerSec, 0.1f);
+        owner.transform.rotation = Quaternion.Euler(0f, angle, 0f);
     }
 }

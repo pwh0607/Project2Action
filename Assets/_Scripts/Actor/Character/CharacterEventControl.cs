@@ -57,11 +57,19 @@ public class CharacterEventControl : MonoBehaviour
 
         if(e.actorProfile.avatar == null)
             Debug.LogError("CharacterEventControl ] avatar 없음.");
-
         controller.animator.avatar = e.actorProfile.avatar;
-        // controller.Visible(true);
 
-        // PoolManager.I.Spawn(e.spawnParticle, Vector3.)
+        yield return new WaitForSeconds(1f);
+
+        controller.Visible(true);
+        controller.PlayeAnimation(AnimationClipHashSet._SPAWN, 0.05f);
+
+        PoolManager.I.Spawn(e.spawnParticle, transform.position, Quaternion.identity, null);
+    
+        yield return new WaitForSeconds(1f);
+
+        foreach( var dat in e.actorProfile.abilities )
+            controller.ability.Add(dat, true);
     }
 }
 

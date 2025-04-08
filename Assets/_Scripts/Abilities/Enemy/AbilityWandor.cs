@@ -11,18 +11,16 @@ public class AbilityWandor : Ability<AbilityWandorData>
     
     private int next;
     float currentVelocity;
-    
-    private EnemyControl control;
-    public AbilityWandor(AbilityWandorData data, IActorControl owner) : base(data, owner) {
-        control = owner as EnemyControl;
-        if(control.Profile == null) return;
+   
+    public AbilityWandor(AbilityWandorData data, CharacterControl owner) : base(data, owner) {
+        if(owner.Profile == null) return;
 
         path = new NavMeshPath();
-        control.isArrived = true;
+        owner.isArrived = true;
 
-        if(control.Profile == null) return;
-        data.movePerSec = control.Profile.moveSpeed;
-        data.rotatePerSec = control.Profile.rotateSpeed;
+        if(owner.Profile == null) return;
+        data.movePerSec = owner.Profile.moveSpeed;
+        data.rotatePerSec = owner.Profile.rotateSpeed;
     }
 
     float elapsed;
@@ -47,7 +45,7 @@ public class AbilityWandor : Ability<AbilityWandorData>
 
     public override void FixedUpdate()
     {
-        if(control == null || control.rb == null) return;
+        if(owner == null || owner.rb == null) return;
 
         FollowPath();
     }
@@ -57,7 +55,7 @@ public class AbilityWandor : Ability<AbilityWandorData>
         // [-1  ~  1]
         
         // 가는 중이다.
-        Vector3 randomPos = control.transform.position + Random.insideUnitSphere * data.wandorRadius;
+        Vector3 randomPos = owner.transform.position + Random.insideUnitSphere * data.wandorRadius;
         randomPos.y = 1f;
     
         SetDestination(randomPos);
@@ -65,46 +63,46 @@ public class AbilityWandor : Ability<AbilityWandorData>
 
 
     void SetDestination(Vector3 destination){
-        if(!NavMesh.CalculatePath(control.transform.position, destination, -1, path))
+        if(!NavMesh.CalculatePath(owner.transform.position, destination, -1, path))
             return;
 
         corners = path.corners;
         next = 1;
-        control.isArrived = false;
+        owner.isArrived = false;
     }
     
     Quaternion lookrot;
     private void FollowPath(){
-        if(corners == null || corners.Length <= 0 || control.isArrived) return;
+        if(corners == null || corners.Length <= 0 || owner.isArrived) return;
 
         Vector3 nextTarget = corners[next];
 
         // 다음 위치 방향.
-        Vector3 direction = (nextTarget - control.rb.transform.position).normalized;
+        Vector3 direction = (nextTarget - owner.rb.transform.position).normalized;
         direction.y = 0;
         
         // 회전
         if(direction != Vector3.zero) lookrot = Quaternion.LookRotation(direction);
-        control.transform.rotation = Quaternion.RotateTowards(control.transform.rotation, lookrot, data.rotatePerSec * Time.deltaTime);
+        owner.transform.rotation = Quaternion.RotateTowards(owner.transform.rotation, lookrot, data.rotatePerSec * Time.deltaTime);
 
         //이동
         //linearVelocity : Vector + Scalar
         Vector3 movement =  direction * data.movePerSec * 50f * Time.deltaTime;
-        control.rb.linearVelocity = movement;
-        currentVelocity = Vector3.Distance(Vector3.zero, control.rb.linearVelocity);
+        owner.rb.linearVelocity = movement;
+        currentVelocity = Vector3.Distance(Vector3.zero, owner.rb.linearVelocity);
         
-        if(Vector3.Distance(nextTarget, control.rb.position) <= data.stopDistance){
+        if(Vector3.Distance(nextTarget, owner.rb.position) <= data.stopDistance){
             next++;
             if(next >= corners.Length){
-                control.isArrived = true;
-                control.rb.linearVelocity = Vector3.zero;
+                owner.isArrived = true;
+                owner.rb.linearVelocity = Vector3.zero;
             }
         }
     }
 
     private void MoveAnimation(){
-        float a = control.isArrived ? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
-        float spd = Mathf.Lerp(control.animator.GetFloat(AnimationClipHashSet._MOVESPEED), a, Time.deltaTime * 10f);
-        control.animator.SetFloat(AnimationClipHashSet._MOVESPEED, spd);
+        float a = owner.isArrived ? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
+        float spd = Mathf.Lerp(owner.animator.GetFloat(AnimationClipHashSet._MOVESPEED), a, Time.deltaTime * 10f);
+        owner.animator.SetFloat(AnimationClipHashSet._MOVESPEED, spd);
     }
 }
