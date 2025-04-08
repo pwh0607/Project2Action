@@ -21,6 +21,7 @@ public enum AbilityFlag
     
     // Enemy
     Wandor = 1 << 3,        // 1000
+    Trace = 1 << 4,
 }
 
 // 데이터 담당 : 역할

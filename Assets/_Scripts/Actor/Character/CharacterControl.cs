@@ -1,6 +1,7 @@
 using UnityEngine;
 using CustomInspector;
 using Project2Action;
+using TMPro;
 
 // GAS (Game Ability System) : 언리얼.
 // 32bit = 4byte ( int )
@@ -26,14 +27,18 @@ public class CharacterControl : MonoBehaviour, IActorControl
     [Header("flag")]   
     [ReadOnly] public bool isGrounded;
     [ReadOnly] public bool isArrived = true;
+    [ReadOnly] public TextMeshPro uiInfo;              //TextMeshPro : 3d object, 
 
     void Awake()
     {
         TryGetComponent(out ability);
         TryGetComponent(out rb);
         TryGetComponent(out animator);
+        
 
         model = transform.Find("_MODEL_").transform;
+
+        uiInfo = GetComponentInChildren<TextMeshPro>();
     }
 
     void Start() { }
@@ -62,5 +67,11 @@ public class CharacterControl : MonoBehaviour, IActorControl
     {
         Debug.Log($"anim : {state}");
         animator?.CrossFadeInFixedTime(state, duration, layer, 0f);
+    }
+
+    public void Display(string info){
+        if(uiInfo == null) return;
+
+        uiInfo.text = info;
     }
 }

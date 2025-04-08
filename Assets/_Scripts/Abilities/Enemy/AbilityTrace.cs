@@ -1,10 +1,7 @@
-using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem;
 
-public class AbilityWandor : Ability<AbilityWandorData>
+public class AbilityTrace : Ability<AbilityTraceData>
 {
     private NavMeshPath path;
     private Vector3[] corners;
@@ -12,7 +9,7 @@ public class AbilityWandor : Ability<AbilityWandorData>
     private int next;
     float currentVelocity;
    
-    public AbilityWandor(AbilityWandorData data, CharacterControl owner) : base(data, owner) {
+    public AbilityTrace(AbilityTraceData data, CharacterControl owner) : base(data, owner) {
         if(owner.Profile == null) return;
 
         path = new NavMeshPath();
@@ -26,21 +23,20 @@ public class AbilityWandor : Ability<AbilityWandorData>
     float elapsed;
     public override void Activate()
     {
-        // RandomPosition();
+        GameObject _player = GameObject.FindGameObjectWithTag("Player");
+
+        if(_player == null) return;
+
+        data.traceTarget = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     public override void Deactivate()
     {
+        
     }
 
     public override void Update()
     {
-        elapsed += Time.deltaTime;
-
-        if(elapsed > data.wandorStay){
-            elapsed = 0f;
-            RandomPosition();
-        }
 
         MoveAnimation();
     }
@@ -52,15 +48,12 @@ public class AbilityWandor : Ability<AbilityWandorData>
         FollowPath();
     }
 
-    private void RandomPosition(){
-        // 이동할 랜덤 위치 선정.
-        // [-1  ~  1]
-        
-        // 가는 중이다.
-        Vector3 randomPos = owner.transform.position + Random.insideUnitSphere * data.wandorRadius;
-        randomPos.y = 1f;
-    
-        SetDestination(randomPos);
+    private void TargetPosition(){
+
+        if(data.traceTarget == null || !owner.isArrived) return;
+
+        Vector3 destination = data.traceTarget.position;
+        SetDestination(destination);
     }
 
 

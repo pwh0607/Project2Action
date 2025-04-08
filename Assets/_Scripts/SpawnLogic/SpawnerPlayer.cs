@@ -7,6 +7,10 @@ public class SpawnerPlayer : Spawner
     [SerializeField] EventPlayerSpawnBefore eventPlayerSpawnBefore;
     [SerializeField] EventPlayerSpawnAfter eventPlayerSpawnAfter;
     
+    [Space(10)]
+    CharacterControl _character;
+    CursorControl _cursor;
+    
     void OnEnable()
     {
         // 이벤트가 등록 되면 발동, 등록 안하면 작동 안함.  [트리거]
@@ -31,8 +35,6 @@ public class SpawnerPlayer : Spawner
         StartCoroutine(SpawnAfter());
     }
     
-    CharacterControl _character;
-    CursorControl _cursor;
   
     IEnumerator SpawnAfter(){
         yield return new WaitForEndOfFrame();

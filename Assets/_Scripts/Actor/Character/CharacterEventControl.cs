@@ -66,7 +66,7 @@ public class CharacterEventControl : MonoBehaviour
 
         PoolManager.I.Spawn(e.spawnParticle, transform.position, Quaternion.identity, null);
     
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
 
         foreach( var dat in e.actorProfile.abilities )
             controller.ability.Add(dat, true);

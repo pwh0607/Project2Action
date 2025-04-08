@@ -91,6 +91,6 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
         
         float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
         float smoothAngle = Mathf.SmoothDampAngle(owner.transform.eulerAngles.y, angle, ref data.rotatePerSec, 0.1f);
-        owner.transform.rotation = Quaternion.Euler(0f, angle, 0f);
+        owner.transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
     }
 }
