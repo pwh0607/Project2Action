@@ -19,11 +19,11 @@ MonoBehaviour:
   avatar: {fileID: 9000000, guid: 4d4630c581ffc2c42a05ab22d0225ef8, type: 3}
   _h_s1: 0
   health: 100
-  moveSpeed: 3
+  moveSpeed: 5
   rotateSpeed: 1080
   jumpForce: 10
   jumpDuration: 0.5
   _h_s2: 0
   abilities:
-  - {fileID: 11400000, guid: 552225c8e201a3e43800274bb5a7dccc, type: 2}
   - {fileID: 11400000, guid: 35b1cb29cd1801f418d40797bbd4429f, type: 2}
+  - {fileID: 11400000, guid: 552225c8e201a3e43800274bb5a7dccc, type: 2}

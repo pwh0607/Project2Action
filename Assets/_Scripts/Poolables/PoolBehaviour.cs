@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class PoolBehaviour : MonoBehaviour
 {
-    [HideInInspector] public PoolManager poolManager;
+    [HideInInspector] public PoolManager poolmanager;
 
-    public void Despawn() => poolManager.Despawn(this);
+    public void Despawn() => poolmanager.Despawn(this);
 }

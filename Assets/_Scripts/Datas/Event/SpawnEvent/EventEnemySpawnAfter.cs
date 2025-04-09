@@ -6,6 +6,7 @@ public class EventEnemySpawnAfter : GameEvent<EventEnemySpawnAfter>
 {
     public override EventEnemySpawnAfter Item => this;
 
+    [ReadOnly] public CharacterControl character;
     [ReadOnly] public Transform eyePoint;
 
     [ReadOnly] public ActorProfile actorProfile;

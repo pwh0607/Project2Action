@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ButtonKey : AnswerKey
 {
+    public override KeyType Key => KeyType.BUTTON;
     [SerializeField] ButtonKeyData buttonKeyData;
     private GameObject key;                  //key
     private FloorButton button;               //바닥 버튼
@@ -20,6 +21,11 @@ public class ButtonKey : AnswerKey
     public void MakeButton(){
         button = Instantiate(buttonKeyData.button, transform).GetComponent<FloorButton>();        
         button.RegisterEvent(CheckValid);
+    }
+
+    public void SetPosition(Vector3 pos1, Vector2 pos2){
+        key.transform.position = pos1;
+        button.transform.position = pos2;
     }
 
     void CheckValid(bool flag){

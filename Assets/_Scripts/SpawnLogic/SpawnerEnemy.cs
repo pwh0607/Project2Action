@@ -18,12 +18,11 @@ public class SpawnerEnemy : Spawner
     void OnDisable()
     {
         // 이벤트가 등록 되면 발동, 등록 안하면 작동 안함.
-        eventEnemySpawnBefore?.UnRegister(OnEventEnemySpawnBefore);
+        eventEnemySpawnBefore?.Unregister(OnEventEnemySpawnBefore);
     }
 
 
     void OnEventEnemySpawnBefore(EventEnemySpawnBefore e){
-        Debug.Log("적 생성!");
         control = Instantiate(e.enemyCharacter);
         control.transform.SetPositionAndRotation(spawnPoint.position, Quaternion.LookRotation(transform.forward));
 
@@ -33,6 +32,7 @@ public class SpawnerEnemy : Spawner
     IEnumerator SpawnAfter(){
         yield return new WaitForEndOfFrame();
 
+        eventEnemySpawnAfter.character = control;
         eventEnemySpawnAfter.eyePoint = control.eyePoint;
         eventEnemySpawnAfter.actorProfile = actorProfile;
         eventEnemySpawnAfter?.Raise();

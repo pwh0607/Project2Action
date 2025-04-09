@@ -145,6 +145,9 @@ MonoBehaviour:
   - type: 1
     texture: {fileID: 2800000, guid: ffc94a954933d184b9f5d098468e98b2, type: 3}
     offset: {x: 0, y: 0}
+  - type: 2
+    texture: {fileID: 2800000, guid: 28c5b0e26c5edcd4195f9f69e4d6ff85, type: 3}
+    offset: {x: 0, y: 0}
   cursorType: 0
   currentHover: {fileID: 0}
   previousHover: {fileID: 0}

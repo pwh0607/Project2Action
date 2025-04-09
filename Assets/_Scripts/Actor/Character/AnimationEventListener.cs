@@ -7,6 +7,7 @@ public class AnimationEventListener : MonoBehaviour
     [HorizontalLine("Event-Spawn"), HideField] public bool h_s_01;
     [SerializeField] EventPlayerSpawnAfter eventPlayerSpawnAfter;
     [HorizontalLine(color:FixedColor.Cyan), HideField] public bool h_e_01;
+    [Space(20)]
     public PoolableParticle footSmoke, jumpSmoke;
     [ReadOnly] public Transform modelRoot;
     [ReadOnly] public Transform footLeft, footRight;
@@ -28,7 +29,7 @@ public class AnimationEventListener : MonoBehaviour
 
     void OnDisable()
     {
-        eventPlayerSpawnAfter.UnRegister(OnEventPlayerSpawnAfter);
+        eventPlayerSpawnAfter.Unregister(OnEventPlayerSpawnAfter);
     }
 
     void OnEventPlayerSpawnAfter(EventPlayerSpawnAfter e){
@@ -45,7 +46,6 @@ public class AnimationEventListener : MonoBehaviour
     public void FootStep(string s)
     {
         if(controller.isArrived == true || footLeft == null || footRight == null) return;
-
         PoolManager.I.Spawn(footSmoke, s == "L" ? footLeft.position : footRight.position, Quaternion.identity, null);
     }
 
@@ -56,7 +56,7 @@ public class AnimationEventListener : MonoBehaviour
     }
 
     public void JumpDown(){
-        Vector3 offset = Vector3.up * 0.1f;
+        Vector3 offset = Vector3.up * 0.1f + Random.insideUnitSphere * 0.2f;
         PoolManager.I.Spawn(jumpSmoke, controller.model.position + offset, Quaternion.identity, null);
     }
 }

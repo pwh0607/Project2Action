@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1871621655938308286}
   - component: {fileID: 5090723763227084911}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Shadow
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65,9 +65,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2910737957155279010}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Eyepoint
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -151,9 +151,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6366712871683737439}
-  m_Layer: 6
+  m_Layer: 2
   m_Name: _MODEL_
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 4379074896331929005}
   - component: {fileID: 7343873971475728621}
   - component: {fileID: 750402350895046784}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -276,7 +276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d9bb32c75eb1c43b7f305b5d50e3ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ability: {fileID: 0}
+  abilityControl: {fileID: 0}
   profile: {fileID: 0}
   rb: {fileID: 0}
   animator: {fileID: 0}
@@ -284,6 +284,7 @@ MonoBehaviour:
   model: {fileID: 0}
   isGrounded: 1
   isArrived: 1
+  uiInfo: {fileID: 0}
 --- !u!114 &2440496725877234930
 MonoBehaviour:
   m_ObjectHideFlags: 0

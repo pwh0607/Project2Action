@@ -24,16 +24,16 @@ public class CharacterEventControl : MonoBehaviour
 
     void OnDisable()
     {
-        eventPlayerSpawnAfter.UnRegister(OnEventPlayerSpawnAfter);
-        eventCameraSwitch.UnRegister(OnEventCameraSwitch);
+        eventPlayerSpawnAfter.Unregister(OnEventPlayerSpawnAfter);
+        eventCameraSwitch.Unregister(OnEventCameraSwitch);
     }
 
 
     void OnEventCameraSwitch(EventCameraSwitch e){
         if(e.inout)
-            controller.ability.Deactivate(AbilityFlag.MoveKeyboard);
+            controller.abilityControl.Deactivate(AbilityFlag.MoveKeyboard);
         else
-            controller.ability.Activate(AbilityFlag.MoveKeyboard);
+            controller.abilityControl.Activate(AbilityFlag.MoveKeyboard);
     }
 
     void OnEventPlayerSpawnAfter(EventPlayerSpawnAfter e){
@@ -69,7 +69,7 @@ public class CharacterEventControl : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         foreach( var dat in e.actorProfile.abilities )
-            controller.ability.Add(dat, true);
+            controller.abilityControl.Add(dat, true);
     }
 }
 

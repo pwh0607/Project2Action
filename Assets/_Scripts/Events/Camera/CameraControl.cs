@@ -17,7 +17,7 @@ public class CameraControl : MonoBehaviour
 
     void OnDisable()
     {
-        eventPlayerSpawnAfter.UnRegister(OnEventPlayerSpawnAfter);
+        eventPlayerSpawnAfter.Unregister(OnEventPlayerSpawnAfter);
     }
 
     void OnEventPlayerSpawnAfter(EventPlayerSpawnAfter e){

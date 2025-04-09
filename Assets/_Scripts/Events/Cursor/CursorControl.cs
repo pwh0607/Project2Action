@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using CustomInspector;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
+
+public enum CursorType {NORMALE, INTERACT, ATTACK, DIALOGUE}
 
 [Serializable]
 public class CursorData{
@@ -12,8 +12,6 @@ public class CursorData{
     public Texture2D texture;
     public Vector2 offset;
 }
-
-public enum CursorType {NORMALE, INTERACT, ATTACK, DIALOGUE}
 
 public class CursorControl : MonoBehaviour
 {
@@ -30,11 +28,11 @@ public class CursorControl : MonoBehaviour
     [SerializeField] LineRenderer line;
 
     private Camera cam;
+    [SerializeField] CursorType cursorType = CursorType.NORMALE;
 
     //커서
     [Space(20)]
     [SerializeField] List<CursorData> cursors = new List<CursorData>();
-    [SerializeField] CursorType cursorType;
     void Start()
     {       
         cam = Camera.main;
@@ -61,18 +59,17 @@ public class CursorControl : MonoBehaviour
 
         if(Physics.Raycast(ray, out var hit)) {
             currentHover = hit.collider.gameObject.GetComponent<CursorSelectable>();
-        
+
             if(currentHover != previousHover)
                 OnHoverEnter();
 
+            // 위치 조정.
             cursorPoint.position = hit.point;
             cursorFixedPoint.position = new Vector3(hit.point.x, eyePoint.position.y, hit.point.z);
             transform.position = hit.point;      
-
             DrawLine();
         }else{
             if(previousHover != null) OnHoverExit();
-
             currentHover = null;
         }
 
@@ -102,11 +99,11 @@ public class CursorControl : MonoBehaviour
         if(currentHover == null) return;
         
         // Selecteable 가능한 오브젝트와만 커서-상호작용을 한다.
-        var sel = currentHover.GetComponentInParent<CursorSelectable>();;
+        var sel = currentHover.GetComponentInParent<CursorSelectable>();
         if(sel == null) return;
 
         if(currentHover != null){
-            currentHover.gameObject.layer = LayerMask.NameToLayer("Outline");
+            currentHover.Select(true);
             SetCursor(sel.type);
         }
     }

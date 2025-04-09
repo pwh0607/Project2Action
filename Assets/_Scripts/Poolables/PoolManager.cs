@@ -10,6 +10,7 @@ public class PoolManager : BehaviourSingleton<PoolManager>
     private Dictionary<PoolBehaviour, ObjectPool<PoolBehaviour>> prefabs;
     private Dictionary<PoolBehaviour, ObjectPool<PoolBehaviour>> instances;
 
+
     protected override void Awake()
     {
         base.Awake();
@@ -18,11 +19,12 @@ public class PoolManager : BehaviourSingleton<PoolManager>
         instances = new Dictionary<PoolBehaviour, ObjectPool<PoolBehaviour>>();
     }
 
-    public void ClearPool(){
-        prefabs.ToList().ForEach(p => p.Value.Clear());
+    public void ClearPool()
+    {
+        prefabs.ToList().ForEach(p => p.Value.Clear());        
         prefabs.Clear();
-
-        instances.ToList().ForEach(i => i.Value.Clear());
+        
+        instances.ToList().ForEach(i => i.Value.Clear());        
         instances.Clear();
     }
 
@@ -35,7 +37,7 @@ public class PoolManager : BehaviourSingleton<PoolManager>
             createFunc: () =>
             {
                 PoolBehaviour p = Instantiate(pb);
-                p.poolManager = this;
+                p.poolmanager = this;
                 return p;
             },
             actionOnGet: (v) =>
@@ -56,27 +58,30 @@ public class PoolManager : BehaviourSingleton<PoolManager>
     }
 
 
-    public PoolBehaviour Spawn(PoolBehaviour pb, Vector3 pos, Quaternion rot, Transform parent){
+    public PoolBehaviour Spawn(PoolBehaviour pb, Vector3 pos, Quaternion rot, Transform parent)
+    {
         if (!prefabs.ContainsKey(pb))
             WarmPool(pb);
 
         var pool = prefabs[pb];
-        
+
         var clone = pool.Get();
-        clone.transform.SetPositionAndRotation(pos, rot);
-        clone.transform.SetParent(parent ?? transform);         // ?? parent가 null이 아니면 parent를 쓰고, parent가 null이면 transform을 써라!
-        
+        clone.transform.SetPositionAndRotation(pos,rot);
+        clone.transform.SetParent(parent ?? transform);
+
         instances[clone] = pool;
 
         return clone;
     }
 
-    public void Despawn(PoolBehaviour pb){
-        if(instances.ContainsKey(pb) == false){
+    public void Despawn(PoolBehaviour pb)
+    {
+        if (instances.ContainsKey(pb) == false)
+        {
             Debug.LogWarning($"PoolManager ] 오브젝트 풀에 {pb.name} 없음");
             return;
         }
-        
+
         instances[pb].Release(pb);
         instances.Remove(pb);
     }

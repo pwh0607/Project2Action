@@ -26,11 +26,14 @@ public class AbilityWandor : Ability<AbilityWandorData>
     float elapsed;
     public override void Activate()
     {
-        // RandomPosition();
+        RandomPosition();
+        
+        owner.Display($"{data.Flag}");
     }
 
     public override void Deactivate()
     {
+        
     }
 
     public override void Update()
@@ -75,10 +78,6 @@ public class AbilityWandor : Ability<AbilityWandorData>
     
     Quaternion lookrot;
     private void FollowPath(){
-        // TEMP_CODE
-        owner.Display($"{currentVelocity:F2}");
-        // TEMP_CODE
-        
         if(corners == null || corners.Length <= 0 || owner.isArrived) return;
 
         Vector3 nextTarget = corners[next];

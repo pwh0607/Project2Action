@@ -28,16 +28,18 @@ public class AbilityTrace : Ability<AbilityTraceData>
         if(_player == null) return;
 
         data.traceTarget = GameObject.FindGameObjectWithTag("Player").transform;
+        
+        owner.Display($"{data.Flag}");
     }
 
     public override void Deactivate()
     {
-        
+
     }
 
     public override void Update()
     {
-
+        TargetPosition();
         MoveAnimation();
     }
 
@@ -50,7 +52,7 @@ public class AbilityTrace : Ability<AbilityTraceData>
 
     private void TargetPosition(){
 
-        if(data.traceTarget == null || !owner.isArrived) return;
+        if(data.traceTarget == null) return;
 
         Vector3 destination = data.traceTarget.position;
         SetDestination(destination);
@@ -68,11 +70,13 @@ public class AbilityTrace : Ability<AbilityTraceData>
     
     Quaternion lookrot;
     private void FollowPath(){
-        // TEMP_CODE
-        owner.Display($"{currentVelocity:F2}");
-        // TEMP_CODE
         
         if(corners == null || corners.Length <= 0 || owner.isArrived) return;
+        // if(Vector3.Distance(data.traceTarget.transform.position, owner.transform.position) <= 2f){
+        //     Debug.Log("추격 종료!");
+        //     Deactivate();
+        //     return;
+        // }
 
         Vector3 nextTarget = corners[next];
 

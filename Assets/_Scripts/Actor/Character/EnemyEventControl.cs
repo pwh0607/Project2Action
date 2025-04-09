@@ -1,10 +1,14 @@
 using System.Collections;
+using NodeCanvas.Tasks.Actions;
 using UnityEngine;
 
 public class EnemyEventControl : MonoBehaviour
 {
 #region Events
     [SerializeField] EventEnemySpawnAfter eventEnemySpawnAfter;
+    [SerializeField] EventSensorTargetEnter eventSensorTargetEnter;
+    [SerializeField] EventSensorTargetExit eventSensorTargetExit;
+
 #endregion
     
     private CharacterControl control;
@@ -17,18 +21,23 @@ public class EnemyEventControl : MonoBehaviour
     void OnEnable()
     {
         eventEnemySpawnAfter.Register(OnEventEnemySpawnAfter);
+        eventSensorTargetEnter.Register(OnEventSensorTargetEnter);
+        eventSensorTargetExit.Register(OnEventSensorTargetExit);
     }
 
     void OnDisable()
     {
-        eventEnemySpawnAfter.UnRegister(OnEventEnemySpawnAfter);
+        eventEnemySpawnAfter.Unregister(OnEventEnemySpawnAfter);
+        eventSensorTargetEnter.Unregister(OnEventSensorTargetEnter);
+        eventSensorTargetExit.Unregister(OnEventSensorTargetExit);
     }
 
-
+    #region Event-Spawn After
     void OnEventEnemySpawnAfter(EventEnemySpawnAfter e){
+        if(control != e.character) return;
         StartCoroutine(SpawnAfter(e));
     }
-    
+
     IEnumerator SpawnAfter(EventEnemySpawnAfter e){
         Debug.Log("Enemy : SpawnAfter");
         yield return new WaitUntil(() => e.actorProfile.avatar != null && e.actorProfile.model != null);
@@ -57,9 +66,34 @@ public class EnemyEventControl : MonoBehaviour
         yield return new WaitForSeconds(1f);
         
         foreach(var abilityData in e.actorProfile.abilities){
-            control.ability.Add(abilityData, true);
+            control.abilityControl.Add(abilityData);
         }
+
+        yield return new WaitForEndOfFrame();
+
+        if(TryGetComponent(out CursorSelectable sel))
+            sel.SetupRenderer();
+
+// =TEMP CODE=
+        yield return new WaitForEndOfFrame();
+        control.abilityControl.Activate(AbilityFlag.Wandor);
+
+// =TEMP CODE=
+    
     }
+    #endregion
+
+    #region Event-Sensor
+    void OnEventSensorTargetEnter(EventSensorTargetEnter e){
+        if(control != e.from) return;
+        control.abilityControl.Activate(AbilityFlag.Trace, true);
+    }
+
+    void OnEventSensorTargetExit(EventSensorTargetExit e){
+        if(control != e.from) return;    
+        control.abilityControl.Activate(AbilityFlag.Wandor, true);
+    }
+    #endregion
 }
 
 // 비동기(async)

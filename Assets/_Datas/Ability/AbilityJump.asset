@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b78651c9a955748408fd0729c4bddd53, type: 3}
   m_Name: AbilityJump
   m_EditorClassIdentifier: 
-  jumpForce: 10
+  jumpForce: 1000
   jumpDuration: 0.5
   jumpCurve:
     serializedVersion: 2

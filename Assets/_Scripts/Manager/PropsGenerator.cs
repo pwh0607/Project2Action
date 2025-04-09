@@ -5,14 +5,13 @@ using System.Linq;
 using DungeonArchitect;
 using DungeonArchitect.Builders.GridFlow;
 using CustomInspector;
-using Cysharp.Threading.Tasks.Triggers;
 using UnityEngine.InputSystem;
 
 public class PropsGenerator : MonoBehaviour
 {
     [HorizontalLine("DungeonProps"), HideInInspector] public bool h_s1;
     private int searchCount = 0;
-    public int lockCount = 2;
+    public int lockCount;
     [HorizontalLine(color:FixedColor.Cyan), HideInInspector] public bool h_e1;
 
     [Space(20)]
@@ -29,7 +28,6 @@ public class PropsGenerator : MonoBehaviour
     //Test
     public DoorData doorData;
     public Vector3 offset = new Vector3(5f,0,5f);
- 
     void Start()
     {
         InitGraphData();
@@ -38,11 +36,13 @@ public class PropsGenerator : MonoBehaviour
 
         while(lockCount > 0){
             SearchGraph();
+            lockCount--;
         }
     }
 
     #region InitDatas
     void InitGraphData(){
+        Debug.Log("InitGraph...");
         if (dungeon == null)
         {
             Debug.LogError("Dungeon 객체가 설정되지 않았습니다!");
@@ -64,7 +64,6 @@ public class PropsGenerator : MonoBehaviour
             if(node.active){
                 // room 위치 측정하기.
                 Vector3 nodePosition = new Vector3(node.coord.x * 20, 0, node.coord.y * 20) + offset;
-
                 Room room = new Room(node.nodeId.ToString(), nodePosition);
                 roomDic[node.nodeId.ToString()] = room;
                 rooms.Add(room);
@@ -107,10 +106,13 @@ public class PropsGenerator : MonoBehaviour
         }
     }
 
-    List<int> RandomIndex(int count){
-        List<int> res = new List<int>();
-        res.Add(1);
-        res.Add(3);
+    List<int> RandomIndex(int size){
+        List<int> list = new();
+        for(int i =0;i<size;i++){
+            list.Add(i);
+        }
+
+        List<int> res = RandomGenerator.RandomIntGenerate(list, lockCount);
         return res;
     }
 #endregion
@@ -139,7 +141,7 @@ public class PropsGenerator : MonoBehaviour
 
     void SearchGraph(){
         SearchNode();
-        activeRooms.Clear();
+        // activeRooms.Clear();
 
         Queue<Room> queue = new();
         Room startRoom = roomDic[startNodeId];
@@ -164,7 +166,10 @@ public class PropsGenerator : MonoBehaviour
                         if(!gates.Contains(link.gate)){                         //아직 처리하지 못한 Gate에 대해서만 설정한다.
                             targetGate = link.gate;
                             gates.Add(link.gate);
-                            Debug.Log($"처리할 게이트 : {targetGate.gameObject.transform.position}");
+                            //알맞은 gate를 찾았으면 key 생성하기.
+        
+                            AnswerKey key = MakeKey();
+                            SendPairData(link.gate, key);
                         }
                         continue;
                     }    
@@ -177,11 +182,6 @@ public class PropsGenerator : MonoBehaviour
             }
         }
         MakeMark();
-        
-        //탐색 완료 후, 랜덤한 방에 키를 설치.
-        Key key = MakeKey();
-        SendPairData(targetGate, key);
-        lockCount--;
     }
 
     void MakeMark(){
@@ -198,11 +198,10 @@ public class PropsGenerator : MonoBehaviour
         Debug.Log($"탐색 시작할 노드 찾기...");
         if(targetGate == null){
             Debug.Log("최초 노드 찾기/...");
-            // 그래프 탐색의 최초 시행
-            // 그래프의 스폰위치(방)은 나중에 인스펙터에서 추가한다.
-            
+
             var key = roomDic.Keys.ToList();
             startNodeId = roomDic[key[spawnNodeNumber]].roomId;     
+        
             return;
         }
         
@@ -226,26 +225,44 @@ public class PropsGenerator : MonoBehaviour
         }
         targetGate = null;
     }
+  
+    public AnswerKeyData answerKeyData;
 
-    public GameObject keyPrefab;
-    Key MakeKey(){
-        int rnd = UnityEngine.Random.Range(0,activeRooms.Count);
-        Key key = Instantiate(keyPrefab, activeRooms[rnd].roomPosition + (Vector3.up *2), Quaternion.identity).GetComponent<Key>();
+    AnswerKey MakeKey(){
+        int rnd = UnityEngine.Random.Range(0, answerKeyData.key.Count);
+        
+        // 키의 종류
+        GameObject keyPrefab = answerKeyData.key[rnd];
+        AnswerKey key = Instantiate(keyPrefab).GetComponent<AnswerKey>();
 
+        if(key is NormalKey normalKey){
+            int rnd1 = UnityEngine.Random.Range(0, activeRooms.Count);
+            normalKey.transform.position = activeRooms[rnd].roomPosition + (Vector3.up * 2);
+        }else if (key is ButtonKey buttonKey){
+            int rnd1 = UnityEngine.Random.Range(0, activeRooms.Count);
+            Vector3 pos1 = activeRooms[rnd1].roomPosition + (Vector3.up * 2);
+
+            int rnd2 = -1;
+            do{
+                rnd2 = UnityEngine.Random.Range(0, activeRooms.Count);
+            }while(rnd1 == rnd2);
+            Vector3 pos2 = activeRooms[rnd2].roomPosition + (Vector3.up * 2);
+            buttonKey.SetPosition(pos1, pos2);
+        }
         return key;
     }
 #endregion
 
-    public void SendPairData(InterActiveGate gate, Key key)
+    public void SendPairData(InterActiveGate gate, AnswerKey key)
     {
         //로직 매니저 에게 이 페어를 보낸다.
-
+        StageLogicManager.I.SetPair(gate, key);
     }
 
     bool CheckWall(Collider[] colliders){
         int count = 0;
         foreach(var col in colliders){
-            if(col.tag == "Wall") count++;
+            if(col.tag == "WALL") count++;
         }
         return count >= 1;
     }

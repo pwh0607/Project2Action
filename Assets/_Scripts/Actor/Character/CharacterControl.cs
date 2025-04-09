@@ -1,6 +1,5 @@
 using UnityEngine;
 using CustomInspector;
-using Project2Action;
 using TMPro;
 
 // GAS (Game Ability System) : 언리얼.
@@ -9,8 +8,8 @@ using TMPro;
 public class CharacterControl : MonoBehaviour, IActorControl
 {
     [Header("Ability")]
-    [HideInInspector] public AbilityControl ability;
-    
+    [HideInInspector] public AbilityControl abilityControl;
+
     [ReadOnly, SerializeField] private ActorProfile profile;
     public ActorProfile Profile { 
         get => profile;
@@ -31,7 +30,7 @@ public class CharacterControl : MonoBehaviour, IActorControl
 
     void Awake()
     {
-        TryGetComponent(out ability);
+        TryGetComponent(out abilityControl);
         TryGetComponent(out rb);
         TryGetComponent(out animator);
         
@@ -59,14 +58,7 @@ public class CharacterControl : MonoBehaviour, IActorControl
 
     public void PlayeAnimation(int hash, float duration = 0f, int layer = 0)
     {
-        Debug.Log($"anim : {hash.GetType()}");
         animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
-    }
-
-    public void PlayeAnimation(string state, float duration = 0f, int layer = 0)
-    {
-        Debug.Log($"anim : {state}");
-        animator?.CrossFadeInFixedTime(state, duration, layer, 0f);
     }
 
     public void Display(string info){

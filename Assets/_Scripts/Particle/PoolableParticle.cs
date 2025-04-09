@@ -6,10 +6,8 @@ public class PoolableParticle : PoolBehaviour
 
     void Awake()
     {
-        if(!TryGetComponent(out ps)){
+        if(!TryGetComponent(out ps))
             Debug.LogWarning($"PoolableParticle {gameObject.name} ] ParticleSystem 없음...");
-        }
-
     }
 
     void OnEnable()

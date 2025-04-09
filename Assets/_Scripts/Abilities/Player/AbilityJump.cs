@@ -40,7 +40,7 @@ public class AbilityJump : Ability<AbilityJumpData>
     }
 
     private void JumpUp(){
-        if(owner.rb == null || owner.isGrounded) return;
+        if(owner.rb == null || !owner.isGrounded) return;
         Debug.Log("jump up!");
         isJumping = true;
         elapsedTime = 0;

@@ -1758,6 +1758,51 @@ MonoBehaviour:
   affectsNavigation: 1
   userData: 0
   externallyManaged: 0
+--- !u!1 &117023887
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 117023888}
+  - component: {fileID: 117023889}
+  m_Layer: 0
+  m_Name: StageLogicManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &117023888
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117023887}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &117023889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117023887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f21c28e63b25d4d9ba475ec2f6b2ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pairs: []
 --- !u!1001 &119273917
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30543,54 +30588,6 @@ MonoBehaviour:
   affectsNavigation: 1
   userData: 0
   externallyManaged: 0
---- !u!1 &1613005328
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1613005330}
-  - component: {fileID: 1613005329}
-  m_Layer: 0
-  m_Name: Scenario
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1613005329
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1613005328}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae696b844aa7dc8459b58bd60088ce74, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  h_s_01: 0
-  playerSpawnerBefore: {fileID: 11400000, guid: f67387aa066b09540ae705f014376428, type: 2}
-  enemySpawn: {fileID: 0}
-  h_e_01: 0
---- !u!4 &1613005330
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1613005328}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1617814384
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33457,7 +33454,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   h_s1: 0
-  lockCount: 3
+  lockCount: 2
   h_e1: 0
   h_s3: 0
   dungeon: {fileID: 114048669819686570}
@@ -33476,7 +33473,7 @@ MonoBehaviour:
   targetGate: {fileID: 0}
   gates: []
   spawnNodeNumber: 3
-  keyPrefab: {fileID: 7687632049814388318, guid: 196cb606a4722884994bd7ac92403011, type: 3}
+  answerKeyData: {fileID: 11400000, guid: 8b085091d672b704ea7eede8ae1836b8, type: 2}
 --- !u!1001 &1736439870
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36465,7 +36462,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pairs: []
-  gates: []
 --- !u!4 &1871804795
 Transform:
   m_ObjectHideFlags: 0
@@ -42555,18 +42551,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &7497797895574800160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8031608545158596206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea0254dacf528984cac4e32154654749, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &7769902450805949140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42594,7 +42578,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4659067847768305247}
-  - component: {fileID: 7497797895574800160}
   m_Layer: 0
   m_Name: PlayerSpawner
   m_TagString: Untagged
@@ -42641,6 +42624,6 @@ SceneRoots:
   - {fileID: 1743385756}
   - {fileID: 1197724510}
   - {fileID: 4659067847768305247}
+  - {fileID: 117023888}
   - {fileID: 1722488499}
-  - {fileID: 1613005330}
   - {fileID: 1040952388}

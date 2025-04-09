@@ -17,7 +17,7 @@ public class EventListenerCameraSwitch : MonoBehaviour
     }
 
     void OnDisable(){
-        eventCameraSwitch.UnRegister(OnEventCameraSwitch);
+        eventCameraSwitch.Unregister(OnEventCameraSwitch);
     }
 
     private void OnEventCameraSwitch(EventCameraSwitch e){

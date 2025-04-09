@@ -20,7 +20,7 @@ public class SpawnerPlayer : Spawner
     void OnDisable()
     {
         // 이벤트가 등록 되면 발동, 등록 안하면 작동 안함.
-        eventPlayerSpawnBefore?.UnRegister(OnEventPlayerSpawnBefore);
+        eventPlayerSpawnBefore?.Unregister(OnEventPlayerSpawnBefore);
     }
   
     void OnEventPlayerSpawnBefore(EventPlayerSpawnBefore e){

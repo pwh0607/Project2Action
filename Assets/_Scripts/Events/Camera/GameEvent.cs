@@ -16,7 +16,7 @@ public abstract class GameEvent<T> : ScriptableObject where T : GameEvent<T>
         OnEventRaised += listener;    
     }
     
-    public void UnRegister(UnityAction<T> listener){
+    public void Unregister(UnityAction<T> listener){
         OnEventRaised -= listener;    
     }
 

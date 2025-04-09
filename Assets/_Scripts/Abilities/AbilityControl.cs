@@ -53,7 +53,8 @@ public class AbilityControl : MonoBehaviour
         actives.Remove(d.Flag);
     }
 
-    public void Activate(AbilityFlag flag, bool immediate = false)
+    // bool => 기존 ability를 비활성화 하고 새로운 ability를 활성화 시킨다.
+    public void Activate(AbilityFlag flag, bool forceDeactivate = false)
     {
         foreach(var d in datas){
             if((d.Flag & flag) == flag) {
@@ -69,12 +70,22 @@ public class AbilityControl : MonoBehaviour
             if((d.Flag & flag) == flag)
             {
                 if(actives.ContainsKey(flag)){
-                    flags.Remove(flag, null);
+                    flags.Remove(flag);
                     actives[flag].Deactivate();
                     actives[flag] = null;
                     actives.Remove(flag);
-                }
+                }   
             }
         }
+    }
+
+    // 모든 어빌리티 비활성화.
+    public void DeactivateAll(){
+        // flags = AbilityFlag.None;/
+        
+        foreach(var active in actives.Values){
+            active.Deactivate();
+        }
+        actives.Clear();
     }
 }

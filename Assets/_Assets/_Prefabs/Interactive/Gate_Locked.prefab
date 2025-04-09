@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  blockDoor: {fileID: 0}
+  blockDoor: {fileID: 5101186605755783655}
   leftDoor: {fileID: 4144735544548848671}
   rightDoor: {fileID: 4144735546036073077}
 --- !u!1 &1143446860226233868
