@@ -81,7 +81,7 @@ public class AbilityControl : MonoBehaviour
 
     // 모든 어빌리티 비활성화.
     public void DeactivateAll(){
-        // flags = AbilityFlag.None;/
+        // flags = defaultFlag;
         
         foreach(var active in actives.Values){
             active.Deactivate();

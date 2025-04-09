@@ -1,5 +1,4 @@
 using System.Collections;
-using NodeCanvas.Tasks.Actions;
 using UnityEngine;
 
 public class EnemyEventControl : MonoBehaviour
@@ -47,8 +46,8 @@ public class EnemyEventControl : MonoBehaviour
         // Enemy 모델 생성 후 하위 항목인 Model에 설정
         if(e.actorProfile.model == null)
             Debug.LogError("CharacterEventControl ] model 없음.");
-
-        var clone = Instantiate(e.actorProfile.model, control.model);
+        int rnd = Random.Range(0,e.actorProfile.model.Count);
+        var clone = Instantiate(e.actorProfile.model[rnd], control.model);
         
         if(e.actorProfile.avatar == null)
             Debug.LogError("CharacterEventControl ] avatar 없음.");
@@ -74,12 +73,8 @@ public class EnemyEventControl : MonoBehaviour
         if(TryGetComponent(out CursorSelectable sel))
             sel.SetupRenderer();
 
-// =TEMP CODE=
         yield return new WaitForEndOfFrame();
         control.abilityControl.Activate(AbilityFlag.Wandor);
-
-// =TEMP CODE=
-    
     }
     #endregion
 
@@ -92,6 +87,7 @@ public class EnemyEventControl : MonoBehaviour
     void OnEventSensorTargetExit(EventSensorTargetExit e){
         if(control != e.from) return;    
         control.abilityControl.Activate(AbilityFlag.Wandor, true);
+        e.to = null;
     }
     #endregion
 }

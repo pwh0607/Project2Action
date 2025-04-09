@@ -1,8 +1,5 @@
-using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem;
 
 public class AbilityWandor : Ability<AbilityWandorData>
 {
@@ -33,7 +30,7 @@ public class AbilityWandor : Ability<AbilityWandorData>
 
     public override void Deactivate()
     {
-        
+
     }
 
     public override void Update()
@@ -61,7 +58,7 @@ public class AbilityWandor : Ability<AbilityWandorData>
         
         // 가는 중이다.
         Vector3 randomPos = owner.transform.position + Random.insideUnitSphere * data.wandorRadius;
-        randomPos.y = 1f;
+        randomPos.y = 0f;
     
         SetDestination(randomPos);
     }

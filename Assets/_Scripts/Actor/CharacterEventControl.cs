@@ -48,8 +48,9 @@ public class CharacterEventControl : MonoBehaviour
         // 플레이어 모델 생성후 하위 항목인 Model에 설정
         if(e.actorProfile.model == null)
             Debug.LogError("CharacterEventControl ] model 없음.");
+        int rnd = Random.Range(0, e.actorProfile.model.Count);
 
-        var clone = Instantiate(e.actorProfile.model, controller.model);
+        var clone = Instantiate(e.actorProfile.model[rnd], controller.model);
 
         clone.GetComponentsInChildren<SkinnedMeshRenderer>().ToList().ForEach( m =>{
             m.gameObject.layer = LayerMask.NameToLayer("Silhouette");

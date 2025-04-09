@@ -41,7 +41,6 @@ public class AbilityJump : Ability<AbilityJumpData>
 
     private void JumpUp(){
         if(owner.rb == null || !owner.isGrounded) return;
-        Debug.Log("jump up!");
         isJumping = true;
         elapsedTime = 0;
         owner.PlayeAnimation(AnimationClipHashSet._JUMPUP, 0.1f);
@@ -53,7 +52,6 @@ public class AbilityJump : Ability<AbilityJumpData>
     }
 
     private void InputJump(InputAction.CallbackContext context){
-        Debug.Log($"jump perform : {context.performed}");
         if(context.performed) JumpUp();
     }
 }

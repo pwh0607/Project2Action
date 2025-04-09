@@ -20,7 +20,6 @@ public class AbilityTrace : Ability<AbilityTraceData>
         data.rotatePerSec = owner.Profile.rotateSpeed;
     }
 
-    float elapsed;
     public override void Activate()
     {
         GameObject _player = GameObject.FindGameObjectWithTag("Player");
@@ -34,7 +33,7 @@ public class AbilityTrace : Ability<AbilityTraceData>
 
     public override void Deactivate()
     {
-
+        data.traceTarget = null;
     }
 
     public override void Update()
@@ -72,11 +71,6 @@ public class AbilityTrace : Ability<AbilityTraceData>
     private void FollowPath(){
         
         if(corners == null || corners.Length <= 0 || owner.isArrived) return;
-        // if(Vector3.Distance(data.traceTarget.transform.position, owner.transform.position) <= 2f){
-        //     Debug.Log("추격 종료!");
-        //     Deactivate();
-        //     return;
-        // }
 
         Vector3 nextTarget = corners[next];
 
