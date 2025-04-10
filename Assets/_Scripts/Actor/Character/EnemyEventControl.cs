@@ -87,7 +87,7 @@ public class EnemyEventControl : MonoBehaviour
         if(TryGetComponent(out CursorSelectable sel))
             sel.SetupRenderer();
 
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(1f);
         control.abilityControl.Activate(AbilityFlag.Wandor, true, null);
     }
     #endregion
@@ -95,27 +95,28 @@ public class EnemyEventControl : MonoBehaviour
     #region Event-Sensor Sight
     void OnEventSensorSightEnter(EventSensorSightEnter e){
         if(control != e.from) return;
-        control.abilityControl.Activate(AbilityFlag.Trace, true, null);
+        Debug.Log("시야에 들어왔다.");
+        control.abilityControl.Activate(AbilityFlag.Trace, true, e.to);
     }
 
     void OnEventSensorSightExit(EventSensorSightExit e){
         if(control != e.from) return;    
+        Debug.Log("시야에서 벗어났다.");
         control.abilityControl.Activate(AbilityFlag.Wandor, true, null);
-        e.to = null;
     }
     #endregion
 
+    #region Event-Sensor Attack
     void OnEventSensorAttackEnter(EventSensorAttackEnter e){
         if(control != e.from) return;
-        Debug.Log("AttackEvent : Enter");
         control.abilityControl.Activate(AbilityFlag.Attack, true, e.to);
     }
 
     void OnEventSensorAttackExit(EventSensorAttackExit e){
         if(control != e.from) return;    
-        Debug.Log("AttackEvent : Exit");
         control.abilityControl.Activate(AbilityFlag.Trace, true, e.to);
     }
+    #endregion
 }
 
 // 비동기(async)

@@ -50,18 +50,6 @@ public class AbilityWandor : Ability<AbilityWandorData>
         FollowPath();
     }
 
-    private void RandomPosition(){
-        // 이동할 랜덤 위치 선정.
-        // [-1  ~  1]
-        
-        // 가는 중이다.
-        Vector3 randomPos = owner.transform.position + Random.insideUnitSphere * data.wandorRadius;
-        randomPos.y = 0f;
-    
-        SetDestination(randomPos);
-    }
-
-
     void SetDestination(Vector3 destination){
         if(!NavMesh.CalculatePath(owner.transform.position, destination, -1, path))
             return;
@@ -93,9 +81,8 @@ public class AbilityWandor : Ability<AbilityWandorData>
         
         if(Vector3.Distance(nextTarget, owner.rb.position) <= data.stopDistance){
             next++;
-            if(next >= corners.Length){
-                owner.isArrived = true;
-                owner.rb.linearVelocity = Vector3.zero;
+            if(next >= corners.Length){      
+                owner.Stop();
             }
         }
     }
@@ -104,5 +91,16 @@ public class AbilityWandor : Ability<AbilityWandorData>
         float a = owner.isArrived ? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
         float spd = Mathf.Lerp(owner.animator.GetFloat(AnimationClipHashSet._MOVESPEED), a, Time.deltaTime * 10f);
         owner.animator.SetFloat(AnimationClipHashSet._MOVESPEED, spd);
+    }
+
+    private void RandomPosition(){
+        // 이동할 랜덤 위치 선정.
+        // [-1  ~  1]
+        
+        // 가는 중이다.
+        Vector3 randomPos = owner.transform.position + Random.insideUnitSphere * data.wandorRadius;
+        randomPos.y = 0f;
+    
+        SetDestination(randomPos);
     }
 }

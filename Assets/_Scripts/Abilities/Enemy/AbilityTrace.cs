@@ -46,7 +46,6 @@ public class AbilityTrace : Ability<AbilityTraceData>
     private void TargetPosition(){
 
         if(data.target == null) return;
-
         Vector3 destination = data.target.transform.position;
         SetDestination(destination);
     }
@@ -84,7 +83,8 @@ public class AbilityTrace : Ability<AbilityTraceData>
         
         if(Vector3.Distance(nextTarget, owner.rb.position) <= data.stopDistance){
             next++;
-            if(next >= corners.Length){   
+            if(next >= corners.Length){
+                Debug.Log("최종 목적지 도착");   
                 owner.Stop();
             }
         }

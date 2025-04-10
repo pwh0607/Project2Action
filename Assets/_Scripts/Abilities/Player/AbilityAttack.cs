@@ -7,7 +7,6 @@ public class AbilityAttack : Ability<AbilityAttackData>
 
     public AbilityAttack(AbilityAttackData data, CharacterControl owner) : base(data, owner) {
         if(owner.Profile == null) return;
-        // 타겟 설정.
         
         attackSpeed = owner.Profile.interval;
     }
@@ -31,11 +30,12 @@ public class AbilityAttack : Ability<AbilityAttackData>
     {
         if(data.target == null) return;
 
-        elapsed -= Time.deltaTime;
+        elapsed += Time.deltaTime;
 
-        if(elapsed <= owner.Profile.interval){                            //1초에 한번씩 때린다.   
+        if(elapsed >= 1f){                            //1초에 한번씩 때린다.    owner.Profile.interval
             owner.PerformAttackOnce(data.target.transform);
-            elapsed = owner.Profile.interval;
+            owner.PlayeAnimation(AnimationClipHashSet._ATTACK, 0.2f);
+            elapsed = 0;
         }
 
         owner.AnimateMoveSpeed(0f);

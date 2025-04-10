@@ -53,12 +53,11 @@ public class CharacterControl : MonoBehaviour, IActorControl
 
     // 타겟을 바라본다 (Y축만 회전)
     public void LookAtY(Vector3 target){
-        // 수정
-        Vector3 direction = eyePoint.transform.position - new Vector3(target.x, 0f, target.z);                //data.target.eyePoint.position - owner.eyePoint.position;
+        Vector3 direction = target - transform.position;
+        direction.y = 0f;
+
         Vector3 euler = Quaternion.LookRotation(direction.normalized).eulerAngles;
-        
         transform.rotation = Quaternion.Euler(euler);
-        // transform.LookAt(target + Vector3.up);
     }
 
     public void Stop(){
@@ -90,7 +89,7 @@ public class CharacterControl : MonoBehaviour, IActorControl
     }
 
     public void PerformAttackOnce(Transform target){ 
-        LookAtY(target.transform.position);
-        PlayeAnimation(AnimationClipHashSet._ATTACK, 0.1f);
+        // LookAtY(target.transform.position);
+        PlayeAnimation(AnimationClipHashSet._ATTACK, 0.2f);
     }
 }

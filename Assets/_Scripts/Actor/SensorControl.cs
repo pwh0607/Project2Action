@@ -55,13 +55,11 @@ public class SensorControl : MonoBehaviour
                 target = c.GetComponentInParent<CharacterControl>();
                 TargetEnter();
 
-                float distance = Vector3.Distance(target.transform.position, owner.transform.position);             //eyePoint로 수정할것.
-                
+                float distance = Vector3.Distance(target.transform.position, owner.transform.position);
                 if(distance <= attackRange)
                     AttackEnter();
                 else
                     AttackExit();
-                
                 return;
             }
         }
@@ -74,7 +72,6 @@ public class SensorControl : MonoBehaviour
     {
         if(prevSight == target || target == null)
             return;
-
         prevSight = target;
         
         eventSensorSightEnter.from = owner;
@@ -86,7 +83,6 @@ public class SensorControl : MonoBehaviour
     {
         if(prevSight == null || target == null)
             return;
-        
         prevSight = null;
        
         eventSensorSightExit.from = owner;
@@ -102,8 +98,6 @@ public class SensorControl : MonoBehaviour
 
         prevAttack = target;
         
-        Debug.Log($"Attack Target Enter: {target.Profile.alias}");
-        
         eventSensorAttackEnter.from = owner;
         eventSensorAttackEnter.to = target;
         eventSensorAttackEnter.Raise();
@@ -114,8 +108,6 @@ public class SensorControl : MonoBehaviour
             return;
 
         prevAttack = null;
-
-        Debug.Log($"Attack Target Exit: {target.Profile.alias}");
 
         eventSensorAttackExit.from = owner;
         eventSensorAttackExit.to = target;
