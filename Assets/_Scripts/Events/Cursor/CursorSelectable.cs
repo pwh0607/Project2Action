@@ -1,4 +1,3 @@
-using System.Linq;
 using CustomInspector;
 using UnityEngine;
 
@@ -27,20 +26,6 @@ public class CursorSelectable : MonoBehaviour
     }
 
     public void SetupRenderer(){
-        if(rds.Length <=0 ) return;
-
-        rds = GetComponentsInChildren<SkinnedMeshRenderer>();
-        if(rds == null){
-            rds = GetComponentsInChildren<MeshRenderer>();
-        }
-
-        Transform meshT = transform.Find("STANDARDMESH");
-
-        if(meshT == null) {
-            Debug.Log("메쉬를 찾지 못했다.");
-            return;
-        }
-
         rd = GetComponentInChildren<SkinnedMeshRenderer>();
 
         if(rd == null){
@@ -51,7 +36,7 @@ public class CursorSelectable : MonoBehaviour
     public void Select(bool on)
     {
         if(rd == null){
-            Debug.Log("렌더러를 찾지 못했다.");
+            // Debug.Log("렌더러를 찾지 못했다.");
             return;
         } 
         string layername = on ? "Outline" : "Default";

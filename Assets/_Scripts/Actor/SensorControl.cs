@@ -5,29 +5,39 @@ public class SensorControl : MonoBehaviour
 {
     #region Event
     [HorizontalLine("Sensor-Event"), HideInInspector] public bool l_s_1;
-    [SerializeField] EventSensorTargetEnter eventSensorTargetEnter;
-    [SerializeField] EventSensorTargetExit eventSensorTargetExit;
+
+    [SerializeField] EventSensorSightEnter eventSensorSightEnter;
+    [SerializeField] EventSensorSightExit eventSensorSightExit;
+    
+    [SerializeField] EventSensorAttackEnter eventSensorAttackEnter;
+    [SerializeField] EventSensorAttackExit eventSensorAttackExit;
+
+
     [HorizontalLine(color:FixedColor.Cyan), HideInInspector] public bool l_e_1;
     #endregion
 
     [Tooltip("시야 범위")]
-    [SerializeField] float sightRange;
+    [SerializeField] float sightRange = 5f;
+    [SerializeField] float attackRange = 1f;
     
     // 자기 자신
     private CharacterControl owner;
 
+    [Space(20)]
     [SerializeField] LayerMask targetLayer;
     [SerializeField] string targetTag;
     
     // target
+    [Space(20)]
     [ReadOnly] public CharacterControl target;
+    [ReadOnly] public CharacterControl prevSight;
+    [ReadOnly] public CharacterControl prevAttack;
 
     void Start()
     {
         TryGetComponent(out owner);
     }
 
-    [ReadOnly] public CharacterControl _prev;
     void Update()
     {
         /*
@@ -36,46 +46,83 @@ public class SensorControl : MonoBehaviour
         */
 
         // 1. Layer 필터
-        var cols = Physics.OverlapSphere(transform.position, sightRange, targetLayer);
+        var cols = Physics.OverlapSphere(owner.transform.position, sightRange, targetLayer);
 
         // 2. 태그 필터
+        // 시야 거리 안에 들어 왔는가...?
         foreach(var c in cols){
             if(c.CompareTag(targetTag)){
                 target = c.GetComponentInParent<CharacterControl>();
                 TargetEnter();
 
+                float distance = Vector3.Distance(target.transform.position, owner.transform.position);             //eyePoint로 수정할것.
+                
+                if(distance <= attackRange)
+                    AttackEnter();
+                else
+                    AttackExit();
+                
                 return;
             }
         }
-
+        AttackExit();
         TargetExit();
     }
 
+    
     private void TargetEnter()
     {
-        if(_prev == target || target == null)
+        if(prevSight == target || target == null)
             return;
 
-        _prev = target;
+        prevSight = target;
         
-        Debug.Log($"Target Enter: {target.Profile.alias}");
-        eventSensorTargetEnter.from = owner;
-        eventSensorTargetEnter.to = target;
-        eventSensorTargetEnter.Raise();
+        eventSensorSightEnter.from = owner;
+        eventSensorSightEnter.to = target;
+        eventSensorSightEnter.Raise();
     }
 
     private void TargetExit()
     {
-        if(_prev == null || target == null)
+        if(prevSight == null || target == null)
             return;
         
-        _prev = null;
-        // target = null;
-        Debug.Log($"Target Exit: {target.Profile.alias}");
-        eventSensorTargetExit.from = owner;
-        eventSensorTargetExit.to = target;
-        eventSensorTargetExit.Raise();
+        prevSight = null;
+       
+        eventSensorSightExit.from = owner;
+        eventSensorSightExit.to = target;
+        eventSensorSightExit.Raise();
     }
+
+
+    #region 공격 범위 체크
+    private void AttackEnter(){        
+        if(prevSight == null || target == null)
+            return;
+
+        prevAttack = target;
+        
+        Debug.Log($"Attack Target Enter: {target.Profile.alias}");
+        
+        eventSensorAttackEnter.from = owner;
+        eventSensorAttackEnter.to = target;
+        eventSensorAttackEnter.Raise();
+    }
+
+    private void AttackExit(){
+        if(prevAttack == null || target == null)
+            return;
+
+        prevAttack = null;
+
+        Debug.Log($"Attack Target Exit: {target.Profile.alias}");
+
+        eventSensorAttackExit.from = owner;
+        eventSensorAttackExit.to = target;
+        eventSensorAttackExit.Raise();
+    }
+
+    #endregion
 }
 
 //sensorControl -> EnemyEventControl

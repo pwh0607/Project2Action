@@ -38,7 +38,7 @@ public class AbilityControl : MonoBehaviour
         
         if(immediate){
             actives[d.Flag] = ability;      
-            actives[d.Flag].Activate();
+            actives[d.Flag].Activate(null);
         }
     }
 
@@ -54,13 +54,18 @@ public class AbilityControl : MonoBehaviour
     }
 
     // bool => 기존 ability를 비활성화 하고 새로운 ability를 활성화 시킨다.
-    public void Activate(AbilityFlag flag, bool forceDeactivate = false)
+    public void Activate(AbilityFlag flag, bool forceDeactivate, object obj)                //Object object.
     {
+        if(forceDeactivate){
+            DeactivateAll();
+        }
+
         foreach(var d in datas){
             if((d.Flag & flag) == flag) {
                 if(!actives.ContainsKey(flag))
                     actives[flag] = d.CreateAbility(GetComponent<CharacterControl>());
-                actives[flag].Activate();
+                
+                actives[flag].Activate(obj);
             }
         }
     }

@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 188572399404243915}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -322,7 +322,7 @@ Animator:
   m_GameObject: {fileID: 6943699192755661008}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 09976f7adbaf83a4c9b321bf2ce42452, type: 2}
+  m_Controller: {fileID: 22100000, guid: 38eb09b202bface419c581c889d631bf, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -368,16 +368,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   l_s_1: 0
-  eventSensorTargetEnter: {fileID: 11400000, guid: a34355ab5aa44bb47a07c0ee16600c94, type: 2}
-  eventSensorTargetExit: {fileID: 11400000, guid: eff9ef9999b054f46b291a372d7a1301, type: 2}
+  eventSensorSightEnter: {fileID: 11400000, guid: 40f208b09d6059b48bb04ee962102771, type: 2}
+  eventSensorSightExit: {fileID: 11400000, guid: 1566c18dd46c9d84a9f04ddfa66e130c, type: 2}
+  eventSensorAttackEnter: {fileID: 11400000, guid: e0f70750bae66be479a616d127dac90c, type: 2}
+  eventSensorAttackExit: {fileID: 11400000, guid: 76b8554e3dc6cfd428c77a470e6efa1c, type: 2}
   l_e_1: 0
-  sightRange: 3
+  sightRange: 4
+  attackRange: 2
   targetLayer:
     serializedVersion: 2
     m_Bits: 4
   targetTag: Player
   target: {fileID: 0}
-  _prev: {fileID: 0}
+  prevSight: {fileID: 0}
+  prevAttack: {fileID: 0}
 --- !u!114 &5751397563990564394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,8 +395,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventEnemySpawnAfter: {fileID: 11400000, guid: d2ae8029d79ca8542a4e389cce8c190a, type: 2}
-  eventSensorTargetEnter: {fileID: 11400000, guid: a34355ab5aa44bb47a07c0ee16600c94, type: 2}
-  eventSensorTargetExit: {fileID: 11400000, guid: eff9ef9999b054f46b291a372d7a1301, type: 2}
+  eventSensorSightEnter: {fileID: 11400000, guid: 40f208b09d6059b48bb04ee962102771, type: 2}
+  eventSensorSightExit: {fileID: 11400000, guid: 1566c18dd46c9d84a9f04ddfa66e130c, type: 2}
+  eventSensorAttackEnter: {fileID: 11400000, guid: e0f70750bae66be479a616d127dac90c, type: 2}
+  eventSensorAttackExit: {fileID: 11400000, guid: 76b8554e3dc6cfd428c77a470e6efa1c, type: 2}
 --- !u!114 &6122278346836665987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -422,6 +428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   rd: {fileID: 0}
+  rds: []
   selectableMaterial: {fileID: 2100000, guid: 650177d6a7696ca479ce72f331034091, type: 2}
   selectableThickness: 1
   on: 0

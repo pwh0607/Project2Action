@@ -39,7 +39,7 @@ public class SpawnerPlayer : Spawner
         // 커서 세팅
         _cursor = Instantiate(e.playerCursor);
         _cursor.eyePoint = _character.eyePoint;
-
+        
         StartCoroutine(SpawnAfter());
     }
     

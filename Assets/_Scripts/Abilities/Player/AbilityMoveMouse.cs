@@ -81,18 +81,14 @@ public class AbilityMoveMouse : Ability<AbilityMoveMouseData>
         }
     }
 
-    public override void Activate(){
-        if(owner.TryGetComponent<InputControl>(out var input)){
+    public override void Activate(object obj){
+        if(owner.TryGetComponent<InputControl>(out var input))
             input.actionInput.Player.MoveMouse.performed += InputMove;
-        }
     }
 
-    public override void Deactivate()
-    {
-        if(owner.TryGetComponent<InputControl>(out var input)){
+    public override void Deactivate(){
+        if(owner.TryGetComponent<InputControl>(out var input))
             input.actionInput.Player.Move.canceled -= InputMove;
-        }
-
     }
 
     private void MoveAnimation(){

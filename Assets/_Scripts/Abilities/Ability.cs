@@ -22,6 +22,9 @@ public enum AbilityFlag
     // Enemy
     Wandor = 1 << 3,        // 1000
     Trace = 1 << 4,
+
+    // Attack
+    Attack = 1 << 11
 }
 
 // 데이터 담당 : 역할
@@ -38,7 +41,7 @@ public abstract class AbilityData : ScriptableObject
 // abstract (정의 - 필수) 는 자식에서 무조건 정의 해야한다.
 // virtual (정의 - 선택) 은 옵션
 public abstract class Ability{
-    public virtual void Activate() { }
+    public virtual void Activate(object obj) { }
     public virtual void Deactivate() { }
     public virtual void Update(){ }
     public virtual void FixedUpdate() { }

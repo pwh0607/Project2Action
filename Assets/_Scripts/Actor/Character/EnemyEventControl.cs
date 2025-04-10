@@ -5,11 +5,16 @@ public class EnemyEventControl : MonoBehaviour
 {
 #region Events
     [SerializeField] EventEnemySpawnAfter eventEnemySpawnAfter;
-    [SerializeField] EventSensorTargetEnter eventSensorTargetEnter;
-    [SerializeField] EventSensorTargetExit eventSensorTargetExit;
 
+    [SerializeField] EventSensorSightEnter eventSensorSightEnter;
+    [SerializeField] EventSensorSightExit eventSensorSightExit;
+
+    [SerializeField] EventSensorAttackEnter eventSensorAttackEnter;
+    [SerializeField] EventSensorAttackExit eventSensorAttackExit;
 #endregion
     
+    [Space(10)]
+
     private CharacterControl control;
     void Start()
     {
@@ -20,15 +25,23 @@ public class EnemyEventControl : MonoBehaviour
     void OnEnable()
     {
         eventEnemySpawnAfter.Register(OnEventEnemySpawnAfter);
-        eventSensorTargetEnter.Register(OnEventSensorTargetEnter);
-        eventSensorTargetExit.Register(OnEventSensorTargetExit);
+
+        eventSensorSightEnter.Register(OnEventSensorSightEnter);
+        eventSensorSightExit.Register(OnEventSensorSightExit);
+
+        eventSensorAttackEnter.Register(OnEventSensorAttackEnter);
+        eventSensorAttackExit.Register(OnEventSensorAttackExit);
     }
 
     void OnDisable()
     {
         eventEnemySpawnAfter.Unregister(OnEventEnemySpawnAfter);
-        eventSensorTargetEnter.Unregister(OnEventSensorTargetEnter);
-        eventSensorTargetExit.Unregister(OnEventSensorTargetExit);
+
+        eventSensorSightEnter.Unregister(OnEventSensorSightEnter);
+        eventSensorSightExit.Unregister(OnEventSensorSightExit);
+
+        eventSensorAttackEnter.Unregister(OnEventSensorAttackEnter);
+        eventSensorAttackExit.Unregister(OnEventSensorAttackExit);
     }
 
     #region Event-Spawn After
@@ -75,22 +88,34 @@ public class EnemyEventControl : MonoBehaviour
             sel.SetupRenderer();
 
         yield return new WaitForEndOfFrame();
-        control.abilityControl.Activate(AbilityFlag.Wandor);
+        control.abilityControl.Activate(AbilityFlag.Wandor, true, null);
     }
     #endregion
 
-    #region Event-Sensor
-    void OnEventSensorTargetEnter(EventSensorTargetEnter e){
+    #region Event-Sensor Sight
+    void OnEventSensorSightEnter(EventSensorSightEnter e){
         if(control != e.from) return;
-        control.abilityControl.Activate(AbilityFlag.Trace, true);
+        control.abilityControl.Activate(AbilityFlag.Trace, true, null);
     }
 
-    void OnEventSensorTargetExit(EventSensorTargetExit e){
+    void OnEventSensorSightExit(EventSensorSightExit e){
         if(control != e.from) return;    
-        control.abilityControl.Activate(AbilityFlag.Wandor, true);
+        control.abilityControl.Activate(AbilityFlag.Wandor, true, null);
         e.to = null;
     }
     #endregion
+
+    void OnEventSensorAttackEnter(EventSensorAttackEnter e){
+        if(control != e.from) return;
+        Debug.Log("AttackEvent : Enter");
+        control.abilityControl.Activate(AbilityFlag.Attack, true, e.to);
+    }
+
+    void OnEventSensorAttackExit(EventSensorAttackExit e){
+        if(control != e.from) return;    
+        Debug.Log("AttackEvent : Exit");
+        control.abilityControl.Activate(AbilityFlag.Trace, true, e.to);
+    }
 }
 
 // 비동기(async)

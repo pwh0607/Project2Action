@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Animator_Enemy_OneHand
+  m_Controller: {fileID: 9100000, guid: a591d104dfb971f49a97474ff4cd7b67, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 4ae4180887c1697489b08579a49f7435, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 5828c7958a7cb4d41ba2d434280b92e4, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 2e77a54483661354e967feee88745063, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 989a3973fae84e344a37d7925b9f7b10, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: ba37ccc934cdd2340b4c43a65ea3656e, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 5fc58e648726c914f8dee69d8b0cf7ec, type: 3}

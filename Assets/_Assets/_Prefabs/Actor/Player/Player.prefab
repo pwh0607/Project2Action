@@ -66,7 +66,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2910737957155279010}
   m_Layer: 2
-  m_Name: Eyepoint
+  m_Name: _EYEPOINT_
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,7 +81,7 @@ Transform:
   m_GameObject: {fileID: 1948834812007720715}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.65, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -11,7 +11,7 @@ public class ActorProfile : ScriptableObject
     [Preview(Size.medium)] public Sprite portrait;
     [Preview(Size.medium)] public List<GameObject> models;
     [Preview(Size.medium)] public Avatar avatar;
-
+    
     [Space(20)]
     [HorizontalLine("Attribute", color:FixedColor.Cyan), HideField] public bool _h_s1;
     [Tooltip("체력")] public int health;              
@@ -19,7 +19,8 @@ public class ActorProfile : ScriptableObject
     [Tooltip("초당 회전 속도")] public float rotateSpeed;
     [Tooltip("점프 파워")] public float jumpForce; 
     [Tooltip("점프 체공 시간")] public float jumpDuration;
-
+    [Tooltip("점프 체공 시간")] public float interval;
+    
     [Space(20)]
     [HorizontalLine("Abilities"), HideField] public bool _h_s2;
     public List<AbilityData> abilities;

@@ -14,26 +14,20 @@ public class AbilityTrace : Ability<AbilityTraceData>
 
         path = new NavMeshPath();
         owner.isArrived = true;
-
-        if(owner.Profile == null) return;
         data.movePerSec = owner.Profile.moveSpeed;
         data.rotatePerSec = owner.Profile.rotateSpeed;
     }
 
-    public override void Activate()
+    public override void Activate(object obj)
     {
-        GameObject _player = GameObject.FindGameObjectWithTag("Player");
-
-        if(_player == null) return;
-
-        data.traceTarget = GameObject.FindGameObjectWithTag("Player").transform;
-        
+        if(obj is CharacterControl control)
+            data.target = control;
         owner.Display($"{data.Flag}");
     }
 
     public override void Deactivate()
     {
-        data.traceTarget = null;
+        owner.Stop();
     }
 
     public override void Update()
@@ -51,9 +45,9 @@ public class AbilityTrace : Ability<AbilityTraceData>
 
     private void TargetPosition(){
 
-        if(data.traceTarget == null) return;
+        if(data.target == null) return;
 
-        Vector3 destination = data.traceTarget.position;
+        Vector3 destination = data.target.transform.position;
         SetDestination(destination);
     }
 
@@ -90,16 +84,21 @@ public class AbilityTrace : Ability<AbilityTraceData>
         
         if(Vector3.Distance(nextTarget, owner.rb.position) <= data.stopDistance){
             next++;
-            if(next >= corners.Length){
-                owner.isArrived = true;
-                owner.rb.linearVelocity = Vector3.zero;
+            if(next >= corners.Length){   
+                owner.Stop();
             }
         }
     }
 
     private void MoveAnimation(){
         float a = owner.isArrived ? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
-        float spd = Mathf.Lerp(owner.animator.GetFloat(AnimationClipHashSet._MOVESPEED), a, Time.deltaTime * 10f);
-        owner.animator.SetFloat(AnimationClipHashSet._MOVESPEED, spd);
+        owner.AnimateMoveSpeed(a);
     }
 }
+
+
+// EQS
+/*
+    Environment Query Systems
+    Player의 주변환경 파악하기.
+*/

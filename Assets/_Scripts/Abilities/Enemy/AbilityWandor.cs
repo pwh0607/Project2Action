@@ -14,14 +14,12 @@ public class AbilityWandor : Ability<AbilityWandorData>
 
         path = new NavMeshPath();
         owner.isArrived = true;
-
-        if(owner.Profile == null) return;
         data.movePerSec = owner.Profile.moveSpeed;
         data.rotatePerSec = owner.Profile.rotateSpeed;
     }
 
     float elapsed;
-    public override void Activate()
+    public override void Activate(object obj)
     {
         RandomPosition();
         
@@ -30,7 +28,7 @@ public class AbilityWandor : Ability<AbilityWandorData>
 
     public override void Deactivate()
     {
-
+        owner.Stop();
     }
 
     public override void Update()
