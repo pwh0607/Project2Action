@@ -24,11 +24,19 @@ public class SpawnerPlayer : Spawner
     }
   
     void OnEventPlayerSpawnBefore(EventPlayerSpawnBefore e){
+        //플레이어용 카메라 생성
         CameraControl camera = Instantiate(e.playerCamera);
     
+        //플레이어 캐릭터 생성
         _character = Instantiate(e.player);
+
+        // 플레이어 캐릭터 위치 및 회전  설정.
         _character.transform.SetPositionAndRotation(spawnPoint.position, Quaternion.LookRotation(transform.forward));
 
+        // 플레이어 캐릭터에 프로파일 연결
+        _character.Profile = actorProfile;
+
+        // 커서 세팅
         _cursor = Instantiate(e.playerCursor);
         _cursor.eyePoint = _character.eyePoint;
 
@@ -41,7 +49,6 @@ public class SpawnerPlayer : Spawner
         
         eventPlayerSpawnAfter.eyePoint = _character.eyePoint;
         eventPlayerSpawnAfter.CursorFixedPoint = _cursor.CursorFixedPoint;
-        eventPlayerSpawnAfter.actorProfile = actorProfile;
         eventPlayerSpawnAfter?.Raise();
     }
 

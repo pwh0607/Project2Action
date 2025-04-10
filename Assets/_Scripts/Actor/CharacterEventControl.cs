@@ -41,24 +41,25 @@ public class CharacterEventControl : MonoBehaviour
     }
     
     IEnumerator SpawnSequence(EventPlayerSpawnAfter e){
-        yield return new WaitUntil(() => e.actorProfile.avatar != null && e.actorProfile.model != null);
+        yield return new WaitUntil(() => controller.Profile.avatar != null && controller.Profile.models != null);
 
-        controller.Profile = e.actorProfile;
+        controller.Profile = controller.Profile;
 
         // 플레이어 모델 생성후 하위 항목인 Model에 설정
-        if(e.actorProfile.model == null)
+        if(controller.Profile.models == null)
             Debug.LogError("CharacterEventControl ] model 없음.");
-        int rnd = Random.Range(0, e.actorProfile.model.Count);
 
-        var clone = Instantiate(e.actorProfile.model[rnd], controller.model);
+        var model = controller.Profile.models.Random();
+
+        var clone = Instantiate(model, controller.model);
 
         clone.GetComponentsInChildren<SkinnedMeshRenderer>().ToList().ForEach( m =>{
             m.gameObject.layer = LayerMask.NameToLayer("Silhouette");
         });
 
-        if(e.actorProfile.avatar == null)
+        if(controller.Profile.avatar == null)
             Debug.LogError("CharacterEventControl ] avatar 없음.");
-        controller.animator.avatar = e.actorProfile.avatar;
+        controller.animator.avatar = controller.Profile.avatar;
 
         yield return new WaitForSeconds(1f);
 
@@ -69,7 +70,7 @@ public class CharacterEventControl : MonoBehaviour
     
         yield return new WaitForSeconds(3f);
 
-        foreach( var dat in e.actorProfile.abilities )
+        foreach( var dat in controller.Profile.abilities )
             controller.abilityControl.Add(dat, true);
     }
 }

@@ -9,8 +9,6 @@ public class EventEnemySpawnAfter : GameEvent<EventEnemySpawnAfter>
     [ReadOnly] public CharacterControl character;
     [ReadOnly] public Transform eyePoint;
 
-    [ReadOnly] public ActorProfile actorProfile;
-
     [Tooltip("플레이어 스폰 파티클")]
     public PoolBehaviour spawnParticle;
 }

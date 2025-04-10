@@ -1,4 +1,5 @@
 using System.Collections;
+using SharpNav;
 using UnityEngine;
 
 public class SpawnerEnemy : Spawner
@@ -23,8 +24,10 @@ public class SpawnerEnemy : Spawner
 
 
     void OnEventEnemySpawnBefore(EventEnemySpawnBefore e){
+
         control = Instantiate(e.enemyCharacter);
         control.transform.SetPositionAndRotation(spawnPoint.position, Quaternion.LookRotation(transform.forward));
+        control.Profile = actorProfile;
 
         StartCoroutine(SpawnAfter());
     }
@@ -34,7 +37,6 @@ public class SpawnerEnemy : Spawner
 
         eventEnemySpawnAfter.character = control;
         eventEnemySpawnAfter.eyePoint = control.eyePoint;
-        eventEnemySpawnAfter.actorProfile = actorProfile;
         eventEnemySpawnAfter?.Raise();
     }
 }

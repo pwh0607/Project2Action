@@ -9,7 +9,7 @@ public class ActorProfile : ScriptableObject
     
     public string alias;
     [Preview(Size.medium)] public Sprite portrait;
-    [Preview(Size.medium)] public List<GameObject> model;
+    [Preview(Size.medium)] public List<GameObject> models;
     [Preview(Size.medium)] public Avatar avatar;
 
     [Space(20)]

@@ -234,7 +234,7 @@ GameObject:
   - component: {fileID: 417646}
   - component: {fileID: 13773204}
   m_Layer: 0
-  m_Name: skeleton_mesh
+  m_Name: STANDARDMESH
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

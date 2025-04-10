@@ -39,20 +39,21 @@ public class EnemyEventControl : MonoBehaviour
 
     IEnumerator SpawnAfter(EventEnemySpawnAfter e){
         Debug.Log("Enemy : SpawnAfter");
-        yield return new WaitUntil(() => e.actorProfile.avatar != null && e.actorProfile.model != null);
+        yield return new WaitUntil(() => control.Profile.avatar != null && control.Profile.models != null);
 
-        control.Profile = e.actorProfile;
+        control.Profile = control.Profile;
         
         // Enemy 모델 생성 후 하위 항목인 Model에 설정
-        if(e.actorProfile.model == null)
+        if(control.Profile.models == null)
             Debug.LogError("CharacterEventControl ] model 없음.");
-        int rnd = Random.Range(0,e.actorProfile.model.Count);
-        var clone = Instantiate(e.actorProfile.model[rnd], control.model);
+
+        var model = control.Profile.models.Random();
+        var clone = Instantiate(model, control.model);
         
-        if(e.actorProfile.avatar == null)
+        if(control.Profile.avatar == null)
             Debug.LogError("CharacterEventControl ] avatar 없음.");
 
-        control.animator.avatar = e.actorProfile.avatar;
+        control.animator.avatar = control.Profile.avatar;
                
         yield return new WaitForSeconds(1f);
         PoolManager.I.Spawn(e.spawnParticle, transform.position, Quaternion.identity, transform);
@@ -64,7 +65,7 @@ public class EnemyEventControl : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
         
-        foreach(var abilityData in e.actorProfile.abilities){
+        foreach(var abilityData in control.Profile.abilities){
             control.abilityControl.Add(abilityData);
         }
 
