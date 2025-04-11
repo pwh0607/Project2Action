@@ -235,6 +235,7 @@ GameObject:
   - component: {fileID: 5751397563990564394}
   - component: {fileID: 6122278346836665987}
   - component: {fileID: 3954374162032563192}
+  - component: {fileID: 5658018190876893850}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: ENEMY
@@ -427,11 +428,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
-  rd: {fileID: 0}
   rds: []
   selectableMaterial: {fileID: 2100000, guid: 650177d6a7696ca479ce72f331034091, type: 2}
   selectableThickness: 1
   on: 0
+--- !u!114 &5658018190876893850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6943699192755661008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9df58b6b5e25da244b72182702afb403, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footSmoke: {fileID: 0}
+  jumpSmoke: {fileID: 0}
+  swing1: {fileID: 2224493660923375104, guid: 7d0bd841ab256d842af6a99febbba20f, type: 3}
+  h_s_01: 0
+  eventPlayerSpawnAfter: {fileID: 11400000, guid: dc969804fc864c940a147df9dd852e32, type: 2}
+  eventEnemySpawnAfter: {fileID: 11400000, guid: d2ae8029d79ca8542a4e389cce8c190a, type: 2}
+  h_e_01: 0
+  modelRoot: {fileID: 0}
+  footLeft: {fileID: 0}
+  footRight: {fileID: 0}
+  handLeft: {fileID: 0}
+  handRight: {fileID: 0}
 --- !u!1 &7357161927007150646
 GameObject:
   m_ObjectHideFlags: 0

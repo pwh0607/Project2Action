@@ -4,19 +4,21 @@ using CustomInspector;
 
 public class AnimationEventListener : MonoBehaviour
 {
+    public PoolableParticle footSmoke, jumpSmoke, swing1;
     [HorizontalLine("Event-Spawn"), HideField] public bool h_s_01;
     [SerializeField] EventPlayerSpawnAfter eventPlayerSpawnAfter;
+    [SerializeField] EventEnemySpawnAfter eventEnemySpawnAfter;
     [HorizontalLine(color:FixedColor.Cyan), HideField] public bool h_e_01;
     [Space(20)]
-    public PoolableParticle footSmoke, jumpSmoke;
     [ReadOnly] public Transform modelRoot;
+    private CharacterControl owner;
     [ReadOnly] public Transform footLeft, footRight;
-
-    private CharacterControl controller;
+    [ReadOnly] public Transform handLeft, handRight;
+    
 
     void Awake()
     {
-        TryGetComponent(out controller);    
+        TryGetComponent(out owner);    
 
         modelRoot = transform.FindSlot("_model_");
         if(modelRoot == null) Debug.LogWarning("AnimationEventListener ] Model Root 없음...");
@@ -24,16 +26,27 @@ public class AnimationEventListener : MonoBehaviour
 
     void OnEnable()
     {
+
         eventPlayerSpawnAfter.Register(OnEventPlayerSpawnAfter);
+
+        // eventEnemySpawnAfter.Register(OnEventEnemeySpawnAfter);
     }
 
     void OnDisable()
     {
         eventPlayerSpawnAfter.Unregister(OnEventPlayerSpawnAfter);
+
+        // eventEnemySpawnAfter.Unregister(OnEventEnemeySpawnAfter);
     }
 
     void OnEventPlayerSpawnAfter(EventPlayerSpawnAfter e){
+        // if(owner != e.controller)
+        //     return;
         StartCoroutine(DelayFind());
+    }
+
+    public void OnEventEnemeySpawnAfter(EventPlayerSpawnAfter e){
+        
     }
     
     IEnumerator DelayFind(){
@@ -41,11 +54,14 @@ public class AnimationEventListener : MonoBehaviour
 
         footLeft = modelRoot.FindSlot("leftfoot", "l foot", "Lfoot");
         footRight = modelRoot.FindSlot("rightfoot", "r foot", "Rfoot");
+        handLeft = modelRoot.FindSlot("L Hand","LeftHand");
+        handRight = modelRoot.FindSlot("R Hand","LeftHand");
     }
+
 
     public void FootStep(string s)
     {
-        if(controller.isArrived == true || footLeft == null || footRight == null) return;
+        if(owner.isArrived == true || footLeft == null || footRight == null) return;
         PoolManager.I.Spawn(footSmoke, s == "L" ? footLeft.position : footRight.position, Quaternion.identity, null);
     }
 
@@ -57,6 +73,13 @@ public class AnimationEventListener : MonoBehaviour
 
     public void JumpDown(){
         Vector3 offset = Vector3.up * 0.1f + Random.insideUnitSphere * 0.2f;
-        PoolManager.I.Spawn(jumpSmoke, controller.model.position + offset, Quaternion.identity, null);
+        PoolManager.I.Spawn(jumpSmoke, owner.model.position + offset, Quaternion.identity, null);
+    }
+
+    public void Attack(string s){
+        var rot = Quaternion.LookRotation(owner.transform.forward);
+        rot.eulerAngles = new Vector3(-90f, rot.eulerAngles.y, 0f);
+        
+        PoolManager.I.Spawn(swing1, s == "L" ? handLeft.position : handRight.position, rot, null);
     }
 }

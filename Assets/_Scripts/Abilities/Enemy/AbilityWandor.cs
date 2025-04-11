@@ -14,6 +14,7 @@ public class AbilityWandor : Ability<AbilityWandorData>
 
         path = new NavMeshPath();
         owner.isArrived = true;
+
         data.movePerSec = owner.Profile.moveSpeed;
         data.rotatePerSec = owner.Profile.rotateSpeed;
     }
@@ -36,8 +37,8 @@ public class AbilityWandor : Ability<AbilityWandorData>
         elapsed += Time.deltaTime;
 
         if(elapsed > data.wandorStay){
-            elapsed = 0f;
             RandomPosition();
+            elapsed = 0f;
         }
 
         MoveAnimation();
@@ -50,14 +51,6 @@ public class AbilityWandor : Ability<AbilityWandorData>
         FollowPath();
     }
 
-    void SetDestination(Vector3 destination){
-        if(!NavMesh.CalculatePath(owner.transform.position, destination, -1, path))
-            return;
-
-        corners = path.corners;
-        next = 1;
-        owner.isArrived = false;
-    }
     
     Quaternion lookrot;
     private void FollowPath(){
@@ -87,11 +80,15 @@ public class AbilityWandor : Ability<AbilityWandorData>
         }
     }
 
-    private void MoveAnimation(){
-        float a = owner.isArrived ? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
-        float spd = Mathf.Lerp(owner.animator.GetFloat(AnimationClipHashSet._MOVESPEED), a, Time.deltaTime * 10f);
-        owner.animator.SetFloat(AnimationClipHashSet._MOVESPEED, spd);
+    void SetDestination(Vector3 destination){
+        if(!NavMesh.CalculatePath(owner.transform.position, destination, -1, path))
+            return;
+
+        corners = path.corners;
+        next = 1;
+        owner.isArrived = false;
     }
+
 
     private void RandomPosition(){
         // 이동할 랜덤 위치 선정.
@@ -99,8 +96,14 @@ public class AbilityWandor : Ability<AbilityWandorData>
         
         // 가는 중이다.
         Vector3 randomPos = owner.transform.position + Random.insideUnitSphere * data.wandorRadius;
-        randomPos.y = 0f;
+        randomPos.y = 1f;
     
         SetDestination(randomPos);
+    }
+
+    private void MoveAnimation(){
+        float a = owner.isArrived ? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
+        float spd = Mathf.Lerp(owner.animator.GetFloat(AnimationClipHashSet._MOVESPEED), a, Time.deltaTime * 10f);
+        owner.animator.SetFloat(AnimationClipHashSet._MOVESPEED, spd);
     }
 }

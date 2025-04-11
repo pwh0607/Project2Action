@@ -13,18 +13,25 @@ MonoBehaviour:
   m_Name: Player_YBot
   m_EditorClassIdentifier: 
   _h_s0: 0
+  actorType: 0
   alias: Player
   portrait: {fileID: 21300000, guid: cb2911b64e7b5574eadc2e174e422e02, type: 3}
   models:
   - {fileID: 1333357786541225630, guid: 0600dccf581a6e4478dcf7dc511d904f, type: 3}
   avatar: {fileID: 9000000, guid: 4d4630c581ffc2c42a05ab22d0225ef8, type: 3}
   _h_s1: 0
+  animatorOverride: {fileID: 0}
+  ATTACK: []
+  _h_e1: 0
+  _h_s2: 0
   health: 100
   moveSpeed: 5
   rotateSpeed: 1080
   jumpForce: 10
   jumpDuration: 0.5
-  _h_s2: 0
+  attackInterval: 0
+  _h_s3: 0
   abilities:
   - {fileID: 11400000, guid: 35b1cb29cd1801f418d40797bbd4429f, type: 2}
   - {fileID: 11400000, guid: 552225c8e201a3e43800274bb5a7dccc, type: 2}
+  - {fileID: 11400000, guid: cd015bfbc7276af429e83518d5d246a1, type: 2}

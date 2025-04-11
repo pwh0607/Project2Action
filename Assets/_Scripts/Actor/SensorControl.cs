@@ -63,8 +63,6 @@ public class SensorControl : MonoBehaviour
         AttackExit();
         TargetExit();
     }
-
-
     
     private void TargetEnter()
     {
@@ -114,5 +112,3 @@ public class SensorControl : MonoBehaviour
 
     #endregion
 }
-
-//sensorControl -> EnemyEventControl

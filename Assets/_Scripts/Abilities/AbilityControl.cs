@@ -86,10 +86,11 @@ public class AbilityControl : MonoBehaviour
     }
 
     // 모든 어빌리티 비활성화.
-    public void DeactivateAll(){
-        foreach(var active in actives.Values){
-            active.Deactivate();
-        }
+    public void DeactivateAll()
+    {
+        foreach( var a in actives )
+            a.Value.Deactivate();
+
         actives.Clear();
     }
 }

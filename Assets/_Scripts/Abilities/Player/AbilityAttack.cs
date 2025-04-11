@@ -5,24 +5,25 @@ using UnityEngine;
 public class AbilityAttack : Ability<AbilityAttackData>
 {
     bool isAttacking = false;
-    CancellationTokenSource cts;
+    private CancellationTokenSource cts;
     public AbilityAttack(AbilityAttackData data, CharacterControl owner) : base(data, owner) {
         if(owner.Profile == null) return;
 
-        cts = new();
+        cts = new CancellationTokenSource(); 
     }
 
     public override void Activate(object obj)
     {        
-        if(obj is CharacterControl control)
-            data.target = control;
+        data.target = obj as CharacterControl;
+        if (data.target == null)
+            return;
 
         owner.Display(data.Flag.ToString());
     }
 
     public override void Deactivate()
     {
-
+        Debug.Log("Attack 종료");
     }
 
     public override void Update()
@@ -33,8 +34,7 @@ public class AbilityAttack : Ability<AbilityAttackData>
 
         owner.LookAtY(data.target.transform.position);
         AnimationClip clip = owner.Profile.ATTACK.Random();
-        float anispd = owner.Profile.attackInterval;
-        owner.PlayeAnimation("ATTACK", owner.Profile.animatorOverride, clip, anispd, 0.1f, 0);
+        owner.PlayeAnimation("ATTACK", owner.Profile.animatorOverride, clip, owner.Profile.attackInterval, 0.1f, 0);
         owner.AnimateMoveSpeed(0f, true);
     }
 
@@ -44,7 +44,7 @@ public class AbilityAttack : Ability<AbilityAttackData>
     async UniTaskVoid CoolTimeAsync(){
         try{
             isAttacking = true;
-            await UniTask.WaitForSeconds(owner.Profile.attackInterval);
+            await UniTask.WaitForSeconds(3f);
             isAttacking = false;
         }catch(System.Exception e){
             Debug.LogException(e);

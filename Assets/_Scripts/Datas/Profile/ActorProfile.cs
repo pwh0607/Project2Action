@@ -2,11 +2,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using CustomInspector;
 
+public enum ActorType {NONE, PLAYER, ENEMY, NPC}
+
 [CreateAssetMenu(menuName = "Datas/ActorProfile")]
 public class ActorProfile : ScriptableObject
 {
     [HorizontalLine("Prefabs", color:FixedColor.Cyan), HideField] public bool _h_s0;
     
+    public ActorType actorType = ActorType.NONE;
+
     public string alias;
     [Preview(Size.medium)] public Sprite portrait;
     [Preview(Size.medium)] public List<GameObject> models;

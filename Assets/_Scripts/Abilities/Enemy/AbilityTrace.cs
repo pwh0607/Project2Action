@@ -22,6 +22,9 @@ public class AbilityTrace : Ability<AbilityTraceData>
     {
         if(obj is CharacterControl control)
             data.target = control;
+
+        if(data.target == null) return;
+
         owner.Display($"{data.Flag}");
     }
 
@@ -46,8 +49,7 @@ public class AbilityTrace : Ability<AbilityTraceData>
     private void TargetPosition(){
 
         if(data.target == null) return;
-        Vector3 destination = data.target.transform.position;
-        SetDestination(destination);
+        SetDestination(data.target.transform.position);
     }
 
 
@@ -73,6 +75,7 @@ public class AbilityTrace : Ability<AbilityTraceData>
         
         // 회전
         if(direction != Vector3.zero) lookrot = Quaternion.LookRotation(direction);
+        
         owner.transform.rotation = Quaternion.RotateTowards(owner.transform.rotation, lookrot, data.rotatePerSec * Time.deltaTime);
 
         //이동
@@ -84,7 +87,6 @@ public class AbilityTrace : Ability<AbilityTraceData>
         if(Vector3.Distance(nextTarget, owner.rb.position) <= data.stopDistance){
             next++;
             if(next >= corners.Length){
-                Debug.Log("최종 목적지 도착");   
                 owner.Stop();
             }
         }
