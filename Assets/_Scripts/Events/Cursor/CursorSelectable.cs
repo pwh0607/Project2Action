@@ -4,7 +4,6 @@ using UnityEngine;
 public class CursorSelectable : MonoBehaviour
 {
     public CursorType type;
-    public Renderer rd;               //Renderer - MeshRenderer
     public Renderer[] rds;
     [Tooltip("Outline Material")]
     public Material selectableMaterial;
@@ -13,43 +12,29 @@ public class CursorSelectable : MonoBehaviour
     public float selectableThickness = 0.05f;
 
     [ReadOnly] public bool on;
-    
 
-    //메쉬 합성하기. => 제거 예정.
-    #region MeshCombine
-    // 메쉬 컴바인 참조.
-    #endregion
-    
-    void Update()
-    {
-        
-    }
-
+    //모델이 생성된 후에 호출.
     public void SetupRenderer(){
-        rd = GetComponentInChildren<SkinnedMeshRenderer>();
+        if(rds.Length > 0) return;
 
-        if(rd == null){
-            rd = GetComponentInChildren<MeshRenderer>();
-        }
+        rds = GetComponentsInChildren<SkinnedMeshRenderer>();
+
+        if(rds.Length <= 0)
+            rds = GetComponentsInChildren<MeshRenderer>();
     }
 
     public void Select(bool on)
     {
-        if(rd == null){
-            // Debug.Log("렌더러를 찾지 못했다.");
-            return;
-        } 
-        string layername = on ? "Outline" : "Default";
-        
-        //Debugging
-        if(on){
-            Debug.Log($"{gameObject.name}");
-        }
-        
-        this.on = on;
-        rd.gameObject.layer = LayerMask.NameToLayer(layername);
+        if(rds == null || rds.Length <=0) return;
 
-        if(selectableMaterial != null)
-            selectableMaterial.SetFloat("_Thickness", selectableThickness);
+        foreach(var rd in rds){
+            string layername = on ? "Outline" : "Default";
+            
+            this.on = on;
+            rd.gameObject.layer = LayerMask.NameToLayer(layername);
+
+            if(selectableMaterial != null)
+                selectableMaterial.SetFloat("_Thickness", selectableThickness);
+        }
     }
 }

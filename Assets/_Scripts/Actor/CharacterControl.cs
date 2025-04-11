@@ -71,7 +71,19 @@ public class CharacterControl : MonoBehaviour, IActorControl
 
     public void PlayeAnimation(int hash, float duration = 0f, int layer = 0)
     {
+        if(animator == null) return;
+        
         animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
+    }
+
+
+    public void PlayeAnimation(string clipName, AnimatorOverrideController aoc, AnimationClip clip, float animationSpeed, float duration = 0f, int layer = 0)
+    {
+        if(animator == null) return;
+
+        aoc[clipName] = clip;
+        animator.runtimeAnimatorController = aoc;
+        animator?.CrossFadeInFixedTime(clipName, duration, layer, 0f);
     }
 
     public void Display(string info){
@@ -80,16 +92,18 @@ public class CharacterControl : MonoBehaviour, IActorControl
         uiInfo.text = info;
     }
 
-    public void AnimateMoveSpeed(float speed){
+    //immediate = true => 보간처리 없이 바로 애니메이션 수행.
+    public void AnimateMoveSpeed(float speed, bool immediate = false){
         if(animator == null) return;
 
         float current = animator.GetFloat(AnimationClipHashSet._MOVESPEED);
         float spd = Mathf.Lerp(current, speed, Time.deltaTime * 10f);
-        animator.SetFloat(AnimationClipHashSet._MOVESPEED, spd);
+        animator.SetFloat(AnimationClipHashSet._MOVESPEED, immediate ? speed : spd);
     }
 
     public void PerformAttackOnce(Transform target){ 
         // LookAtY(target.transform.position);
         PlayeAnimation(AnimationClipHashSet._ATTACK, 0.2f);
     }
+
 }

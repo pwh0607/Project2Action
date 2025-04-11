@@ -1,14 +1,15 @@
+using Cysharp.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 
 public class AbilityAttack : Ability<AbilityAttackData>
 {
-    private float attackSpeed;
-    float elapsed = 0f;
-
+    bool isAttacking = false;
+    CancellationTokenSource cts;
     public AbilityAttack(AbilityAttackData data, CharacterControl owner) : base(data, owner) {
         if(owner.Profile == null) return;
-        
-        attackSpeed = owner.Profile.interval;
+
+        cts = new();
     }
 
     public override void Activate(object obj)
@@ -17,8 +18,6 @@ public class AbilityAttack : Ability<AbilityAttackData>
             data.target = control;
 
         owner.Display(data.Flag.ToString());
-        owner.PerformAttackOnce(data.target.transform);
-        elapsed = 0f;                                   // Activate되고나서 
     }
 
     public override void Deactivate()
@@ -28,16 +27,27 @@ public class AbilityAttack : Ability<AbilityAttackData>
 
     public override void Update()
     {
-        if(data.target == null) return;
+        if(isAttacking || data.target == null) return;
 
-        elapsed += Time.deltaTime;
+        CoolTimeAsync().Forget();                 //순서 의미는?
 
-        if(elapsed >= 1f){                            //1초에 한번씩 때린다.    owner.Profile.interval
-            owner.PerformAttackOnce(data.target.transform);
-            owner.PlayeAnimation(AnimationClipHashSet._ATTACK, 0.2f);
-            elapsed = 0;
+        owner.LookAtY(data.target.transform.position);
+        AnimationClip clip = owner.Profile.ATTACK.Random();
+        float anispd = owner.Profile.attackInterval;
+        owner.PlayeAnimation("ATTACK", owner.Profile.animatorOverride, clip, anispd, 0.1f, 0);
+        owner.AnimateMoveSpeed(0f, true);
+    }
+
+
+    // Ability는 Monobehavouir가 아니기 때문에 코루틴은 사용할 수 없다.
+    // 이런땐 async - Await 방식 사용
+    async UniTaskVoid CoolTimeAsync(){
+        try{
+            isAttacking = true;
+            await UniTask.WaitForSeconds(owner.Profile.attackInterval);
+            isAttacking = false;
+        }catch(System.Exception e){
+            Debug.LogException(e);
         }
-
-        owner.AnimateMoveSpeed(0f);
     }
 }

@@ -36,15 +36,12 @@ public class SensorControl : MonoBehaviour
     void Start()
     {
         TryGetComponent(out owner);
+        InvokeRepeating("CheckOverlap", 0f, 0.2f);
     }
 
-    void Update()
+    float elapsed;
+    void CheckOverlap()
     {
-        /*
-            Physics.SphereCast => bool
-            Physics.OverlapSphere => Collider[]
-        */
-
         // 1. Layer 필터
         var cols = Physics.OverlapSphere(owner.transform.position, sightRange, targetLayer);
 
@@ -66,6 +63,7 @@ public class SensorControl : MonoBehaviour
         AttackExit();
         TargetExit();
     }
+
 
     
     private void TargetEnter()

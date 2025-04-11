@@ -102,7 +102,7 @@ public class EnemyEventControl : MonoBehaviour
     void OnEventSensorSightExit(EventSensorSightExit e){
         if(control != e.from) return;    
         Debug.Log("시야에서 벗어났다.");
-        control.abilityControl.Activate(AbilityFlag.Wandor, true, null);
+        control.abilityControl.Activate(AbilityFlag.Wandor, true, e.to);
     }
     #endregion
 

@@ -12,16 +12,20 @@ public class ActorProfile : ScriptableObject
     [Preview(Size.medium)] public List<GameObject> models;
     [Preview(Size.medium)] public Avatar avatar;
     
+    [HorizontalLine("Animations", color:FixedColor.Cyan), HideField] public bool _h_s1;
+    public AnimatorOverrideController animatorOverride;
+    [Preview(Size.medium)] public List<AnimationClip> ATTACK;              //대문자는 약속된 단어. => 콤보 어택의 구조.
+    [HorizontalLine("Animations", color:FixedColor.Cyan), HideField] public bool _h_e1;
     [Space(20)]
-    [HorizontalLine("Attribute", color:FixedColor.Cyan), HideField] public bool _h_s1;
+    [HorizontalLine("Attribute", color:FixedColor.Cyan), HideField] public bool _h_s2;
     [Tooltip("체력")] public int health;              
     [Tooltip("초당 이동 속도")] public float moveSpeed;
     [Tooltip("초당 회전 속도")] public float rotateSpeed;
     [Tooltip("점프 파워")] public float jumpForce; 
     [Tooltip("점프 체공 시간")] public float jumpDuration;
-    [Tooltip("점프 체공 시간")] public float interval;
+    [Tooltip("공격 빈도")] public float attackInterval;          // Attack Interval
     
     [Space(20)]
-    [HorizontalLine("Abilities"), HideField] public bool _h_s2;
+    [HorizontalLine("Abilities"), HideField] public bool _h_s3;
     public List<AbilityData> abilities;
 }

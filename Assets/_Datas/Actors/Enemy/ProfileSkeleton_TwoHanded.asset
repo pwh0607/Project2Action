@@ -20,13 +20,17 @@ MonoBehaviour:
   - {fileID: 154340, guid: 3a70281d5d6d75b4eb17387260ccb839, type: 3}
   avatar: {fileID: 9000000, guid: 20300ac630e0fcd4dbab63a9b39cdafa, type: 3}
   _h_s1: 0
+  animatorOverride: {fileID: 0}
+  ATTACK: []
+  _h_e1: 0
+  _h_s2: 0
   health: 100
   moveSpeed: 3
   rotateSpeed: 1080
   jumpForce: 0
   jumpDuration: 0
-  interval: 2
-  _h_s2: 0
+  attackInterval: 1
+  _h_s3: 0
   abilities:
   - {fileID: 11400000, guid: 5f322d47c39023e44aeff22d62903f88, type: 2}
   - {fileID: 11400000, guid: abc5c84cc10840d43818ca6acfbd2f95, type: 2}
