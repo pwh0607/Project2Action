@@ -4,6 +4,7 @@ public class AbilityPick : Ability<AbilityPickData>
 {
     Pickable currentItem;              //현재 잡고 있는 아이템
     Pickable pickableItem;
+    
     public AbilityPick(AbilityPickData data, CharacterControl owner) : base(data, owner) {
         if(owner.Profile == null) return;
 
@@ -53,12 +54,11 @@ public class AbilityPick : Ability<AbilityPickData>
         if(currentItem != null) return;
 
         if(Physics.Raycast(owner.eyePoint.transform.position, owner.transform.forward, out RaycastHit hit, data.pickRange)){
-            Pickable item = hit.collider.GetComponent<Pickable>();
-            if(item != null){
-                Debug.Log("잡을 아이템을 찾았다.");
-                pickableItem = item;
-                return;
+            IInterative interative = hit.collider.GetComponent<IInterative>();
+            if(interative is Pickable pickable){
+                pickableItem = pickable;
             }
+            
         }
         pickableItem = null;       
     }

@@ -24,7 +24,7 @@ public class AbilityWandor : Ability<AbilityWandorData>
     {
         RandomPosition();
         
-        owner.Display($"{data.Flag}");
+        owner.uiControl.Display($"{data.Flag}");
     }
 
     public override void Deactivate()

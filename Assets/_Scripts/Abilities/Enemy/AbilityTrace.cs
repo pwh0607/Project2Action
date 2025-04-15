@@ -25,7 +25,7 @@ public class AbilityTrace : Ability<AbilityTraceData>
 
         if(data.target == null) return;
 
-        owner.Display($"{data.Flag}");
+        owner.uiControl.Display($"{data.Flag}");
     }
 
     public override void Deactivate()

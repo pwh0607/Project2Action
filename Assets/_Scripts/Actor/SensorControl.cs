@@ -12,7 +12,6 @@ public class SensorControl : MonoBehaviour
     [SerializeField] EventSensorAttackEnter eventSensorAttackEnter;
     [SerializeField] EventSensorAttackExit eventSensorAttackExit;
 
-
     [HorizontalLine(color:FixedColor.Cyan), HideInInspector] public bool l_e_1;
     #endregion
 
@@ -20,14 +19,12 @@ public class SensorControl : MonoBehaviour
     [SerializeField] float sightRange = 5f;
     [SerializeField] float attackRange = 1f;
     
-    // 자기 자신
     private CharacterControl owner;
 
     [Space(20)]
     [SerializeField] LayerMask targetLayer;
     [SerializeField] string targetTag;
     
-    // target
     [Space(20)]
     [ReadOnly] public CharacterControl target;
     [ReadOnly] public CharacterControl prevSight;
@@ -39,7 +36,6 @@ public class SensorControl : MonoBehaviour
         InvokeRepeating("CheckOverlap", 0f, 0.2f);
     }
 
-    float elapsed;
     void CheckOverlap()
     {
         // 1. Layer 필터
@@ -53,10 +49,12 @@ public class SensorControl : MonoBehaviour
                 TargetEnter();
 
                 float distance = Vector3.Distance(target.transform.position, owner.transform.position);
-                if(distance <= attackRange)
+                if(distance <= attackRange){
                     AttackEnter();
-                else
+                }
+                else{
                     AttackExit();
+                }
                 return;
             }
         }
@@ -68,6 +66,7 @@ public class SensorControl : MonoBehaviour
     {
         if(prevSight == target || target == null)
             return;
+            
         prevSight = target;
         
         eventSensorSightEnter.from = owner;
@@ -79,31 +78,35 @@ public class SensorControl : MonoBehaviour
     {
         if(prevSight == null || target == null)
             return;
+
         prevSight = null;
-       
+        target = null;
+
         eventSensorSightExit.from = owner;
         eventSensorSightExit.to = target;
         eventSensorSightExit.Raise();
     }
 
+    private bool isAttacking = false;
 
     #region 공격 범위 체크
     private void AttackEnter(){        
-        if(prevSight == null || target == null)
-            return;
+        if(isAttacking || prevSight == null || target == null) return;
 
         prevAttack = target;
         
+        isAttacking = true;
+
         eventSensorAttackEnter.from = owner;
         eventSensorAttackEnter.to = target;
         eventSensorAttackEnter.Raise();
     }
 
     private void AttackExit(){
-        if(prevAttack == null || target == null)
-            return;
+        if(prevAttack == null || target == null) return;
 
         prevAttack = null;
+        isAttacking = false;
 
         eventSensorAttackExit.from = owner;
         eventSensorAttackExit.to = target;

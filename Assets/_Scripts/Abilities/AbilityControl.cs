@@ -14,17 +14,18 @@ public class AbilityControl : MonoBehaviour
 
     private readonly Dictionary<AbilityFlag, Ability> actives = new Dictionary<AbilityFlag, Ability>();
 
-    private void FixedUpdate()
-    {
-        foreach( var a in actives.ToList())
-            a.Value.FixedUpdate();
-    }
-
     private void Update()
     {
         foreach( var a in actives.ToList())
-            a.Value.Update();
+            a.Value?.Update();
     }
+
+    private void FixedUpdate()
+    {
+        foreach( var a in actives.ToList())
+            a.Value?.FixedUpdate();
+    }
+
 
     // 잠재능력을 추가
     public void Add(AbilityData d, bool immediate = false)
@@ -38,7 +39,7 @@ public class AbilityControl : MonoBehaviour
         
         if(immediate){
             actives[d.Flag] = ability;      
-            actives[d.Flag].Activate(null);
+            ability.Activate(null);
         }
     }
 
@@ -60,27 +61,31 @@ public class AbilityControl : MonoBehaviour
             DeactivateAll();
         }
 
-        foreach(var d in datas){
-            if((d.Flag & flag) == flag) {
-                if(!actives.ContainsKey(flag))
+        foreach( var d in datas )
+        {
+            if ((d.Flag & flag) == flag)
+            {
+                if (actives.ContainsKey(flag) == false)
                     actives[flag] = d.CreateAbility(GetComponent<CharacterControl>());
-                
+
                 actives[flag].Activate(obj);
             }
-        }
-        
+        }        
     }
 
-    public void Deactivate(AbilityFlag flag){
-        foreach(var d in datas){
-            if((d.Flag & flag) == flag)
+    public void Deactivate(AbilityFlag flag)
+    {        
+        foreach( var d in datas )
+        {
+            if ((d.Flag & flag) == flag)               
             {
-                if(actives.ContainsKey(flag)){
-                    flags.Remove(flag);
+                if (actives.ContainsKey(flag) == true)
+                {
+                    flags.Remove(flag, null);
                     actives[flag].Deactivate();
                     actives[flag] = null;
                     actives.Remove(flag);
-                }   
+                }
             }
         }
     }

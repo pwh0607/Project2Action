@@ -8,6 +8,7 @@ using TMPro;
 public class CharacterControl : MonoBehaviour, IActorControl
 {
     [Header("Ability")]
+    [HideInInspector] public UIControl uiControl;
     [HideInInspector] public AbilityControl abilityControl;
 
     [ReadOnly, SerializeField] private ActorProfile profile;
@@ -26,17 +27,16 @@ public class CharacterControl : MonoBehaviour, IActorControl
     [Header("flag")]   
     [ReadOnly] public bool isGrounded;
     [ReadOnly] public bool isArrived = true;
-    [ReadOnly] public TextMeshPro uiInfo;              //TextMeshPro : 3d object, 
 
     void Awake()
     {
         TryGetComponent(out abilityControl);
         TryGetComponent(out rb);
         TryGetComponent(out animator);
+        TryGetComponent(out uiControl);
         
         eyePoint = transform.Find("_EYEPOINT_");
         model = transform.Find("_MODEL_");
-        uiInfo = GetComponentInChildren<TextMeshPro>();
     }
 
     void Start() { }
@@ -83,12 +83,6 @@ public class CharacterControl : MonoBehaviour, IActorControl
         aoc[clipName] = clip;
         animator.runtimeAnimatorController = aoc;
         animator?.CrossFadeInFixedTime(clipName, duration, layer, 0f);
-    }
-
-    public void Display(string info){
-        if(uiInfo == null) return;
-
-        uiInfo.text = info;
     }
 
     //immediate = true => 보간처리 없이 바로 애니메이션 수행.

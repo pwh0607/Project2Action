@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Linq;
+using NodeCanvas.Framework;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterEventControl : MonoBehaviour
@@ -7,6 +9,7 @@ public class CharacterEventControl : MonoBehaviour
 #region Events
     [SerializeField] EventCameraSwitch eventCameraSwitch;
     [SerializeField] EventPlayerSpawnAfter eventPlayerSpawnAfter;
+    [SerializeField] EventAttackAfter eventAttackAfter;
 #endregion
     
     private CharacterControl controller;
@@ -63,14 +66,33 @@ public class CharacterEventControl : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         controller.Visible(true);
-        controller.PlayeAnimation(AnimationClipHashSet._SPAWN, 0.05f);
+        controller.PlayeAnimation(AnimationClipHashSet._SPAWN, 0f);
 
         PoolManager.I.Spawn(e.spawnParticle, transform.position, Quaternion.identity, null);
     
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         foreach( var dat in controller.Profile.abilities )
             controller.abilityControl.Add(dat, true);
+
+        // yield return new WaitForSeconds(.3f);
+        
+        yield return new WaitForEndOfFrame();
+        controller.uiControl?.Show(true);
+    }
+
+    void OnEventAttackAfter(EventAttackAfter e){
+        if(controller != e.to) return;
+
+        PoolManager.I.Spawn(e.feedbackFloatingText, controller.eyePoint.position, Quaternion.identity, null);
+        e.feedbackFloatingText.SetText(e.damage.ToString());
+
+        Vector3 rndsphere = Random.insideUnitSphere;
+        rndsphere.y = 0f;
+
+        Vector3 rndpos = rndsphere * 0.5f + controller.eyePoint.position;
+
+        PoolManager.I.Spawn(e.particleHit, rndpos, Quaternion.identity, null);
     }
 }
 
@@ -78,7 +100,7 @@ public class CharacterEventControl : MonoBehaviour
 /*
     1. 코루틴   
     2. Invoke
-    3. async / await
+    3. async / await [UniTask]
     4. Awaitable
     5. CySharp - Unitask
     6. DoTween - DoVirtual.Delay(3f, () => {...})

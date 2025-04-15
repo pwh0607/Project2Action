@@ -108,12 +108,16 @@ public class EnemyEventControl : MonoBehaviour
 
     #region Event-Sensor Attack
     void OnEventSensorAttackEnter(EventSensorAttackEnter e){
-        if(control != e.from) return;
+        if(control != e.from)
+            return;
+        Debug.Log("OnEventSensorAttackEnter!");
         control.abilityControl.Activate(AbilityFlag.Attack, true, e.to);
     }
 
     void OnEventSensorAttackExit(EventSensorAttackExit e){
         if(control != e.from) return;    
+        
+        Debug.Log("OnEventSensorAttackExit!");
         control.abilityControl.Activate(AbilityFlag.Trace, true, e.to);
     }
     #endregion
