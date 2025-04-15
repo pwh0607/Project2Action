@@ -5,6 +5,7 @@ using UnityEngine;
 public class EventAttackAfter : GameEvent<EventAttackAfter>
 {
     public override EventAttackAfter Item => this;
+    [ReadOnly] public CharacterControl from;
     [ReadOnly] public CharacterControl to;
 
     [ReadOnly] public int damage;

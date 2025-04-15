@@ -5,8 +5,8 @@ using UnityEngine;
 public class AbilityAttackData : AbilityData
 {
     public override AbilityFlag Flag => AbilityFlag.Attack;
-    
     public override Ability CreateAbility(CharacterControl owner) => new AbilityAttack(this, owner);
 
     [ReadOnly] public CharacterControl target;
+    public EventAttackAfter eventAttackAfter;
 }

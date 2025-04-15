@@ -1,6 +1,17 @@
 using UnityEngine;
 using CustomInspector;
-using TMPro;
+
+//TempCode
+public struct CharacterState
+{
+    public int health;
+    public int damage;
+
+    public void Set(ActorProfile profile){
+        health = profile.health;
+        damage = profile.attackDamage;
+    }
+}
 
 // GAS (Game Ability System) : 언리얼.
 // 32bit = 4byte ( int )
@@ -9,13 +20,18 @@ public class CharacterControl : MonoBehaviour, IActorControl
 {
     [Header("Ability")]
     [HideInInspector] public UIControl uiControl;
+
+    // 원본 데이터
     [HideInInspector] public AbilityControl abilityControl;
+    // 인스턴스화 한 데이터
+    public CharacterState state;
 
     [ReadOnly, SerializeField] private ActorProfile profile;
     public ActorProfile Profile { 
         get => profile;
         set => profile = value; 
     }
+
     
     [Header("Physics")]   
     [ReadOnly] public Rigidbody rb;

@@ -1,11 +1,18 @@
-using CustomInspector;
-using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using CustomInspector;
 
 public class UIControl : MonoBehaviour
 {
     [ReadOnly] public Transform uiRoot;
+
+//  TempCode
+    [HorizontalLine("직접 연결 (없으면 미사용)"), HideInInspector] public bool h_s1;
     [SerializeField] TextMeshPro textMesh;
+    [SerializeField] Slider sliderHealth;
+    [HorizontalLine(color:FixedColor.Cyan), HideInInspector] public bool h_e1;
+//  TempCode
 
     void Start()
     {
@@ -32,4 +39,10 @@ public class UIControl : MonoBehaviour
         textMesh.text= info;
     }
 
+    public void SetHealth(int current, int max){
+        if(sliderHealth == null) return;
+
+        float cur = (float)current / (float)max;
+        sliderHealth.value = Mathf.Clamp01(cur);
+    }
 }

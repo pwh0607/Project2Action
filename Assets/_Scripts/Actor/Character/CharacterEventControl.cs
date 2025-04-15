@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Linq;
-using NodeCanvas.Framework;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterEventControl : MonoBehaviour
@@ -23,12 +21,14 @@ public class CharacterEventControl : MonoBehaviour
     {
         eventPlayerSpawnAfter.Register(OnEventPlayerSpawnAfter);
         eventCameraSwitch.Register(OnEventCameraSwitch);
+        eventAttackAfter.Register(OnEventAttackAfter);
     }
 
     void OnDisable()
     {
         eventPlayerSpawnAfter.Unregister(OnEventPlayerSpawnAfter);
         eventCameraSwitch.Unregister(OnEventCameraSwitch);
+        eventAttackAfter.Unregister(OnEventAttackAfter);
     }
 
     void OnEventCameraSwitch(EventCameraSwitch e){
@@ -75,14 +75,19 @@ public class CharacterEventControl : MonoBehaviour
         foreach( var dat in controller.Profile.abilities )
             controller.abilityControl.Add(dat, true);
 
-        // yield return new WaitForSeconds(.3f);
-        
+
+        // UI
         yield return new WaitForEndOfFrame();
         controller.uiControl?.Show(true);
+
+
+        // Health
+        controller.uiControl.SetHealth(controller.Profile.health, controller.Profile.health);
     }
 
+    #region DAMAGES
     void OnEventAttackAfter(EventAttackAfter e){
-        if(controller != e.to) return;
+        if(controller != e.to) return;              // e.to는 Player .. 피격자[공격을 받는 사람은]
 
         PoolManager.I.Spawn(e.feedbackFloatingText, controller.eyePoint.position, Quaternion.identity, null);
         e.feedbackFloatingText.SetText(e.damage.ToString());
@@ -92,8 +97,15 @@ public class CharacterEventControl : MonoBehaviour
 
         Vector3 rndpos = rndsphere * 0.5f + controller.eyePoint.position;
 
-        PoolManager.I.Spawn(e.particleHit, rndpos, Quaternion.identity, null);
+        var floating = PoolManager.I.Spawn(e.particleHit, rndpos, Quaternion.identity, null) as PoolableFeedback;
+        floating.SetText($"{e.damage}");
+
+        // 데미지 ui 갱신
+        controller.state.health -= e.damage;
+        controller.uiControl.SetHealth(controller.state.health, controller.Profile.health);
     }
+    #endregion
+
 }
 
 // 비동기(async)

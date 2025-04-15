@@ -67,7 +67,7 @@ GameObject:
   - component: {fileID: 6597930643586024479}
   - component: {fileID: 7757914009003801089}
   m_Layer: 5
-  m_Name: Slider_IconType_03_basic_WhiteFill
+  m_Name: UI_Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.655
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -689,8 +689,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fcf70bb2f6b18d43b8935ade63b22ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiroot: {fileID: 0}
+  uiRoot: {fileID: 0}
+  h_s1: 0
   textMesh: {fileID: 0}
+  sliderHealth: {fileID: 7757914009003801089}
+  h_e1: 0
 --- !u!1 &6125268480584045965
 GameObject:
   m_ObjectHideFlags: 0
@@ -1091,7 +1094,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1, y: 0.2}
+  m_SizeDelta: {x: 1, y: 0.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &342770092021404776
 CanvasRenderer:
@@ -1237,7 +1240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.23113209, b: 0.23113209, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

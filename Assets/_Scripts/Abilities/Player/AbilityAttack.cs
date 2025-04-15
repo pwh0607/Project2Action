@@ -51,4 +51,13 @@ public class AbilityAttack : Ability<AbilityAttackData>
             Debug.LogException(e);
         }
     }
+
+    private void OnEventAttackBefore(EventAttackAfter e){
+        if(owner != e.to) return;
+
+        data.eventAttackAfter.from = owner;
+        data.eventAttackAfter.to = data.target;
+        data.eventAttackAfter.damage = e.damage;
+        data.eventAttackAfter.Raise();
+    }
 }

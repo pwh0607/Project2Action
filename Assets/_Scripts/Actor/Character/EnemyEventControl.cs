@@ -57,14 +57,12 @@ public class EnemyEventControl : MonoBehaviour
         control.Profile = control.Profile;
         
         // Enemy 모델 생성 후 하위 항목인 Model에 설정
-        if(control.Profile.models == null)
-            Debug.LogError("CharacterEventControl ] model 없음.");
+        if(control.Profile.models == null) Debug.LogError("CharacterEventControl ] model 없음.");
 
         var model = control.Profile.models.Random();
         var clone = Instantiate(model, control.model);
         
-        if(control.Profile.avatar == null)
-            Debug.LogError("CharacterEventControl ] avatar 없음.");
+        if(control.Profile.avatar == null) Debug.LogError("CharacterEventControl ] avatar 없음.");
 
         control.animator.avatar = control.Profile.avatar;
                
@@ -83,6 +81,7 @@ public class EnemyEventControl : MonoBehaviour
         }
 
         yield return new WaitForEndOfFrame();
+        control.uiControl.Show(true);
 
         if(TryGetComponent(out CursorSelectable sel))
             sel.SetupRenderer();
@@ -95,29 +94,23 @@ public class EnemyEventControl : MonoBehaviour
     #region Event-Sensor Sight
     void OnEventSensorSightEnter(EventSensorSightEnter e){
         if(control != e.from) return;
-        Debug.Log("시야에 들어왔다.");
         control.abilityControl.Activate(AbilityFlag.Trace, true, e.to);
     }
 
     void OnEventSensorSightExit(EventSensorSightExit e){
-        if(control != e.from) return;    
-        Debug.Log("시야에서 벗어났다.");
+        if(control != e.from) return;
         control.abilityControl.Activate(AbilityFlag.Wandor, true, e.to);
     }
     #endregion
 
     #region Event-Sensor Attack
     void OnEventSensorAttackEnter(EventSensorAttackEnter e){
-        if(control != e.from)
-            return;
-        Debug.Log("OnEventSensorAttackEnter!");
+        if(control != e.from) return;
         control.abilityControl.Activate(AbilityFlag.Attack, true, e.to);
     }
 
     void OnEventSensorAttackExit(EventSensorAttackExit e){
         if(control != e.from) return;    
-        
-        Debug.Log("OnEventSensorAttackExit!");
         control.abilityControl.Activate(AbilityFlag.Trace, true, e.to);
     }
     #endregion

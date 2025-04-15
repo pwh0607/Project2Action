@@ -87,16 +87,13 @@ public class SensorControl : MonoBehaviour
         eventSensorSightExit.Raise();
     }
 
-    private bool isAttacking = false;
 
     #region 공격 범위 체크
     private void AttackEnter(){        
-        if(isAttacking || prevSight == null || target == null) return;
+        if(prevAttack == target || prevSight == null || target == null) return;
 
         prevAttack = target;
         
-        isAttacking = true;
-
         eventSensorAttackEnter.from = owner;
         eventSensorAttackEnter.to = target;
         eventSensorAttackEnter.Raise();
@@ -106,7 +103,6 @@ public class SensorControl : MonoBehaviour
         if(prevAttack == null || target == null) return;
 
         prevAttack = null;
-        isAttacking = false;
 
         eventSensorAttackExit.from = owner;
         eventSensorAttackExit.to = target;
