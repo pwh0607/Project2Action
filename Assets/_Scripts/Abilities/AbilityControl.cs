@@ -95,7 +95,7 @@ public class AbilityControl : MonoBehaviour
     {
         foreach( var a in actives )
             a.Value.Deactivate();
-
+            
         actives.Clear();
     }
 }

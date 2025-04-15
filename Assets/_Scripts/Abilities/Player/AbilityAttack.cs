@@ -19,12 +19,13 @@ public class AbilityAttack : Ability<AbilityAttackData>
             return;
 
         owner.uiControl.Display(data.Flag.ToString());
-        Debug.Log("Attack Activate");
     }
 
     public override void Deactivate()
     {
-        Debug.Log("Attack Deactivate");
+        Debug.Log("Attack Deactivate.");
+        cts.Cancel();
+        owner.Stop();        
     }
 
     public override void Update()
@@ -34,7 +35,6 @@ public class AbilityAttack : Ability<AbilityAttackData>
         CoolTimeAsync().Forget();                 //순서 의미는?
 
         owner.LookAtY(data.target.transform.position);
-        owner.Stop();
         AnimationClip clip = owner.Profile.ATTACK.Random();
         owner.PlayeAnimation("ATTACK", owner.Profile.animatorOverride, clip, owner.Profile.attackInterval, 0.1f, 0);
         owner.AnimateMoveSpeed(0f, true);
@@ -45,7 +45,7 @@ public class AbilityAttack : Ability<AbilityAttackData>
     async UniTaskVoid CoolTimeAsync(){
         try{
             isAttacking = true;
-            await UniTask.WaitForSeconds(1f);
+            await UniTask.WaitForSeconds(owner.Profile.attackInterval);
             isAttacking = false;
         }catch(System.Exception e){
             Debug.LogException(e);

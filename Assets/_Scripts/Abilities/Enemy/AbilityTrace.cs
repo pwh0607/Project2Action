@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,6 +10,8 @@ public class AbilityTrace : Ability<AbilityTraceData>
     private int next;
     float currentVelocity;
    
+    private CancellationTokenSource cts;
+    
     public AbilityTrace(AbilityTraceData data, CharacterControl owner) : base(data, owner) {
         if(owner.Profile == null) return;
 
@@ -16,6 +19,8 @@ public class AbilityTrace : Ability<AbilityTraceData>
         owner.isArrived = true;
         data.movePerSec = owner.Profile.moveSpeed;
         data.rotatePerSec = owner.Profile.rotateSpeed;
+
+        cts = new CancellationTokenSource(); 
     }
 
     public override void Activate(object obj)
@@ -48,7 +53,7 @@ public class AbilityTrace : Ability<AbilityTraceData>
 
     private void TargetPosition(){
 
-        if(data.target == null) return;
+        if(data.target == null || !owner.isArrived) return;
         SetDestination(data.target.transform.position);
     }
 
@@ -78,8 +83,6 @@ public class AbilityTrace : Ability<AbilityTraceData>
         
         owner.transform.rotation = Quaternion.RotateTowards(owner.transform.rotation, lookrot, data.rotatePerSec * Time.deltaTime);
 
-        //이동
-        //linearVelocity : Vector + Scalar
         Vector3 movement =  direction * data.movePerSec * 50f * Time.deltaTime;
         owner.rb.linearVelocity = movement;
         currentVelocity = Vector3.Distance(Vector3.zero, owner.rb.linearVelocity);
