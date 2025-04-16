@@ -106,7 +106,7 @@ public class CharacterEventControl : MonoBehaviour
         rndsphere.y = 0f;
 
         Vector3 rndpos = rndsphere * 0.5f + owner.eyePoint.position;
-
+        Debug.Log("OnEventAttackAfter : Damaged");
         var floating = PoolManager.I.Spawn(e.particleHit, rndpos, Quaternion.identity, null) as PoolableFeedback;
         if(floating != null)
             floating.SetText($"{e.damage}");
@@ -114,6 +114,8 @@ public class CharacterEventControl : MonoBehaviour
         // 데미지 ui 갱신
         owner.state.health -= e.damage;
         owner.uiControl.SetHealth(owner.state.health, owner.Profile.health);
+
+        owner.abilityControl.Activate(AbilityFlag.Damage, false, e);
     }
     #endregion
 

@@ -611,6 +611,7 @@ MonoBehaviour:
   eyePoint: {fileID: 2910737957155279010}
   model: {fileID: 0}
   isGrounded: 1
+  isDamageable: 1
   isArrived: 1
 --- !u!114 &2440496725877234930
 MonoBehaviour:
@@ -677,6 +678,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventCameraSwitch: {fileID: 11400000, guid: 8fb7e145d520b724d9a2148889e8299f, type: 2}
   eventPlayerSpawnAfter: {fileID: 11400000, guid: dc969804fc864c940a147df9dd852e32, type: 2}
+  eventDeath: {fileID: 11400000, guid: 93ae54cae924dce4eaad14eb500a870c, type: 2}
   eventAttackAfter: {fileID: 11400000, guid: 98f914c037a49164e9d1666facbb0e17, type: 2}
 --- !u!114 &4916702610279981125
 MonoBehaviour:

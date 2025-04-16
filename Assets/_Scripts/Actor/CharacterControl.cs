@@ -99,6 +99,13 @@ public class CharacterControl : MonoBehaviour, IActorControl
         animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
     }
 
+    public void PlayeAnimation(int hash, AnimatorOverrideController aoc, float animationSpeed, float duration = 0f, int layer = 0)
+    {
+        if(animator == null) return;
+        
+        animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
+    }
+
     public void PlayeAnimation(string clipName, AnimatorOverrideController aoc, AnimationClip clip, float animationSpeed, float duration = 0f, int layer = 0)
     {
         if(animator == null) return;

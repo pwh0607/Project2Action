@@ -8,6 +8,7 @@ public class AnimationEventListener : MonoBehaviour
     [HorizontalLine("Event-Spawn"), HideField] public bool h_s_01;
     [SerializeField] EventPlayerSpawnAfter eventPlayerSpawnAfter;
     [SerializeField] EventEnemySpawnAfter eventEnemySpawnAfter;
+    [SerializeField] EventAttackBefore eventAttackBefore;
     [HorizontalLine(color:FixedColor.Cyan), HideField] public bool h_e_01;
     [Space(20)]
     [ReadOnly] public Transform modelRoot;
@@ -77,6 +78,14 @@ public class AnimationEventListener : MonoBehaviour
     }
 
     public void Attack(string s){
+        eventAttackBefore.from = owner;
+        eventAttackBefore.Raise();
+        
+        Debug.Log("Enemy 공격!");
+
+        int rnd = Random.Range(0,3);
+        if(rnd <1) return;
+
         var rot = Quaternion.LookRotation(owner.transform.forward);
         rot.eulerAngles = new Vector3(-90f, rot.eulerAngles.y, 0f);
         

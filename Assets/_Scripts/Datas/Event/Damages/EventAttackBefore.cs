@@ -10,6 +10,6 @@ public class EventAttackBefore : GameEvent<EventAttackBefore>
 
     [ReadOnly] public int damage;
     
-    public PoolableParticle particleHit;
-    public PoolableFeedback feedbackFloatingText;   
+    // public PoolableParticle particleHit;
+    // public PoolableFeedback feedbackFloatingText;   
 }

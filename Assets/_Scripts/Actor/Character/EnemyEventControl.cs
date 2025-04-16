@@ -98,7 +98,7 @@ public class EnemyEventControl : MonoBehaviour
 
     void OnEventSensorSightExit(EventSensorSightExit e){
         if(control != e.from) return;
-        control.abilityControl.Activate(AbilityFlag.Wandor, true, e.to);
+        control.abilityControl.Activate(AbilityFlag.Wandor, true, null);
     }
     #endregion
 

@@ -3,7 +3,6 @@ using UnityEngine.InputSystem;
 
 public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
 {
-    float horz, vert;
     private Transform cameraTransform;
     private Vector3 camForward, camRight;
     private Vector3 direction;
@@ -71,7 +70,7 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
 
     void Movement()
     {
-        Vector3 movement = direction * data.movePerSec *150f * Time.deltaTime;
+        Vector3 movement = direction * data.movePerSec *50f * Time.deltaTime;
         Vector3 velocity = new Vector3(movement.x, owner.rb.linearVelocity.y, movement.z);
 
         owner.rb.linearVelocity = velocity;

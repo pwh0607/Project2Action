@@ -718,12 +718,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiControl: {fileID: 0}
   abilityControl: {fileID: 0}
+  feedbackControl: {fileID: 0}
   profile: {fileID: 0}
   rb: {fileID: 0}
   animator: {fileID: 0}
   eyePoint: {fileID: 0}
   model: {fileID: 0}
   isGrounded: 0
+  isDamageable: 1
   isArrived: 1
 --- !u!114 &5735356100811915811
 MonoBehaviour:
@@ -820,6 +822,7 @@ MonoBehaviour:
   h_s_01: 0
   eventPlayerSpawnAfter: {fileID: 11400000, guid: dc969804fc864c940a147df9dd852e32, type: 2}
   eventEnemySpawnAfter: {fileID: 11400000, guid: d2ae8029d79ca8542a4e389cce8c190a, type: 2}
+  eventAttackBefore: {fileID: 11400000, guid: 3e617410fe1a5e146a9cd963bedf87f8, type: 2}
   h_e_01: 0
   modelRoot: {fileID: 0}
   footLeft: {fileID: 0}
