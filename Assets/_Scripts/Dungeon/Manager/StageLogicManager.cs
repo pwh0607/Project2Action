@@ -5,9 +5,9 @@ using UnityEngine.Events;
 
 public class StageLogicManager : BehaviourSingleton<StageLogicManager>
 {
-    protected override bool IsDontDestroy() => false;
+    protected override bool IsDontDestroy() => true;
     
-    public List<GatePair> pairs = new ();
+    public List<GatePair> pairs = new();
     public UnityAction OnOpenLogicCompleted;
 
     void Start()
@@ -21,9 +21,10 @@ public class StageLogicManager : BehaviourSingleton<StageLogicManager>
         pairs.Add(pair);
     }
 
+    //문에 아이템을 사용했을 때 이벤트 처리.
     public bool UseKey(InterActiveGate gate, AnswerKey answerKey){
         Debug.Log($"Stage Logic Manager : {gate} = {answerKey} CHECK!");
-        var targetKey = pairs.Find(pair => pair.key == answerKey);
+        var targetKey = pairs.Find(pair => pair.answerKey == answerKey);
         if(targetKey == null) {
             Debug.Log($"Logic Fail...");
             return false;
@@ -42,9 +43,10 @@ public class StageLogicManager : BehaviourSingleton<StageLogicManager>
 [Serializable]
 public class GatePair{
     public InterActiveGate gate;
-    public AnswerKey key;
-    public GatePair(InterActiveGate gate, AnswerKey key){
+    public AnswerKey answerKey;
+
+    public GatePair(InterActiveGate gate, AnswerKey answerKey){
         this.gate = gate;
-        this.key = key;
+        this.answerKey = answerKey;
     }
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ProfileSkeleton_OneHanded
   m_EditorClassIdentifier: 
   _h_s0: 0
-  actorType: 0
+  actorType: 2
   alias: Skeleton
   portrait: {fileID: 21300000, guid: 7487349ebcb96a548a587919413b7e50, type: 3}
   models:

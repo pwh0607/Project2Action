@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Player_YBot
   m_EditorClassIdentifier: 
   _h_s0: 0
-  actorType: 0
+  actorType: 1
   alias: Player
   portrait: {fileID: 21300000, guid: cb2911b64e7b5574eadc2e174e422e02, type: 3}
   models:

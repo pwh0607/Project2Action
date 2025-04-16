@@ -122,12 +122,10 @@ public class CharacterEventControl : MonoBehaviour
 
     #region Death
     void OnEventDeath(EventDeath e){
-        if(owner != e.target) return;           //죽은 사람이 당사자가 아니라면...
-
+        if(owner != e.target) return;
+        
         owner.PlayeAnimation(AnimationClipHashSet._DEATH, 0.2f);
         owner.abilityControl.RemoveAll();
-
-        GameManager.I.ShowInfo("PLAYER DIED", 5f);
     }
     #endregion
 

@@ -10,29 +10,14 @@ public class GameManager : BehaviourSingleton<GameManager>
 
     void Start()
     {
-        information_TMP.text = "";
+        
     }
 
     public void ShowInfo(string info, float duration = 1f){
         if(feedbackInformation.IsPlaying) feedbackInformation.StopFeedbacks();
+
+        information_TMP.text = info;
+        feedbackInformation.GetFeedbackOfType<MMF_Pause>().PauseDuration = duration;
+        feedbackInformation.PlayFeedbacks();
     }
 }
-
-/*
-
-    void OnEnable(){
-        cts?.Dispose();
-        cts = new();
-    }
-
-    void OnDisable(){
-        cts.Cancel();
-
-    }
-    void OnDestroy()
-    {
-        cts.Cancel();
-        cts.Dispose();
-    }
-
-*/

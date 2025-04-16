@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ButtonKey : AnswerKey
 {
+    // 설치 가능한 방을 propsGenerator에게 받는다.
     public override KeyType Key => KeyType.BUTTON;
     [SerializeField] ButtonKeyData buttonKeyData;
     private GameObject key;                  //key

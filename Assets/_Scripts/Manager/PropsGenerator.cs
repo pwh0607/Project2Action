@@ -5,7 +5,6 @@ using System.Linq;
 using DungeonArchitect;
 using DungeonArchitect.Builders.GridFlow;
 using CustomInspector;
-using UnityEngine.InputSystem;
 
 public class PropsGenerator : MonoBehaviour
 {
@@ -16,7 +15,7 @@ public class PropsGenerator : MonoBehaviour
 
     [Space(20)]
     [HorizontalLine("DungeonData"), HideInInspector] public bool h_s3;
-    public Dungeon dungeon;
+    [ReadOnly] Dungeon dungeon;
     public Dictionary<string, Room> roomDic = new();
     public List<Room> rooms = new();
     public List<Link> links = new();
@@ -33,6 +32,8 @@ public class PropsGenerator : MonoBehaviour
         InitGraphData();
         InitGate();
         InitVisited();
+
+        dungeon = FindAnyObjectByType<Dungeon>();
 
         while(lockCount > 0){
             SearchGraph();
@@ -166,10 +167,12 @@ public class PropsGenerator : MonoBehaviour
                         if(!gates.Contains(link.gate)){                         //아직 처리하지 못한 Gate에 대해서만 설정한다.
                             targetGate = link.gate;
                             gates.Add(link.gate);
+
                             //알맞은 gate를 찾았으면 key 생성하기.
-        
                             AnswerKey key = MakeKey();
-                            SendPairData(link.gate, key);
+                            SendPairData(targetGate, key);
+
+                            // key의 위치를 설정
                         }
                         continue;
                     }    
@@ -195,10 +198,7 @@ public class PropsGenerator : MonoBehaviour
 
     // 다음에 탐색할 노드를 찾는다.
     void SearchNode(){
-        Debug.Log($"탐색 시작할 노드 찾기...");
         if(targetGate == null){
-            Debug.Log("최초 노드 찾기/...");
-
             var key = roomDic.Keys.ToList();
             startNodeId = roomDic[key[spawnNodeNumber]].roomId;     
         
@@ -206,9 +206,7 @@ public class PropsGenerator : MonoBehaviour
         }
         
         Link link = links.Find(v => v.gate == targetGate);
-        if(link == null){
-            Debug.Log("link 없음...");
-        }
+        if(link == null) return;
 
         //해당 링크의 두개의 룸에 대하여 아직 방문하지 않은 노드가 시작 노드이다.
         var room1 = link.node.Item1;
@@ -223,6 +221,7 @@ public class PropsGenerator : MonoBehaviour
             startNodeId = room2.roomId;
             return;
         }
+
         targetGate = null;
     }
   
@@ -255,7 +254,6 @@ public class PropsGenerator : MonoBehaviour
 
     public void SendPairData(InterActiveGate gate, AnswerKey key)
     {
-        //로직 매니저 에게 이 페어를 보낸다.
         StageLogicManager.I.SetPair(gate, key);
     }
 
