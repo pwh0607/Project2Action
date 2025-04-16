@@ -37,9 +37,9 @@ public class AbilityDamage : Ability<AbilityDamageData>
         owner.uiControl.SetHealth(owner.state.health, owner.Profile.health);
         
         if(owner.state.health <= 0){
-            owner.PlayeAnimation(AnimationClipHashSet._DEATH, 0.2f);
-            owner.abilityControl.Remove(data);
-            owner.transform.tag = "Untagged";
+            
+            data.eventDeath.target = owner;
+            data.eventDeath.Raise();
         }
     }
 

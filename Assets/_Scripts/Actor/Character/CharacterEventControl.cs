@@ -7,6 +7,7 @@ public class CharacterEventControl : MonoBehaviour
 #region Events
     [SerializeField] EventCameraSwitch eventCameraSwitch;
     [SerializeField] EventPlayerSpawnAfter eventPlayerSpawnAfter;
+    [SerializeField] EventDeath eventDeath;
     [SerializeField] EventAttackAfter eventAttackAfter;
 #endregion
     
@@ -22,6 +23,7 @@ public class CharacterEventControl : MonoBehaviour
         eventPlayerSpawnAfter.Register(OnEventPlayerSpawnAfter);
         eventCameraSwitch.Register(OnEventCameraSwitch);
         eventAttackAfter.Register(OnEventAttackAfter);
+        eventDeath.Register(OnEventDeath);
     }
 
     void OnDisable()
@@ -29,6 +31,7 @@ public class CharacterEventControl : MonoBehaviour
         eventPlayerSpawnAfter.Unregister(OnEventPlayerSpawnAfter);
         eventCameraSwitch.Unregister(OnEventCameraSwitch);
         eventAttackAfter.Unregister(OnEventAttackAfter);
+        eventDeath.Unregister(OnEventDeath);
     }
 
     //Temp
@@ -111,6 +114,20 @@ public class CharacterEventControl : MonoBehaviour
         // 데미지 ui 갱신
         owner.state.health -= e.damage;
         owner.uiControl.SetHealth(owner.state.health, owner.Profile.health);
+    }
+    #endregion
+
+    #region Attack
+    #endregion
+
+    #region Death
+    void OnEventDeath(EventDeath e){
+        if(owner != e.target) return;           //죽은 사람이 당사자가 아니라면...
+
+        owner.PlayeAnimation(AnimationClipHashSet._DEATH, 0.2f);
+        owner.abilityControl.RemoveAll();
+
+        GameManager.I.ShowInfo("PLAYER DIED", 5f);
     }
     #endregion
 

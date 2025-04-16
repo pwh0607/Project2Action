@@ -20539,7 +20539,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  meshRenderer: {fileID: 0}
+  rds: []
+  selectableMaterial: {fileID: 0}
+  selectableThickness: 0.05
+  on: 0
 --- !u!1001 &1043276668
 PrefabInstance:
   m_ObjectHideFlags: 0

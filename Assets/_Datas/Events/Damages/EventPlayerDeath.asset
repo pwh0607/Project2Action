@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81591ca11493e674b84fe5f3ba20dd41, type: 3}
-  m_Name: AbilityDamage
+  m_Script: {fileID: 11500000, guid: c53ce4f057a1a2a418e57babbd516815, type: 3}
+  m_Name: EventPlayerDeath
   m_EditorClassIdentifier: 
-  eventDeath: {fileID: 11400000, guid: 93ae54cae924dce4eaad14eb500a870c, type: 2}
+  from: {fileID: 0}
+  to: {fileID: 0}

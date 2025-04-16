@@ -1,13 +1,25 @@
 using UnityEngine;
-using Cysharp.Threading.Tasks;
-using System.Threading;
-using System;
+using MoreMountains.Feedbacks;
+using TMPro;
 
-// 관리, 이벤트 송출.
 public class GameManager : BehaviourSingleton<GameManager>
 {
+    [SerializeField] MMF_Player feedbackInformation;
+    [SerializeField] TextMeshProUGUI information_TMP;
     protected override bool IsDontDestroy() => true;
-    
+
+    void Start()
+    {
+        information_TMP.text = "";
+    }
+
+    public void ShowInfo(string info, float duration = 1f){
+        if(feedbackInformation.IsPlaying) feedbackInformation.StopFeedbacks();
+    }
+}
+
+/*
+
     void OnEnable(){
         cts?.Dispose();
         cts = new();
@@ -23,19 +35,4 @@ public class GameManager : BehaviourSingleton<GameManager>
         cts.Dispose();
     }
 
-    CancellationTokenSource cts = new CancellationTokenSource();
-    public async UniTaskVoid DelayCallAsync(int millisec, Action onComplete){
-        try{
-            await UniTask.Delay(millisec, cancellationToken:cts.Token);         //취소 명령이 떨어지면 이 작업도 취소하라 [할당 받기를 대기하지않고 취소할 것]
-            onComplete?.Invoke();
-        }
-        catch(Exception e){
-            Debug.LogException(e);
-        }        
-        finally
-        {
-            cts.Cancel();
-        }
-    }
-
-}
+*/
