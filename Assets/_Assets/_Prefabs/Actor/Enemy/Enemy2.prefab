@@ -702,6 +702,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4
   targetTag: Player
+  interval: 0.2
   target: {fileID: 0}
   prevSight: {fileID: 0}
   prevAttack: {fileID: 0}

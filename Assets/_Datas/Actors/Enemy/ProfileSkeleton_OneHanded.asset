@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ProfileSkeleton_OneHanded
   m_EditorClassIdentifier: 
   _h_s0: 0
+  actorType: 0
   alias: Skeleton
   portrait: {fileID: 21300000, guid: 7487349ebcb96a548a587919413b7e50, type: 3}
   models:
@@ -33,7 +34,8 @@ MonoBehaviour:
   rotateSpeed: 1080
   jumpForce: 0
   jumpDuration: 0
-  attackInterval: 1
+  attackInterval: 3
+  attackDamage: 0
   _h_s3: 0
   abilities:
   - {fileID: 11400000, guid: 5f322d47c39023e44aeff22d62903f88, type: 2}

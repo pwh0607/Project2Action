@@ -19,12 +19,16 @@ public enum AbilityFlag
     MoveMouse = 1 << 1,     // 0010
     Jump = 1 << 2,          // 0100
     Pick = 1 << 3,
+
     // Enemy
     Wandor = 1 << 11,        // 1000
     Trace = 1 << 12,
 
     // Attack
-    Attack = 1 << 21
+    Attack = 1 << 21,
+    
+    // Damaged
+    Damage = 1 << 30,
 }
 
 // 데이터 담당 : 역할

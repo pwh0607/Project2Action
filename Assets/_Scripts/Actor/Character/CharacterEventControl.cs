@@ -10,11 +10,11 @@ public class CharacterEventControl : MonoBehaviour
     [SerializeField] EventAttackAfter eventAttackAfter;
 #endregion
     
-    private CharacterControl controller;
+    private CharacterControl owner;
     void Start()
     {
-        if(!TryGetComponent(out controller)) Debug.LogWarning("GameEventControl - controllerControl 없음...");
-        controller.Visible(false);
+        if(!TryGetComponent(out owner)) Debug.LogWarning("GameEventControl - controllerControl 없음...");
+        owner.Visible(false);
     }
 
     void OnEnable()
@@ -31,11 +31,18 @@ public class CharacterEventControl : MonoBehaviour
         eventAttackAfter.Unregister(OnEventAttackAfter);
     }
 
+    //Temp
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Backspace))
+            owner.state.health = 0;
+    }
+
     void OnEventCameraSwitch(EventCameraSwitch e){
         if(e.inout)
-            controller.abilityControl.Deactivate(AbilityFlag.MoveKeyboard);
+            owner.abilityControl.Deactivate(AbilityFlag.MoveKeyboard);
         else
-            controller.abilityControl.Activate(AbilityFlag.MoveKeyboard, false, null);
+            owner.abilityControl.Activate(AbilityFlag.MoveKeyboard, false, null);
     }
 
     void OnEventPlayerSpawnAfter(EventPlayerSpawnAfter e){
@@ -43,66 +50,67 @@ public class CharacterEventControl : MonoBehaviour
     }
     
     IEnumerator SpawnSequence(EventPlayerSpawnAfter e){
-        yield return new WaitUntil(() => controller.Profile.avatar != null && controller.Profile.models != null);
+        yield return new WaitUntil(() => owner.Profile.avatar != null && owner.Profile.models != null);
 
-        controller.Profile = controller.Profile;
+        owner.Profile = owner.Profile;
 
         // 플레이어 모델 생성후 하위 항목인 Model에 설정
-        if(controller.Profile.models == null)
+        if(owner.Profile.models == null)
             Debug.LogError("CharacterEventControl ] model 없음.");
 
-        var model = controller.Profile.models.Random();
+        var model = owner.Profile.models.Random();
 
-        var clone = Instantiate(model, controller.model);
+        var clone = Instantiate(model, owner.model);
+
+        var feedback = clone.GetComponentInChildren<FeedbackControl>();
+        if(feedback != null){
+            owner.feedbackControl = feedback;
+        }
 
         clone.GetComponentsInChildren<SkinnedMeshRenderer>().ToList().ForEach( m =>{
             m.gameObject.layer = LayerMask.NameToLayer("Silhouette");
         });
 
-        if(controller.Profile.avatar == null)
+        if(owner.Profile.avatar == null)
             Debug.LogError("CharacterEventControl ] avatar 없음.");
-        controller.animator.avatar = controller.Profile.avatar;
+        owner.animator.avatar = owner.Profile.avatar;
 
         yield return new WaitForSeconds(1f);
 
-        controller.Visible(true);
-        controller.PlayeAnimation(AnimationClipHashSet._SPAWN, 0f);
+        owner.Visible(true);
+        owner.PlayeAnimation(AnimationClipHashSet._SPAWN, 0f);
 
         PoolManager.I.Spawn(e.spawnParticle, transform.position, Quaternion.identity, null);
     
         yield return new WaitForSeconds(1f);
 
-        foreach( var dat in controller.Profile.abilities )
-            controller.abilityControl.Add(dat, true);
-
-
-        // UI
-        yield return new WaitForEndOfFrame();
-        controller.uiControl?.Show(true);
-
-
-        // Health
-        controller.uiControl.SetHealth(controller.Profile.health, controller.Profile.health);
+        foreach( var dat in owner.Profile.abilities)
+            owner.abilityControl.Add(dat, true);
     }
 
-    #region DAMAGES
+    #region DAMAGE
     void OnEventAttackAfter(EventAttackAfter e){
-        if(controller != e.to) return;              // e.to는 Player .. 피격자[공격을 받는 사람은]
+        if(owner != e.to) return;              // e.to는 Player .. 피격자[공격을 받는 사람은]
 
-        PoolManager.I.Spawn(e.feedbackFloatingText, controller.eyePoint.position, Quaternion.identity, null);
+        // 플레이어 damage를 입다.
+        // object : damage값.
+        owner.abilityControl.Activate(AbilityFlag.Damage, false, e);             //일반 공격의 경우에는 맞으면서 움직일 수 있다.
+
+        PoolManager.I.Spawn(e.feedbackFloatingText, owner.eyePoint.position, Quaternion.identity, null);
         e.feedbackFloatingText.SetText(e.damage.ToString());
 
         Vector3 rndsphere = Random.insideUnitSphere;
         rndsphere.y = 0f;
 
-        Vector3 rndpos = rndsphere * 0.5f + controller.eyePoint.position;
+        Vector3 rndpos = rndsphere * 0.5f + owner.eyePoint.position;
 
         var floating = PoolManager.I.Spawn(e.particleHit, rndpos, Quaternion.identity, null) as PoolableFeedback;
-        floating.SetText($"{e.damage}");
+        if(floating != null)
+            floating.SetText($"{e.damage}");
 
         // 데미지 ui 갱신
-        controller.state.health -= e.damage;
-        controller.uiControl.SetHealth(controller.state.health, controller.Profile.health);
+        owner.state.health -= e.damage;
+        owner.uiControl.SetHealth(owner.state.health, owner.Profile.health);
     }
     #endregion
 

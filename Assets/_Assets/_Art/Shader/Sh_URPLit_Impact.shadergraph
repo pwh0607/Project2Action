@@ -2375,10 +2375,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -387.0,
-            "y": 973.9999389648438,
-            "width": 128.0,
-            "height": 101.00006103515625
+            "x": -253.0,
+            "y": 817.0,
+            "width": 127.99996185302735,
+            "height": 100.99993896484375
         }
     },
     "m_Slots": [
@@ -2444,10 +2444,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -190.00001525878907,
-            "y": 905.0,
-            "width": 207.99998474121095,
-            "height": 325.9998779296875
+            "x": -125.00003814697266,
+            "y": 917.9999389648438,
+            "width": 153.99998474121095,
+            "height": 142.00006103515626
         }
     },
     "m_Slots": [
@@ -2469,7 +2469,7 @@
         "scale"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": true,
+    "m_PreviewExpanded": false,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
     "m_CustomColors": {
@@ -2677,8 +2677,8 @@
     "m_ObjectId": "cf0e154d39bc419e9f7a4f7776e81fd9",
     "m_Title": "텍스처 및 컬러 표현",
     "m_Position": {
-        "x": -412.0,
-        "y": 347.0
+        "x": -278.0,
+        "y": 346.99993896484377
     }
 }
 

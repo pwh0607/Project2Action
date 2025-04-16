@@ -23,7 +23,9 @@ public class AbilityAttack : Ability<AbilityAttackData>
 
     public override void Deactivate()
     {
-        Debug.Log("Attack Deactivate.");
+        if(isAttacking){
+            Debug.Log("현재 공격 중입니다...");
+        }
         cts.Cancel();
         owner.Stop();        
     }

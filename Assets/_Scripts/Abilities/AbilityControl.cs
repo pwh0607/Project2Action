@@ -49,6 +49,7 @@ public class AbilityControl : MonoBehaviour
         if (datas.Contains(d) == false || d == null)
             return;
 
+        Deactivate(d.Flag);
         datas.Remove(d);
         flags.Remove(d.Flag, null);
         actives.Remove(d.Flag);
@@ -57,10 +58,13 @@ public class AbilityControl : MonoBehaviour
     // bool => 기존 ability를 비활성화 하고 새로운 ability를 활성화 시킨다.
     public void Activate(AbilityFlag flag, bool forceDeactivate, object obj)                //Object object.
     {
-        if(forceDeactivate){
-            DeactivateAll();
-        }
+        if(forceDeactivate) DeactivateAll();
 
+    // Temp  실시간으로 삭제된 데이터를 임시 저장.
+        List<AbilityData> temp = new();
+        temp.AddRange(datas.GetRange(0, datas.Count));
+    // Temp
+    
         foreach( var d in datas )
         {
             if ((d.Flag & flag) == flag)
@@ -95,7 +99,14 @@ public class AbilityControl : MonoBehaviour
     {
         foreach( var a in actives )
             a.Value.Deactivate();
-            
         actives.Clear();
+    }
+
+    public void RemoveAll(){
+        DeactivateAll();
+
+        flags = AbilityFlag.None;
+        actives.Clear();
+        datas.Clear();
     }
 }

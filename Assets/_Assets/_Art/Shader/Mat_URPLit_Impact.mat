@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_Impact
+  m_Name: Mat_URPLit_Impact
   m_Shader: {fileID: -6465566751694194690, guid: f8106d75013ae6741ae7749fe224aa73, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -108,7 +108,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _ImpactPower: 3
+    - _ImpactPower: 0
     - _Metalic: 0
     - _Metallic: 0
     - _OcclusionStrength: 1

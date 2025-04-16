@@ -25,6 +25,8 @@ public class CharacterControl : MonoBehaviour, IActorControl
     [HideInInspector] public AbilityControl abilityControl;
     // 인스턴스화 한 데이터
     public CharacterState state;
+    
+    [HideInInspector] public FeedbackControl feedbackControl;
 
     [ReadOnly, SerializeField] private ActorProfile profile;
     public ActorProfile Profile { 
@@ -41,7 +43,12 @@ public class CharacterControl : MonoBehaviour, IActorControl
     [ReadOnly] public Transform model;
 
     [Header("flag")]   
+    // 땅에 붙어 있는가?
     [ReadOnly] public bool isGrounded;
+
+    //데미지를 받을 수 있는 상태
+    [ReadOnly] public bool isDamageable = true;
+    // 목적지 도착 상태.
     [ReadOnly] public bool isArrived = true;
 
     void Awake()
@@ -91,7 +98,6 @@ public class CharacterControl : MonoBehaviour, IActorControl
         
         animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
     }
-
 
     public void PlayeAnimation(string clipName, AnimatorOverrideController aoc, AnimationClip clip, float animationSpeed, float duration = 0f, int layer = 0)
     {

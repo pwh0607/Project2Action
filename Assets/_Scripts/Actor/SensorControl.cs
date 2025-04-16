@@ -24,6 +24,7 @@ public class SensorControl : MonoBehaviour
     [Space(20)]
     [SerializeField] LayerMask targetLayer;
     [SerializeField] string targetTag;
+    [SerializeField] float interval;
     
     [Space(20)]
     [ReadOnly] public CharacterControl target;
@@ -33,20 +34,19 @@ public class SensorControl : MonoBehaviour
     void Start()
     {
         TryGetComponent(out owner);
-        InvokeRepeating("CheckOverlap", 0f, 0.2f);
+        InvokeRepeating("CheckOverlap", 0f, interval);
     }
 
     void CheckOverlap()
     {
-        // 1. Layer 필터
         var cols = Physics.OverlapSphere(owner.transform.position, sightRange, targetLayer);
 
-        // 2. 태그 필터
-        // 시야 거리 안에 들어 왔는가...?
         foreach(var c in cols){
             if(c.CompareTag(targetTag)){
                 target = c.GetComponentInParent<CharacterControl>();
                 TargetEnter();
+                
+                if(!target.isDamageable) continue;
 
                 float distance = Vector3.Distance(target.transform.position, owner.transform.position);
                 if(distance <= attackRange){

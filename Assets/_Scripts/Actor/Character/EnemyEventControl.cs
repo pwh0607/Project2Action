@@ -56,7 +56,6 @@ public class EnemyEventControl : MonoBehaviour
 
         control.Profile = control.Profile;
         
-        // Enemy 모델 생성 후 하위 항목인 Model에 설정
         if(control.Profile.models == null) Debug.LogError("CharacterEventControl ] model 없음.");
 
         var model = control.Profile.models.Random();
@@ -111,7 +110,7 @@ public class EnemyEventControl : MonoBehaviour
 
     void OnEventSensorAttackExit(EventSensorAttackExit e){
         if(control != e.from) return;    
-        control.abilityControl.Activate(AbilityFlag.Trace, true, e.to);
+        control.abilityControl.Activate(AbilityFlag.Trace, false, e.to);
     }
     #endregion
 }
