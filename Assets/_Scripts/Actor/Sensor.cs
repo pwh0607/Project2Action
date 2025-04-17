@@ -1,43 +1,70 @@
 using System.Collections.Generic;
-using CustomInspector;
-using UnityEditor.Search;
 using UnityEngine;
-using UnityEngine.Events;
+using CustomInspector;
 
 public struct TargetState
 {
     public bool isVisible;
-    public bool isArrived;
+    public bool isAttackable;
 }
 
 public class Sensor : MonoBehaviour
 {
-    #region Event
-    [HorizontalLine("Sensor-Event"), HideInInspector] public bool l_s_1;
+
+#region EVENTS
+    [HorizontalLine("EVENTS"),HideField] public bool _h0;
+
+    [SerializeField] EventEnemySpawnAfter eventEnemySpawnAfter;    
 
     [SerializeField] EventSensorSightEnter eventSensorSightEnter;
     [SerializeField] EventSensorSightExit eventSensorSightExit;
-    [SerializeField] EventSensorAttackEnter eventSensorAttackEnter;
-    [SerializeField] EventSensorAttackExit eventSensorAttackExit;
 
-    [HorizontalLine(color:FixedColor.Cyan), HideInInspector] public bool l_e_1;
-    #endregion
+    [SerializeField] EventSensorAttackEnter eventSensorAttackEnter;
+    [SerializeField] EventSensorAttackExit eventSensorAttackExit;    
+    
+    [Space(10), HorizontalLine(color:FixedColor.Cyan),HideField] public bool _h1;
+#endregion
 
 
 
     [Header("Detection Settings")]
-    public float interval = 0.5f;
+    public float interval = 0.5f; // Interval for detection checks
     public float detectionRadius = 5f;
-    public float arrivedRadius = 3f; 
-    public float fieldOfViewAngle = 60f;
+    public float attackRange = 3f; 
+    public float fieldOfViewAngle = 60f; // New FOV angle parameter
     public LayerMask targetLayer;
     public LayerMask blockLayer;
 
     public string targetTag = "ENEMY";
     public bool showGizmos = true;
- 
+
     private Dictionary<CharacterControl, TargetState> visibilityStates = new Dictionary<CharacterControl, TargetState>();
-    [SerializeField, ReadOnly] private CharacterControl owner, target;
+
+    [HorizontalLine("DEBUG"),HideField] public bool _h2;
+    [ReadOnly, SerializeField] private CharacterControl owner, target;
+    
+
+    void OnEnable()
+    {
+        eventEnemySpawnAfter?.Register(OneventEnemySpawnAfter);
+    }
+
+    void OnDisable()
+    {
+        eventEnemySpawnAfter?.Unregister(OneventEnemySpawnAfter);
+    }
+
+    void OneventEnemySpawnAfter(EventEnemySpawnAfter e)
+    {
+        if (owner != e.character) return;
+
+        // detectionRadius = 5f;
+        // arrivedRadius = 1f;
+
+        detectionRadius = owner.Profile.sightRange;
+        attackRange = owner.Profile.attackRange;
+    }
+
 
 
     void Start()
@@ -63,7 +90,10 @@ public class Sensor : MonoBehaviour
             if (target == null)
                 Debug.LogWarning("Sensor ] target - CharacterControl 없음");
 
-            Vector3 direction = (target.eyePoint.position - transform.position).normalized;
+            // 데미지 받을 수 없는 상태는 무시
+            if (!target.isDamageable) continue;
+
+            Vector3 direction = (target.transform.position - owner.transform.position).normalized;
 
             float angle = Vector3.Angle(transform.forward, direction);
             if (angle > (fieldOfViewAngle * 0.5f))
@@ -72,11 +102,13 @@ public class Sensor : MonoBehaviour
             currentFrameTargets.Add(target);
 
             // 타겟과의 거리 체크
-            float distance = Vector3.Distance(transform.position, target.eyePoint.position);
+            float distance = Vector3.Distance(transform.position, target.transform.position);
+            
             // 타겟과의 장애물 체크
             bool isVisible = !Physics.Raycast(transform.position, direction, distance, blockLayer);
-            // 타겟 도착 체크
-            bool isArrived = distance <= arrivedRadius;
+            
+            // 타겟이 공격 가능 범위에 도착했는지
+            bool isAttackable = distance <= attackRange;
 
             //현재 상태 가져오기
             visibilityStates.TryGetValue(target, out TargetState previousState);
@@ -84,7 +116,7 @@ public class Sensor : MonoBehaviour
             TargetState newState = new TargetState
             {
                 isVisible = isVisible,
-                isArrived = isArrived
+                isAttackable = isAttackable
             };
 
             // 새로운 타겟 출현
@@ -96,12 +128,12 @@ public class Sensor : MonoBehaviour
                 else
                     OnBlocked();
                 
-                if (isArrived)
-                    OnArrived();
+                if (isAttackable)
+                    OnAttack();
             }
 
             // 기존 타겟의 상태 변경
-            else if (previousState.isVisible != isVisible || previousState.isArrived != isArrived)
+            else if (previousState.isVisible != isVisible || previousState.isAttackable != isAttackable)
             {
                 visibilityStates[target] = newState;
                 if(isVisible)
@@ -109,8 +141,8 @@ public class Sensor : MonoBehaviour
                 else
                     OnBlocked();
 
-                if (isArrived && !previousState.isArrived)
-                    OnArrived();
+                if (isAttackable && !previousState.isAttackable)
+                    OnAttack();
             }
         }
 
@@ -133,8 +165,7 @@ public class Sensor : MonoBehaviour
     
     void OnFound()
     {
-        owner.uiControl.Display("FOUND"); 
-       
+        Debug.Log("FOUND");
         eventSensorSightEnter.from = owner;
         eventSensorSightEnter.to = target;
         eventSensorSightEnter.Raise();
@@ -142,28 +173,23 @@ public class Sensor : MonoBehaviour
 
     void OnBlocked()
     {
-        owner.uiControl.Display("BLOCKED");
-
+        Debug.Log("BLOCK");
         eventSensorSightExit.from = owner;
         eventSensorSightExit.to = target;
         eventSensorSightExit.Raise();
-
-        target = null;
     }
 
     void OnLost()
     {        
-        owner.uiControl.Display("LOST");
-
-        eventSensorAttackExit.from = owner;
-        eventSensorAttackExit.to = target;
-        eventSensorAttackExit.Raise();
+        Debug.Log("LOST");
+        eventSensorSightExit.from = owner;
+        eventSensorSightExit.to = target;        
+        eventSensorSightExit.Raise();
     }
 
-    void OnArrived()
-    {        
-        owner.uiControl.Display("ARRIVED");
-
+    void OnAttack()
+    {
+        Debug.Log("Attack On");
         eventSensorAttackEnter.from = owner;
         eventSensorAttackEnter.to = target;
         eventSensorAttackEnter.Raise();

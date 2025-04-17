@@ -6,30 +6,27 @@ public class AbilityTrace : Ability<AbilityTraceData>
 {
     private NavMeshPath path;
     private Vector3[] corners;
-    
     private int next;
+    
     float currentVelocity;
    
-    private CancellationTokenSource cts;
     
     public AbilityTrace(AbilityTraceData data, CharacterControl owner) : base(data, owner) {
         if(owner.Profile == null) return;
 
         path = new NavMeshPath();
         owner.isArrived = true;
+
         data.movePerSec = owner.Profile.moveSpeed;
         data.rotatePerSec = owner.Profile.rotateSpeed;
-
-        cts = new CancellationTokenSource(); 
     }
 
     public override void Activate(object obj)
     {
-        if(obj is CharacterControl control)
-            data.target = control;
+        data.target = obj as CharacterControl;
 
         if(data.target == null) return;
-
+        Debug.Log("Trace 중...");
         owner.uiControl.Display($"{data.Flag}");
     }
 

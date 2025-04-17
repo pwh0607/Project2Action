@@ -25,7 +25,7 @@ public class SensorControl : MonoBehaviour
     [SerializeField] LayerMask targetLayer;
     [SerializeField] string targetTag;
     [SerializeField] float interval;
-    
+
     [Space(20)]
     [ReadOnly] public CharacterControl target;
     [ReadOnly] public CharacterControl prevSight;
@@ -84,7 +84,6 @@ public class SensorControl : MonoBehaviour
         eventSensorSightExit.to = target;
         eventSensorSightExit.Raise();
     }
-
 
     #region 공격 범위 체크
     private void AttackEnter(){        

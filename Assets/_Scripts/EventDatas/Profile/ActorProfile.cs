@@ -23,13 +23,20 @@ public class ActorProfile : ScriptableObject
     [Space(20)]
     [HorizontalLine("Attribute", color:FixedColor.Cyan), HideField] public bool _h_s2;
     [Tooltip("체력")] public int health;              
+    
     [Tooltip("초당 이동 속도")] public float moveSpeed;
     [Tooltip("초당 회전 속도")] public float rotateSpeed;
+    
     [Tooltip("점프 파워")] public float jumpForce; 
     [Tooltip("점프 체공 시간")] public float jumpDuration;
-    [Tooltip("공격 빈도")] public float attackInterval;    
-    [Tooltip("공격력")] public int attackDamage;         
     
+    [Tooltip("시야 범위")] public float sightRange;
+    [Tooltip("시야 범위")] public float attackRange;
+    
+    [Tooltip("공격 빈도")] public float attackInterval;    
+    [Tooltip("공격력")] public int attackDamage;   
+          
+
     [Space(20)]
     [HorizontalLine("Abilities"), HideField] public bool _h_s3;
     public List<AbilityData> abilities;

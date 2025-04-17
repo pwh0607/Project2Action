@@ -18,7 +18,7 @@ public class EnemyEventControl : MonoBehaviour
     private CharacterControl owner;
     void Start()
     {
-        if(!TryGetComponent(out owner)) Debug.LogWarning("GameEventControl - controllerControl 없음...");
+        TryGetComponent(out owner);
         owner.Visible(false);
     }
 
@@ -47,11 +47,10 @@ public class EnemyEventControl : MonoBehaviour
     #region Event-Spawn After
     void OnEventEnemySpawnAfter(EventEnemySpawnAfter e){
         if(owner != e.character) return;
-        StartCoroutine(SpawnAfter(e));
+        StartCoroutine(SpawnSequence(e));
     }
 
-    IEnumerator SpawnAfter(EventEnemySpawnAfter e){
-        Debug.Log("Enemy : SpawnAfter");
+    IEnumerator SpawnSequence(EventEnemySpawnAfter e){
         yield return new WaitUntil(() => owner.Profile.avatar != null && owner.Profile.models != null);
 
         owner.Profile = owner.Profile;
@@ -110,7 +109,7 @@ public class EnemyEventControl : MonoBehaviour
 
     void OnEventSensorAttackExit(EventSensorAttackExit e){
         if(owner != e.from) return;    
-        owner.abilityControl.Activate(AbilityFlag.Trace, false, e.to);
+        owner.abilityControl.Activate(AbilityFlag.Trace, true, e.to);
     }
     #endregion
 }

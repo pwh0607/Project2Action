@@ -6,14 +6,19 @@ using CustomInspector;
 public class AnimationEventListener : MonoBehaviour
 {
     public PoolableParticle footSmoke, jumpSmoke, swing1;
+
     [HorizontalLine("Event-Spawn"), HideField] public bool h_s_01;
+    
     [SerializeField] EventPlayerSpawnAfter eventPlayerSpawnAfter;
     [SerializeField] EventEnemySpawnAfter eventEnemySpawnAfter;
     [SerializeField] EventAttackBefore eventAttackBefore;
+    
     [HorizontalLine(color:FixedColor.Cyan), HideField] public bool h_e_01;
+    
     [Space(20)]
-    [ReadOnly] public Transform modelRoot;
     private CharacterControl owner;
+    [ReadOnly] public Transform modelRoot;
+    
     [ReadOnly] public Transform footLeft, footRight;
     [ReadOnly] public Transform handLeft, handRight;
     
@@ -33,24 +38,27 @@ public class AnimationEventListener : MonoBehaviour
 
         eventPlayerSpawnAfter.Register(OnEventPlayerSpawnAfter);
 
-        // eventEnemySpawnAfter.Register(OnEventEnemeySpawnAfter);
+        eventEnemySpawnAfter.Register(OnEventEnemySpawnAfter);
     }
 
     void OnDisable()
     {
         eventPlayerSpawnAfter.Unregister(OnEventPlayerSpawnAfter);
 
-        // eventEnemySpawnAfter.Unregister(OnEventEnemeySpawnAfter);
+        eventEnemySpawnAfter.Unregister(OnEventEnemySpawnAfter);
     }
 
     void OnEventPlayerSpawnAfter(EventPlayerSpawnAfter e){
-        // if(owner != e.controller)
-        //     return;
+        if(owner != e.character)
+            return;
         StartCoroutine(DelayFind());
     }
 
-    public void OnEventEnemeySpawnAfter(EventPlayerSpawnAfter e){
+    public void OnEventEnemySpawnAfter(EventEnemySpawnAfter e){
+        if (owner != e.character)
+            return;
         
+        StartCoroutine(DelayFind());
     }
     
     IEnumerator DelayFind(){

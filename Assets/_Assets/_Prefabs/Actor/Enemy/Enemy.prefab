@@ -599,12 +599,12 @@ GameObject:
   - component: {fileID: 5611028517158968054}
   - component: {fileID: 8981880355421327764}
   - component: {fileID: 1880474463011480214}
-  - component: {fileID: 5735356100811915811}
   - component: {fileID: 5751397563990564394}
   - component: {fileID: 6122278346836665987}
   - component: {fileID: 3954374162032563192}
   - component: {fileID: 5658018190876893850}
   - component: {fileID: 7578951471217505408}
+  - component: {fileID: 8914348742403454756}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: ENEMY
@@ -716,46 +716,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d9bb32c75eb1c43b7f305b5d50e3ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiControl: {fileID: 0}
   abilityControl: {fileID: 0}
+  uiControl: {fileID: 0}
   feedbackControl: {fileID: 0}
   profile: {fileID: 0}
+  isGrounded: 0
+  isDamageable: 1
+  isArrived: 1
   rb: {fileID: 0}
   animator: {fileID: 0}
   ik: {fileID: 0}
   eyePoint: {fileID: 0}
   model: {fileID: 0}
-  isGrounded: 0
-  isDamageable: 1
-  isArrived: 1
---- !u!114 &5735356100811915811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6943699192755661008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41e376313181e964f8856781bbfe1e59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  l_s_1: 0
-  eventSensorSightEnter: {fileID: 11400000, guid: 40f208b09d6059b48bb04ee962102771, type: 2}
-  eventSensorSightExit: {fileID: 11400000, guid: 1566c18dd46c9d84a9f04ddfa66e130c, type: 2}
-  eventSensorAttackEnter: {fileID: 11400000, guid: e0f70750bae66be479a616d127dac90c, type: 2}
-  eventSensorAttackExit: {fileID: 11400000, guid: 76b8554e3dc6cfd428c77a470e6efa1c, type: 2}
-  l_e_1: 0
-  sightRange: 4
-  attackRange: 2
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 512
-  targetTag: Player
-  interval: 0.2
-  target: {fileID: 0}
-  prevSight: {fileID: 0}
-  prevAttack: {fileID: 0}
 --- !u!114 &5751397563990564394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,6 +772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31bc6d6e76f794c40ba61c24a6f57cc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
   type: 2
   rds: []
   selectableMaterial: {fileID: 2100000, guid: 650177d6a7696ca479ce72f331034091, type: 2}
@@ -848,6 +821,41 @@ MonoBehaviour:
   textMesh: {fileID: 265699057270485124}
   sliderHealth: {fileID: 0}
   h_e1: 0
+  state: 
+--- !u!114 &8914348742403454756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6943699192755661008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b89d889c76782f45838bc099071a609, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _h0: 0
+  eventEnemySpawnAfter: {fileID: 11400000, guid: d2ae8029d79ca8542a4e389cce8c190a, type: 2}
+  eventSensorSightEnter: {fileID: 11400000, guid: 40f208b09d6059b48bb04ee962102771, type: 2}
+  eventSensorSightExit: {fileID: 11400000, guid: 1566c18dd46c9d84a9f04ddfa66e130c, type: 2}
+  eventSensorAttackEnter: {fileID: 11400000, guid: e0f70750bae66be479a616d127dac90c, type: 2}
+  eventSensorAttackExit: {fileID: 11400000, guid: 76b8554e3dc6cfd428c77a470e6efa1c, type: 2}
+  _h1: 0
+  interval: 0.5
+  detectionRadius: 5
+  arrivedRadius: 3
+  fieldOfViewAngle: 60
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  blockLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  targetTag: Player
+  showGizmos: 1
+  _h2: 0
+  owner: {fileID: 0}
+  target: {fileID: 0}
 --- !u!1 &7357161927007150646
 GameObject:
   m_ObjectHideFlags: 0

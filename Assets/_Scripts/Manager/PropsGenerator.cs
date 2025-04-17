@@ -27,6 +27,7 @@ public class PropsGenerator : MonoBehaviour
     //Test
     public DoorData doorData;
     public Vector3 offset = new Vector3(5f,0,5f);
+
     void Start()
     {
         dungeon = FindAnyObjectByType<Dungeon>();
@@ -143,7 +144,6 @@ public class PropsGenerator : MonoBehaviour
 
     void SearchGraph(){
         SearchNode();
-        // activeRooms.Clear();
 
         Queue<Room> queue = new();
         Room startRoom = roomDic[startNodeId];
@@ -170,8 +170,9 @@ public class PropsGenerator : MonoBehaviour
                             gates.Add(link.gate);
 
                             AnswerKey key = MakeKey();
+                            SendPairData(targetGate, key);                      // logic을 관리하는 매니저에게 전달.
+
                             SetKeyPosition(key);
-                            SendPairData(targetGate, key);
                         }
                         continue;
                     }    
@@ -229,7 +230,7 @@ public class PropsGenerator : MonoBehaviour
     AnswerKey MakeKey(){
         int rnd = UnityEngine.Random.Range(0, answerKeyData.key.Count);
         
-        // 키의 종류
+        // 랜덤 키 생성.
         GameObject keyPrefab = answerKeyData.key[rnd];
         AnswerKey key = Instantiate(keyPrefab).GetComponent<AnswerKey>();
 
@@ -247,10 +248,10 @@ public class PropsGenerator : MonoBehaviour
             //임시로 세팅.
             buttonKey.transform.position = pos1;
 
-            int rnd2 = -1;
-            do{
-                rnd2 = UnityEngine.Random.Range(0, activeRooms.Count);
-            }while(rnd1 == rnd2);
+            int rnd2 = 2;           //temp
+            // do{
+            //     rnd2 = UnityEngine.Random.Range(0, activeRooms.Count);
+            // }while(rnd1 == rnd2);
 
             Vector3 pos2 = activeRooms[rnd2].roomPosition + (Vector3.up * 2);
             // buttonKey.SetPosition(pos1, pos2);

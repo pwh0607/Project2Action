@@ -20,13 +20,13 @@ public struct CharacterState
 public class CharacterControl : MonoBehaviour, IActorControl
 {
     [Header("Ability")]
-    [ReadOnly] public UIControl uiControl;
+
+    // 인스턴스화 한 데이터
+    public CharacterState state;
 
     // 원본 데이터
     [ReadOnly] public AbilityControl abilityControl;
-    // 인스턴스화 한 데이터
-    public CharacterState state;
-    
+    [ReadOnly] public UIControl uiControl;
     [ReadOnly] public FeedbackControl feedbackControl;
 
     [ReadOnly, SerializeField] private ActorProfile profile;
@@ -36,6 +36,16 @@ public class CharacterControl : MonoBehaviour, IActorControl
     }
 
     
+
+    [Header("flag")]   
+    // 땅에 붙어 있는가?
+    [ReadOnly] public bool isGrounded;
+
+    //데미지를 받을 수 있는 상태
+    [ReadOnly] public bool isDamageable = false;
+    // 목적지 도착 상태.
+    [ReadOnly] public bool isArrived = true;
+
     [Header("Physics")]   
     [ReadOnly] public Rigidbody rb;
     [ReadOnly] public Animator animator;
@@ -43,15 +53,6 @@ public class CharacterControl : MonoBehaviour, IActorControl
 
     [ReadOnly] public Transform eyePoint;
     [ReadOnly] public Transform model;
-
-    [Header("flag")]   
-    // 땅에 붙어 있는가?
-    [ReadOnly] public bool isGrounded;
-
-    //데미지를 받을 수 있는 상태
-    [ReadOnly] public bool isDamageable = true;
-    // 목적지 도착 상태.
-    [ReadOnly] public bool isArrived = true;
 
     void Awake()
     {
@@ -103,13 +104,6 @@ public class CharacterControl : MonoBehaviour, IActorControl
         model.gameObject.SetActive(b);
     }
 
-    public void AnimateTrigger(int hash, AnimatorOverrideController aoc, AnimationClip clip){
-        if(animator == null) return;
-
-        aoc[name] = clip;
-        animator.runtimeAnimatorController = aoc;
-        animator.SetTrigger(hash);
-    }
     
     public void AnimateTrigger(string clipName, AnimatorOverrideController aoc, AnimationClip clip){
         if(animator == null) return;
@@ -117,13 +111,6 @@ public class CharacterControl : MonoBehaviour, IActorControl
         aoc[name] = clip;
         animator.runtimeAnimatorController = aoc;
         animator.SetTrigger(clipName);
-    }
-
-    public void PlayAnimation(int hash, float duration = 0f, int layer = 0)
-    {
-        if(animator == null) return;
-        
-        animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
     }
 
     public void PlayAnimation(string clipName, float duration = 0f, int layer = 0)
@@ -136,19 +123,12 @@ public class CharacterControl : MonoBehaviour, IActorControl
     public void PlayAnimation(string clipName, AnimatorOverrideController aoc, AnimationClip clip, float animationSpeed, float duration = 0f, int layer = 0)
     {
         if(animator == null) return;
+
         aoc[clipName] = clip;
         animator.runtimeAnimatorController = aoc;
         animator?.CrossFadeInFixedTime(clipName, duration, layer, 0f);
     }
-
-    public void PlayAnimation(int hash, AnimatorOverrideController aoc, float animationSpeed, float duration = 0f, int layer = 0)
-    {
-        if(animator == null) return;
-        
-        animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
-    }
-
-
+    
     //immediate = true => 보간처리 없이 바로 애니메이션 수행.
     public void AnimateMoveSpeed(float speed, bool immediate = false){
         if(animator == null) return;

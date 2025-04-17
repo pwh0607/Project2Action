@@ -54,6 +54,14 @@ public class AbilityControl : MonoBehaviour
         flags.Remove(d.Flag, null);
         actives.Remove(d.Flag);
     }
+    
+    public void RemoveAll(){
+        DeactivateAll();
+
+        flags = AbilityFlag.None;
+        actives.Clear();
+        datas.Clear();
+    }
 
     // bool => 기존 ability를 비활성화 하고 새로운 ability를 활성화 시킨다.
     public void Activate(AbilityFlag flag, bool forceDeactivate, object obj)                //Object object.
@@ -100,13 +108,5 @@ public class AbilityControl : MonoBehaviour
         foreach( var a in actives )
             a.Value.Deactivate();
         actives.Clear();
-    }
-
-    public void RemoveAll(){
-        DeactivateAll();
-
-        flags = AbilityFlag.None;
-        actives.Clear();
-        datas.Clear();
     }
 }

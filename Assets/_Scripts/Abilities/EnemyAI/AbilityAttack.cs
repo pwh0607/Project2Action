@@ -35,12 +35,12 @@ public class AbilityAttack : Ability<AbilityAttackData>
 
     
     private void OnEventAttackBefore(EventAttackBefore e){
-        if(owner != e.to) return;
+        if(owner != e.from) return;
 
         Debug.Log("OnEventAttackBefore : 공격 시작!");
         data.eventAttackAfter.from = owner;
         data.eventAttackAfter.to = data.target;
-        data.eventAttackAfter.damage = e.damage;
+        data.eventAttackAfter.damage = owner.state.damage;
         data.eventAttackAfter.Raise();
     }
 
@@ -53,6 +53,7 @@ public class AbilityAttack : Ability<AbilityAttackData>
         owner.LookAtY(data.target.transform.position);
         
         AnimationClip clip = owner.Profile.ATTACK.Random();
+        Debug.Log("공격 수행중...");
         owner.AnimateTrigger("ATTACK", owner.Profile.animatorOverride, clip);
         owner.AnimateMoveSpeed(0f, true);
         data.eventAttackAfter.Raise();
@@ -61,9 +62,15 @@ public class AbilityAttack : Ability<AbilityAttackData>
     async UniTaskVoid CoolTimeAsync(){
         try{
             isAttacking = true;
-            await UniTask.WaitForSeconds(owner.Profile.attackInterval);
+            await UniTask.WaitForSeconds(owner.Profile.attackInterval, cancellationToken: cts.Token);
             isAttacking = false;
-        }catch(System.Exception e){
+        }
+        catch ( System.OperationCanceledException)      
+        {
+            //Debug.Log("쿨타임 취소");
+        }
+        catch ( System.Exception e )
+        {
             Debug.LogException(e);
         }
     }
