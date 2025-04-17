@@ -103,7 +103,7 @@ public class AbilityWandor : Ability<AbilityWandorData>
 
     private void MoveAnimation(){
         float a = owner.isArrived ? 0 : Mathf.Clamp01(currentVelocity / data.movePerSec);
-        float spd = Mathf.Lerp(owner.animator.GetFloat(AnimationClipHashSet._MOVESPEED), a, Time.deltaTime * 10f);
-        owner.animator.SetFloat(AnimationClipHashSet._MOVESPEED, spd);
+        float spd = Mathf.Lerp(owner.animator.GetFloat("MOVESPEED"), a, Time.deltaTime * 10f);
+        owner.animator.SetFloat("MOVESPEED", spd);
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class KeyFactory : BehaviourSingleton<KeyFactory>
 {
-    protected override bool IsDontDestroy() => true;
+    protected override bool IsDontDestroy() => false;
 
-    // [SerializeField] 
+    
 }

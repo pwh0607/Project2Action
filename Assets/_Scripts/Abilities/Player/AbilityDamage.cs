@@ -18,6 +18,7 @@ public class AbilityDamage : Ability<AbilityDamageData>
             return;
         } 
         
+        Debug.Log("Player 피격!");
 
         PoolManager.I.Spawn(e.feedbackFloatingText, owner.eyePoint.position, Quaternion.identity, null);
         e.feedbackFloatingText.SetText(e.damage.ToString());
@@ -45,8 +46,7 @@ public class AbilityDamage : Ability<AbilityDamageData>
 
 
     public override void Deactivate()
-    {        
-        // owner.isDamageable = false;
+    {
         owner.uiControl?.Show(false);
         owner.abilityControl.RemoveAll();
     }

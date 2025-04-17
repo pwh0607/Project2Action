@@ -1,5 +1,4 @@
 using System.Collections;
-using SharpNav;
 using UnityEngine;
 
 public class SpawnerEnemy : Spawner

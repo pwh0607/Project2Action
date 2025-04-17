@@ -15,11 +15,11 @@ public class EnemyEventControl : MonoBehaviour
     
     [Space(10)]
 
-    private CharacterControl control;
+    private CharacterControl owner;
     void Start()
     {
-        if(!TryGetComponent(out control)) Debug.LogWarning("GameEventControl - controllerControl 없음...");
-        control.Visible(false);
+        if(!TryGetComponent(out owner)) Debug.LogWarning("GameEventControl - controllerControl 없음...");
+        owner.Visible(false);
     }
 
     void OnEnable()
@@ -46,71 +46,71 @@ public class EnemyEventControl : MonoBehaviour
 
     #region Event-Spawn After
     void OnEventEnemySpawnAfter(EventEnemySpawnAfter e){
-        if(control != e.character) return;
+        if(owner != e.character) return;
         StartCoroutine(SpawnAfter(e));
     }
 
     IEnumerator SpawnAfter(EventEnemySpawnAfter e){
         Debug.Log("Enemy : SpawnAfter");
-        yield return new WaitUntil(() => control.Profile.avatar != null && control.Profile.models != null);
+        yield return new WaitUntil(() => owner.Profile.avatar != null && owner.Profile.models != null);
 
-        control.Profile = control.Profile;
+        owner.Profile = owner.Profile;
         
-        if(control.Profile.models == null) Debug.LogError("CharacterEventControl ] model 없음.");
+        if(owner.Profile.models == null) Debug.LogError("CharacterEventControl ] model 없음.");
 
-        var model = control.Profile.models.Random();
-        var clone = Instantiate(model, control.model);
+        var model = owner.Profile.models.Random();
+        var clone = Instantiate(model, owner.model);
         
-        if(control.Profile.avatar == null) Debug.LogError("CharacterEventControl ] avatar 없음.");
+        if(owner.Profile.avatar == null) Debug.LogError("CharacterEventControl ] avatar 없음.");
 
-        control.animator.avatar = control.Profile.avatar;
+        owner.animator.avatar = owner.Profile.avatar;
                
         yield return new WaitForSeconds(1f);
         PoolManager.I.Spawn(e.spawnParticle, transform.position, Quaternion.identity, transform);
         
         yield return new WaitForSeconds(0.2f);
         
-        control.Visible(true);
-        control.PlayeAnimation(AnimationClipHashSet._SPAWN, 0f);
+        owner.Visible(true);
+        owner.PlayAnimation("SPAWN", 0f);
 
         yield return new WaitForSeconds(1f);
         
-        foreach(var abilityData in control.Profile.abilities){
-            control.abilityControl.Add(abilityData);
+        foreach(var abilityData in owner.Profile.abilities){
+            owner.abilityControl.Add(abilityData);
         }
 
         yield return new WaitForEndOfFrame();
-        control.uiControl.Show(true);
+        owner.uiControl.Show(true);
 
         if(TryGetComponent(out CursorSelectable sel))
             sel.SetupRenderer();
 
         yield return new WaitForSeconds(1f);
-        control.abilityControl.Activate(AbilityFlag.Wandor, true, null);
+        owner.abilityControl.Activate(AbilityFlag.Wandor, true, null);
     }
     #endregion
 
     #region Event-Sensor Sight
     void OnEventSensorSightEnter(EventSensorSightEnter e){
-        if(control != e.from) return;
-        control.abilityControl.Activate(AbilityFlag.Trace, true, e.to);
+        if(owner != e.from) return;
+        owner.abilityControl.Activate(AbilityFlag.Trace, true, e.to);
     }
 
     void OnEventSensorSightExit(EventSensorSightExit e){
-        if(control != e.from) return;
-        control.abilityControl.Activate(AbilityFlag.Wandor, true, null);
+        if(owner != e.from) return;
+        owner.abilityControl.Activate(AbilityFlag.Wandor, true, null);
     }
     #endregion
 
     #region Event-Sensor Attack
     void OnEventSensorAttackEnter(EventSensorAttackEnter e){
-        if(control != e.from) return;
-        control.abilityControl.Activate(AbilityFlag.Attack, true, e.to);
+        if(owner != e.from) return;
+        owner.abilityControl.Activate(AbilityFlag.Attack, true, e.to);
     }
 
     void OnEventSensorAttackExit(EventSensorAttackExit e){
-        if(control != e.from) return;    
-        control.abilityControl.Activate(AbilityFlag.Trace, false, e.to);
+        if(owner != e.from) return;    
+        owner.abilityControl.Activate(AbilityFlag.Trace, false, e.to);
     }
     #endregion
 }

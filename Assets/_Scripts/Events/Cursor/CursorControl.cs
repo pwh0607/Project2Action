@@ -26,10 +26,16 @@ public class CursorControl : MonoBehaviour
     [SerializeField] Transform cursorFixedPoint;
     public Transform CursorFixedPoint => cursorFixedPoint;
     [SerializeField] LineRenderer line;
+    
+    [SerializeField] EventCursorHover eventCursorHover;
+
 
     private Camera cam;
     [SerializeField] CursorType cursorType = CursorType.NORMALE;
 
+    //충돌할 Layer
+    [SerializeField] LayerMask targetLayer;
+    
     //커서
     [Space(20)]
     [SerializeField] List<CursorData> cursors = new List<CursorData>();
@@ -105,6 +111,11 @@ public class CursorControl : MonoBehaviour
         if(currentHover != null){
             currentHover.Select(true);
             SetCursor(sel.type);
+        }
+
+        if(sel.target != null){
+            eventCursorHover.target = sel.target;
+            eventCursorHover.Raise();
         }
     }
 

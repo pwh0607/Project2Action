@@ -9,6 +9,11 @@ public class CharacterEventControl : MonoBehaviour
     [SerializeField] EventPlayerSpawnAfter eventPlayerSpawnAfter;
     [SerializeField] EventDeath eventDeath;
     [SerializeField] EventAttackAfter eventAttackAfter;
+
+    [SerializeField] EventSensorSightEnter eventSensorSightEnter;
+    [SerializeField] EventSensorSightExit eventSensorSightExit;
+
+    [SerializeField] EventCursorHover eventCursorHover;
 #endregion
     
     private CharacterControl owner;
@@ -24,6 +29,11 @@ public class CharacterEventControl : MonoBehaviour
         eventCameraSwitch.Register(OnEventCameraSwitch);
         eventAttackAfter.Register(OnEventAttackAfter);
         eventDeath.Register(OnEventDeath);
+
+        eventSensorSightEnter.Register(OnEventSensorSightEnter);
+        eventSensorSightExit.Register(OnEventSensorSightExit);
+
+        eventCursorHover.Register(OnEventCursorHover);
     }
 
     void OnDisable()
@@ -32,6 +42,12 @@ public class CharacterEventControl : MonoBehaviour
         eventCameraSwitch.Unregister(OnEventCameraSwitch);
         eventAttackAfter.Unregister(OnEventAttackAfter);
         eventDeath.Unregister(OnEventDeath);
+        
+        
+        eventSensorSightEnter.Unregister(OnEventSensorSightEnter);
+        eventSensorSightExit.Unregister(OnEventSensorSightExit);
+
+        eventCursorHover.Unregister(OnEventCursorHover);
     }
 
     //Temp
@@ -81,7 +97,7 @@ public class CharacterEventControl : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         owner.Visible(true);
-        owner.PlayeAnimation(AnimationClipHashSet._SPAWN, 0f);
+        owner.PlayAnimation("SPAWN", 0f);
 
         PoolManager.I.Spawn(e.spawnParticle, transform.position, Quaternion.identity, null);
     
@@ -106,7 +122,9 @@ public class CharacterEventControl : MonoBehaviour
         rndsphere.y = 0f;
 
         Vector3 rndpos = rndsphere * 0.5f + owner.eyePoint.position;
+
         Debug.Log("OnEventAttackAfter : Damaged");
+
         var floating = PoolManager.I.Spawn(e.particleHit, rndpos, Quaternion.identity, null) as PoolableFeedback;
         if(floating != null)
             floating.SetText($"{e.damage}");
@@ -125,12 +143,38 @@ public class CharacterEventControl : MonoBehaviour
     #region Death
     void OnEventDeath(EventDeath e){
         if(owner != e.target) return;
+
+        owner.ik.isTarget = false;
         
-        owner.PlayeAnimation(AnimationClipHashSet._DEATH, 0.2f);
+        owner.PlayAnimation("DEATH", 0.2f);
         owner.abilityControl.RemoveAll();
     }
     #endregion
 
+
+    #region Sight
+    void OnEventSensorSightEnter(EventSensorSightEnter e){
+        if(owner != e.from) return;
+    }
+
+    void OnEventSensorSightExit(EventSensorSightExit e){
+        //바라보는 자신과 from이 다르거나, 바라볼 타겟과 to가 다르면 무시한다.
+        if(owner != e.from || owner.ik.target != e.to) return;
+
+        owner.ik.target = null;
+        owner.ik.isTarget = false;
+    }
+    #endregion
+
+
+    #region CursorHover
+    // 커서가 호버된 타겟을 쳐다보는 이벤트.
+    void OnEventCursorHover(EventCursorHover e){
+        owner.ik.isTarget = true;
+        owner.ik.target = e.target.eyePoint;
+        owner.LookAtY(e.target.eyePoint.position);
+    }
+    #endregion
 }
 
 // 비동기(async)

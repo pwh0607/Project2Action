@@ -22,8 +22,6 @@ public class AbilityAttack : Ability<AbilityAttackData>
             return;
 
         owner.uiControl.Display(data.Flag.ToString());
-        
-
         data.eventAttackBefore.Register(OnEventAttackBefore);
     }
 
@@ -50,17 +48,16 @@ public class AbilityAttack : Ability<AbilityAttackData>
     {
         if(isAttacking || data.target == null) return;
 
-        CoolTimeAsync().Forget();                 //순서 의미는?
+        CoolTimeAsync().Forget();
 
         owner.LookAtY(data.target.transform.position);
+        
         AnimationClip clip = owner.Profile.ATTACK.Random();
-        owner.PlayeAnimation("ATTACK", owner.Profile.animatorOverride, clip, owner.Profile.attackInterval, 0.1f, 0);
+        owner.AnimateTrigger("ATTACK", owner.Profile.animatorOverride, clip);
         owner.AnimateMoveSpeed(0f, true);
         data.eventAttackAfter.Raise();
     }
 
-    // Ability는 Monobehavouir가 아니기 때문에 코루틴은 사용할 수 없다.
-    // 이럴 때는 async - Await 방식 사용
     async UniTaskVoid CoolTimeAsync(){
         try{
             isAttacking = true;
@@ -70,5 +67,4 @@ public class AbilityAttack : Ability<AbilityAttackData>
             Debug.LogException(e);
         }
     }
-
 }

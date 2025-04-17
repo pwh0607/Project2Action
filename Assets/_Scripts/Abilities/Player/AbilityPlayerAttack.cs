@@ -29,7 +29,8 @@ public class AbilityPlayerAttack : Ability<AbilityPlayerAttackData>
 
     void PerformAttack(){
         Debug.Log("공격!!");
-        owner.PlayeAnimation(AnimationClipHashSet._ATTACK, owner.Profile.animatorOverride, 0.1f, 0);
         owner.AnimateMoveSpeed(0f, true);
+        AnimationClip clip = owner.Profile.ATTACK.Random();
+        owner.AnimateTrigger("ATTACK", owner.Profile.animatorOverride, clip);
     }
 }

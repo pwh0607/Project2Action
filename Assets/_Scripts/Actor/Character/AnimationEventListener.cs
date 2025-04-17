@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.VFX;
 using CustomInspector;
 
 public class AnimationEventListener : MonoBehaviour
@@ -16,6 +17,8 @@ public class AnimationEventListener : MonoBehaviour
     [ReadOnly] public Transform footLeft, footRight;
     [ReadOnly] public Transform handLeft, handRight;
     
+
+    public VisualEffect vfxSwing;
 
     void Awake()
     {
@@ -53,8 +56,8 @@ public class AnimationEventListener : MonoBehaviour
     IEnumerator DelayFind(){
         yield return new WaitForEndOfFrame();
 
-        footLeft = modelRoot.FindSlot("leftfoot", "l foot", "Lfoot");
-        footRight = modelRoot.FindSlot("rightfoot", "r foot", "Rfoot");
+        footRight = modelRoot.FindSlot("rightfoot", "Ball_R", "r foot", "Rfoot");
+        footLeft = modelRoot.FindSlot("leftfoot", "Ball_L", "l foot", "Lfoot");
         handLeft = modelRoot.FindSlot("L Hand","LeftHand");
         handRight = modelRoot.FindSlot("R Hand","LeftHand");
     }
@@ -90,5 +93,21 @@ public class AnimationEventListener : MonoBehaviour
         rot.eulerAngles = new Vector3(-90f, rot.eulerAngles.y, 0f);
         
         PoolManager.I.Spawn(swing1, s == "L" ? handLeft.position : handRight.position, rot, null);
+    }
+
+    // string => on : 시작, off : 종료
+
+    /*
+
+    */
+    public void Swing(string on){
+        if(vfxSwing == null) return;
+
+        if(on == "on"){
+            vfxSwing.Play();
+        }else{
+            vfxSwing.Stop();
+        }
+
     }
 }

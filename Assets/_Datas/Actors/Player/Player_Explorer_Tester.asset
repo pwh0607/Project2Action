@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2b6190a2a4915945a053546f42b666b, type: 3}
+  m_Name: Player_Explorer_Tester
+  m_EditorClassIdentifier: 
+  _h_s0: 0
+  actorType: 1
+  alias: Player
+  portrait: {fileID: 21300000, guid: cb2911b64e7b5574eadc2e174e422e02, type: 3}
+  models:
+  - {fileID: 8730629907387425158, guid: 2de35919a3470a646a7ad63e2fb9bdd9, type: 3}
+  avatar: {fileID: 9000000, guid: 285f7ff3a047cb64fbca69253a45ae28, type: 3}
+  _h_s1: 0
+  animatorOverride: {fileID: 22100000, guid: aca33f7f5e440094dbb456f7fa76952c, type: 2}
+  ATTACK:
+  - {fileID: 7400000, guid: ec2ec8e954488704c8df43edc8224299, type: 2}
+  _h_e1: 0
+  _h_s2: 0
+  health: 100
+  moveSpeed: 5
+  rotateSpeed: 1080
+  jumpForce: 10
+  jumpDuration: 0.5
+  attackInterval: 0
+  attackDamage: 0
+  _h_s3: 0
+  abilities:
+  - {fileID: 11400000, guid: e5c0c666dfa69554cbde32415caf9f78, type: 2}
+  - {fileID: 11400000, guid: 552225c8e201a3e43800274bb5a7dccc, type: 2}
+  - {fileID: 11400000, guid: cd015bfbc7276af429e83518d5d246a1, type: 2}
+  - {fileID: 11400000, guid: a066461422bbfdb488a3c608267bb01e, type: 2}
+  - {fileID: 11400000, guid: d7db2c60be139d54d88a7c9ec39a523c, type: 2}

@@ -1,5 +1,6 @@
 using UnityEngine;
 using CustomInspector;
+using DG.Tweening;
 
 //TempCode
 public struct CharacterState
@@ -19,14 +20,14 @@ public struct CharacterState
 public class CharacterControl : MonoBehaviour, IActorControl
 {
     [Header("Ability")]
-    [HideInInspector] public UIControl uiControl;
+    [ReadOnly] public UIControl uiControl;
 
     // 원본 데이터
-    [HideInInspector] public AbilityControl abilityControl;
+    [ReadOnly] public AbilityControl abilityControl;
     // 인스턴스화 한 데이터
     public CharacterState state;
     
-    [HideInInspector] public FeedbackControl feedbackControl;
+    [ReadOnly] public FeedbackControl feedbackControl;
 
     [ReadOnly, SerializeField] private ActorProfile profile;
     public ActorProfile Profile { 
@@ -38,6 +39,7 @@ public class CharacterControl : MonoBehaviour, IActorControl
     [Header("Physics")]   
     [ReadOnly] public Rigidbody rb;
     [ReadOnly] public Animator animator;
+    [ReadOnly] public AnimationIKControl ik;
 
     [ReadOnly] public Transform eyePoint;
     [ReadOnly] public Transform model;
@@ -60,6 +62,9 @@ public class CharacterControl : MonoBehaviour, IActorControl
         
         eyePoint = transform.Find("_EYEPOINT_");
         model = transform.Find("_MODEL_");
+
+        // Option : 있으면 쓰고, 없으면 무시.
+        ik = GetComponent<AnimationIKControl>();
     }
 
     void Start() { }
@@ -68,19 +73,25 @@ public class CharacterControl : MonoBehaviour, IActorControl
     {
         isGrounded = CheckGrounded();
     }
-    
+
     bool CheckGrounded(){
         var ray = new Ray(transform.position + Vector3.up * 0.1f, Vector3.down);
         return Physics.Raycast(ray, 0.3f);
     }
 
+    Tween tweenrot;
+
     // 타겟을 바라본다 (Y축만 회전)
     public void LookAtY(Vector3 target){
+        if(tweenrot != null || tweenrot.IsPlaying()) return;
+
         Vector3 direction = target - transform.position;
         direction.y = 0f;
 
         Vector3 euler = Quaternion.LookRotation(direction.normalized).eulerAngles;
-        transform.rotation = Quaternion.Euler(euler);
+        Quaternion rot = Quaternion.Euler(euler);
+        
+        transform.DORotateQuaternion(rot, 0.2f).SetEase(Ease.OutSine);
     }
 
     public void Stop(){
@@ -92,21 +103,37 @@ public class CharacterControl : MonoBehaviour, IActorControl
         model.gameObject.SetActive(b);
     }
 
-    public void PlayeAnimation(int hash, float duration = 0f, int layer = 0)
+    public void AnimateTrigger(int hash, AnimatorOverrideController aoc, AnimationClip clip){
+        if(animator == null) return;
+
+        aoc[name] = clip;
+        animator.runtimeAnimatorController = aoc;
+        animator.SetTrigger(hash);
+    }
+    
+    public void AnimateTrigger(string clipName, AnimatorOverrideController aoc, AnimationClip clip){
+        if(animator == null) return;
+
+        aoc[name] = clip;
+        animator.runtimeAnimatorController = aoc;
+        animator.SetTrigger(clipName);
+    }
+
+    public void PlayAnimation(int hash, float duration = 0f, int layer = 0)
     {
         if(animator == null) return;
         
         animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
     }
 
-    public void PlayeAnimation(int hash, AnimatorOverrideController aoc, float animationSpeed, float duration = 0f, int layer = 0)
+    public void PlayAnimation(string clipName, float duration = 0f, int layer = 0)
     {
         if(animator == null) return;
         
-        animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
+        animator?.CrossFadeInFixedTime(clipName, duration, layer, 0f);
     }
 
-    public void PlayeAnimation(string clipName, AnimatorOverrideController aoc, AnimationClip clip, float animationSpeed, float duration = 0f, int layer = 0)
+    public void PlayAnimation(string clipName, AnimatorOverrideController aoc, AnimationClip clip, float animationSpeed, float duration = 0f, int layer = 0)
     {
         if(animator == null) return;
         aoc[clipName] = clip;
@@ -114,12 +141,20 @@ public class CharacterControl : MonoBehaviour, IActorControl
         animator?.CrossFadeInFixedTime(clipName, duration, layer, 0f);
     }
 
+    public void PlayAnimation(int hash, AnimatorOverrideController aoc, float animationSpeed, float duration = 0f, int layer = 0)
+    {
+        if(animator == null) return;
+        
+        animator?.CrossFadeInFixedTime(hash, duration, layer, 0f);
+    }
+
+
     //immediate = true => 보간처리 없이 바로 애니메이션 수행.
     public void AnimateMoveSpeed(float speed, bool immediate = false){
         if(animator == null) return;
 
-        float current = animator.GetFloat(AnimationClipHashSet._MOVESPEED);
+        float current = animator.GetFloat("MOVESPEED");
         float spd = Mathf.Lerp(current, speed, Time.deltaTime * 10f);
-        animator.SetFloat(AnimationClipHashSet._MOVESPEED, immediate ? speed : spd);
+        animator.SetFloat("MOVESPEED", immediate ? speed : spd);
     }
 }

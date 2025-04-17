@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using CustomInspector;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,22 +12,33 @@ public struct TargetState
 
 public class Sensor : MonoBehaviour
 {
+    #region Event
+    [HorizontalLine("Sensor-Event"), HideInInspector] public bool l_s_1;
+
+    [SerializeField] EventSensorSightEnter eventSensorSightEnter;
+    [SerializeField] EventSensorSightExit eventSensorSightExit;
+    [SerializeField] EventSensorAttackEnter eventSensorAttackEnter;
+    [SerializeField] EventSensorAttackExit eventSensorAttackExit;
+
+    [HorizontalLine(color:FixedColor.Cyan), HideInInspector] public bool l_e_1;
+    #endregion
+
+
+
     [Header("Detection Settings")]
-    public float interval = 0.5f; // Interval for detection checks
+    public float interval = 0.5f;
     public float detectionRadius = 5f;
     public float arrivedRadius = 3f; 
-    public float fieldOfViewAngle = 60f; // New FOV angle parameter
+    public float fieldOfViewAngle = 60f;
     public LayerMask targetLayer;
     public LayerMask blockLayer;
 
-    public string targetTag = "Enemy";
+    public string targetTag = "ENEMY";
     public bool showGizmos = true;
-
-
-    
+ 
     private Dictionary<CharacterControl, TargetState> visibilityStates = new Dictionary<CharacterControl, TargetState>();
+    [SerializeField, ReadOnly] private CharacterControl owner, target;
 
-    private CharacterControl owner, target;
 
     void Start()
     {
@@ -120,22 +133,40 @@ public class Sensor : MonoBehaviour
     
     void OnFound()
     {
-        owner.uiControl.Display("FOUND");        
+        owner.uiControl.Display("FOUND"); 
+       
+        eventSensorSightEnter.from = owner;
+        eventSensorSightEnter.to = target;
+        eventSensorSightEnter.Raise();
     }
 
     void OnBlocked()
     {
         owner.uiControl.Display("BLOCKED");
+
+        eventSensorSightExit.from = owner;
+        eventSensorSightExit.to = target;
+        eventSensorSightExit.Raise();
+
+        target = null;
     }
 
     void OnLost()
     {        
         owner.uiControl.Display("LOST");
+
+        eventSensorAttackExit.from = owner;
+        eventSensorAttackExit.to = target;
+        eventSensorAttackExit.Raise();
     }
 
     void OnArrived()
     {        
         owner.uiControl.Display("ARRIVED");
+
+        eventSensorAttackEnter.from = owner;
+        eventSensorAttackEnter.to = target;
+        eventSensorAttackEnter.Raise();
     }
 
 

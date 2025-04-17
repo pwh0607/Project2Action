@@ -15,25 +15,25 @@ public class PropsGenerator : MonoBehaviour
 
     [Space(20)]
     [HorizontalLine("DungeonData"), HideInInspector] public bool h_s3;
-    [ReadOnly] Dungeon dungeon;
+    [ReadOnly] public Dungeon dungeon;
     public Dictionary<string, Room> roomDic = new();
     public List<Room> rooms = new();
     public List<Link> links = new();
     [HorizontalLine(color:FixedColor.Cyan), HideInInspector] public bool h_e3;
     
     [Space(20)]
-    public List<GameObject> tmpPrefab;
+    public List<GameObject> markPrefab;
 
     //Test
     public DoorData doorData;
     public Vector3 offset = new Vector3(5f,0,5f);
     void Start()
     {
+        dungeon = FindAnyObjectByType<Dungeon>();
+
         InitGraphData();
         InitGate();
         InitVisited();
-
-        dungeon = FindAnyObjectByType<Dungeon>();
 
         while(lockCount > 0){
             SearchGraph();
@@ -44,6 +44,7 @@ public class PropsGenerator : MonoBehaviour
     #region InitDatas
     void InitGraphData(){
         Debug.Log("InitGraph...");
+
         if (dungeon == null)
         {
             Debug.LogError("Dungeon 객체가 설정되지 않았습니다!");
@@ -137,7 +138,7 @@ public class PropsGenerator : MonoBehaviour
     // 1. StartSearch를 통해 첫번째로 발견한 잠긴 문과, key를 설치할 수 있는 노드들을 찾는다.
     // 2. StartSeach를 통해 activeRooms에 key를 설치할 수 있는 key를 설치한다.
     // 3. key를 설치 완료후, StartSearch를 시작하여 Gate 개수만큼 위 과정을 반복한다.
-    public InterActiveGate targetGate = null; 
+    [ReadOnly] public InterActiveGate targetGate = null; 
     public List<InterActiveGate> gates = new();
 
     void SearchGraph(){
@@ -168,11 +169,9 @@ public class PropsGenerator : MonoBehaviour
                             targetGate = link.gate;
                             gates.Add(link.gate);
 
-                            //알맞은 gate를 찾았으면 key 생성하기.
                             AnswerKey key = MakeKey();
+                            SetKeyPosition(key);
                             SendPairData(targetGate, key);
-
-                            // key의 위치를 설정
                         }
                         continue;
                     }    
@@ -189,12 +188,12 @@ public class PropsGenerator : MonoBehaviour
 
     void MakeMark(){
         foreach(var room in activeRooms){
-            Instantiate(tmpPrefab[searchCount], room.roomPosition, Quaternion.identity);
+            Instantiate(markPrefab[searchCount], room.roomPosition, Quaternion.identity);
         }
         searchCount++;
     }
 
-    public int spawnNodeNumber = 3;                 //test용
+    public int spawnNodeNumber;
 
     // 다음에 탐색할 노드를 찾는다.
     void SearchNode(){
@@ -234,21 +233,28 @@ public class PropsGenerator : MonoBehaviour
         GameObject keyPrefab = answerKeyData.key[rnd];
         AnswerKey key = Instantiate(keyPrefab).GetComponent<AnswerKey>();
 
+        return key;
+    }
+
+    void SetKeyPosition(AnswerKey key){
         if(key is NormalKey normalKey){
             int rnd1 = UnityEngine.Random.Range(0, activeRooms.Count);
-            normalKey.transform.position = activeRooms[rnd].roomPosition + (Vector3.up * 2);
+            normalKey.transform.position = activeRooms[rnd1].roomPosition + (Vector3.up * 2);
         }else if (key is ButtonKey buttonKey){
             int rnd1 = UnityEngine.Random.Range(0, activeRooms.Count);
             Vector3 pos1 = activeRooms[rnd1].roomPosition + (Vector3.up * 2);
+
+            //임시로 세팅.
+            buttonKey.transform.position = pos1;
 
             int rnd2 = -1;
             do{
                 rnd2 = UnityEngine.Random.Range(0, activeRooms.Count);
             }while(rnd1 == rnd2);
+
             Vector3 pos2 = activeRooms[rnd2].roomPosition + (Vector3.up * 2);
-            buttonKey.SetPosition(pos1, pos2);
+            // buttonKey.SetPosition(pos1, pos2);
         }
-        return key;
     }
 #endregion
 
@@ -265,10 +271,6 @@ public class PropsGenerator : MonoBehaviour
         return count >= 1;
     }
 }
-
-
-
-
 
 [Serializable]              
 public class Room{

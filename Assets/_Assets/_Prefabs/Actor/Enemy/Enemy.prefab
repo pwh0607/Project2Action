@@ -454,7 +454,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6886352115772259457}
   - component: {fileID: 7948595078243542999}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Collision
   m_TagString: ENEMY
   m_Icon: {fileID: 0}
@@ -605,7 +605,7 @@ GameObject:
   - component: {fileID: 3954374162032563192}
   - component: {fileID: 5658018190876893850}
   - component: {fileID: 7578951471217505408}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy
   m_TagString: ENEMY
   m_Icon: {fileID: 0}
@@ -722,6 +722,7 @@ MonoBehaviour:
   profile: {fileID: 0}
   rb: {fileID: 0}
   animator: {fileID: 0}
+  ik: {fileID: 0}
   eyePoint: {fileID: 0}
   model: {fileID: 0}
   isGrounded: 0
@@ -749,7 +750,7 @@ MonoBehaviour:
   attackRange: 2
   targetLayer:
     serializedVersion: 2
-    m_Bits: 4
+    m_Bits: 512
   targetTag: Player
   interval: 0.2
   target: {fileID: 0}
@@ -829,6 +830,7 @@ MonoBehaviour:
   footRight: {fileID: 0}
   handLeft: {fileID: 0}
   handRight: {fileID: 0}
+  vfxSwing: {fileID: 0}
 --- !u!114 &7578951471217505408
 MonoBehaviour:
   m_ObjectHideFlags: 0

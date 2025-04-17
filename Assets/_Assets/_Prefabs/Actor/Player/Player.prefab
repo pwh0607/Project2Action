@@ -260,23 +260,31 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1948834812007720715}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b89d889c76782f45838bc099071a609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  l_s_1: 0
+  eventSensorSightEnter: {fileID: 11400000, guid: 40f208b09d6059b48bb04ee962102771, type: 2}
+  eventSensorSightExit: {fileID: 11400000, guid: 1566c18dd46c9d84a9f04ddfa66e130c, type: 2}
+  eventSensorAttackEnter: {fileID: 11400000, guid: e0f70750bae66be479a616d127dac90c, type: 2}
+  eventSensorAttackExit: {fileID: 11400000, guid: 76b8554e3dc6cfd428c77a470e6efa1c, type: 2}
+  l_e_1: 0
   interval: 0.5
-  detectionRadius: 5
+  detectionRadius: 8
   arrivedRadius: 3
-  fieldOfViewAngle: 60
+  fieldOfViewAngle: 90
   targetLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   blockLayer:
     serializedVersion: 2
-    m_Bits: 0
-  targetTag: Enemy
+    m_Bits: 1
+  targetTag: ENEMY
   showGizmos: 1
+  owner: {fileID: 0}
+  target: {fileID: 0}
 --- !u!1 &2778881341834981060
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,7 +295,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4675960079967612654}
   - component: {fileID: 4349415867957677361}
-  m_Layer: 2
+  m_Layer: 9
   m_Name: Collision
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -514,7 +522,8 @@ GameObject:
   - component: {fileID: 7343873971475728621}
   - component: {fileID: 750402350895046784}
   - component: {fileID: 4916702610279981125}
-  m_Layer: 2
+  - component: {fileID: 3923841910659365889}
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -578,7 +587,7 @@ Animator:
   m_GameObject: {fileID: 5264368567590646377}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a591d104dfb971f49a97474ff4cd7b67, type: 2}
+  m_Controller: {fileID: 22100000, guid: aca33f7f5e440094dbb456f7fa76952c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -608,6 +617,7 @@ MonoBehaviour:
   profile: {fileID: 0}
   rb: {fileID: 0}
   animator: {fileID: 0}
+  ik: {fileID: 0}
   eyePoint: {fileID: 2910737957155279010}
   model: {fileID: 0}
   isGrounded: 1
@@ -658,12 +668,14 @@ MonoBehaviour:
   h_s_01: 0
   eventPlayerSpawnAfter: {fileID: 11400000, guid: dc969804fc864c940a147df9dd852e32, type: 2}
   eventEnemySpawnAfter: {fileID: 0}
+  eventAttackBefore: {fileID: 0}
   h_e_01: 0
   modelRoot: {fileID: 6366712871683737439}
   footLeft: {fileID: 0}
   footRight: {fileID: 0}
   handLeft: {fileID: 0}
   handRight: {fileID: 0}
+  vfxSwing: {fileID: 0}
 --- !u!114 &750402350895046784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -680,6 +692,9 @@ MonoBehaviour:
   eventPlayerSpawnAfter: {fileID: 11400000, guid: dc969804fc864c940a147df9dd852e32, type: 2}
   eventDeath: {fileID: 11400000, guid: 93ae54cae924dce4eaad14eb500a870c, type: 2}
   eventAttackAfter: {fileID: 11400000, guid: 98f914c037a49164e9d1666facbb0e17, type: 2}
+  eventSensorSightEnter: {fileID: 11400000, guid: 40f208b09d6059b48bb04ee962102771, type: 2}
+  eventSensorSightExit: {fileID: 11400000, guid: 1566c18dd46c9d84a9f04ddfa66e130c, type: 2}
+  eventCursorHover: {fileID: 0}
 --- !u!114 &4916702610279981125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -697,6 +712,25 @@ MonoBehaviour:
   textMesh: {fileID: 0}
   sliderHealth: {fileID: 7757914009003801089}
   h_e1: 0
+  state: 
+--- !u!114 &3923841910659365889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5264368567590646377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f72cf5b193e3a74ab1c7f85a9073c3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _h0: 0
+  isTarget: 1
+  target: {fileID: 0}
+  overallWeight: 1
+  bodyWeight: 0.2
+  headWeight: 0.5
 --- !u!1 &6125268480584045965
 GameObject:
   m_ObjectHideFlags: 0

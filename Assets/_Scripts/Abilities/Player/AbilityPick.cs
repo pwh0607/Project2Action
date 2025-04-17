@@ -39,11 +39,13 @@ public class AbilityPick : Ability<AbilityPickData>
     }
     private void PickItem(){
         if(currentItem != null || pickableItem == null) return;             // 이미 아이템을 가지고 있다면 무시.
+        Debug.Log("Pick!!");
         pickableItem.Apply(owner);
     }
 
     private void ThrowItem(){
         if(currentItem != null) return;
+        Debug.Log("Throw!!");
         pickableItem.Throw();
     }
 

@@ -33,10 +33,13 @@ public class UIControl : MonoBehaviour
         uiRoot.gameObject.SetActive(on);
     }
 
+    [ReadOnly] public string state;
+
     public void Display(string info){
         if(textMesh == null) return;
 
-        textMesh.text= info;
+        textMesh.text = info;
+        state = info;
     }
 
     public void SetHealth(int current, int max){

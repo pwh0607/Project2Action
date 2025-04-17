@@ -31,14 +31,12 @@ public class SensorControl : MonoBehaviour
     [ReadOnly] public CharacterControl prevSight;
     [ReadOnly] public CharacterControl prevAttack;
 
-    void Start()
-    {
+    void Start(){
         TryGetComponent(out owner);
         InvokeRepeating("CheckOverlap", 0f, interval);
     }
 
-    void CheckOverlap()
-    {
+    void CheckOverlap(){
         var cols = Physics.OverlapSphere(owner.transform.position, sightRange, targetLayer);
 
         foreach(var c in cols){
@@ -108,6 +106,5 @@ public class SensorControl : MonoBehaviour
         eventSensorAttackExit.to = target;
         eventSensorAttackExit.Raise();
     }
-
     #endregion
 }
