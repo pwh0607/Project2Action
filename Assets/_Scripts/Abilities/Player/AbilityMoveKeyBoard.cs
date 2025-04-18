@@ -6,10 +6,14 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
     private Transform cameraTransform;
     private Vector3 camForward, camRight;
     private Vector3 direction;
+    private CursorControl cursor;
 
     public AbilityMoveKeyBoard(AbilityMoveKeyBoardData data, CharacterControl owner) : base(data, owner)
     {
         cameraTransform = Camera.main.transform;
+        cursor = GameObject.FindFirstObjectByType<CursorControl>();
+        if(cursor == null)
+            Debug.LogWarning("AbilityMoveMouse ] CursorControl is null...");
 
         if(owner.Profile == null) return;
 
@@ -20,6 +24,7 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
     public override void FixedUpdate()
     {
         Rotate();
+        // RotateByCursor();
         Movement();
     }
 
@@ -91,5 +96,19 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
         float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
         float smoothAngle = Mathf.SmoothDampAngle(owner.transform.eulerAngles.y, angle, ref data.rotatePerSec, 0.1f);
         owner.transform.rotation = Quaternion.Euler(0f, smoothAngle, 0f);
+    }
+
+    void RotateByCursor(){
+        if(cursor == null) return;
+
+        Vector3 cursorPoint = cursor.CursorFixedPoint.position;
+
+        // 커서와 캐릭터의 y 높이를 같게 처리하기.
+        cursorPoint.y = owner.transform.position.y;
+        Vector3 direction = cursorPoint - owner.transform.position;
+
+        // 바라볼 방향으로 회전
+        Quaternion rot =Quaternion.LookRotation(direction);
+        owner.transform.rotation = Quaternion.Slerp(owner.transform.rotation, rot, Time.deltaTime * 10f);           //RotateTowards : 회전 보정
     }
 }

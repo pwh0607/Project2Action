@@ -4,9 +4,19 @@ using UnityEngine;
 
 public static class RandomGenerator
 {
-    public static List<int> RandomIntGenerate(this List<int> list, int count){
-        if(count > list.Count) return null;
-        List<int> res = new();
+    /*
+        public static T Random<T>(this List<T> list){
+            int rnd = UnityEngine.Random.Range(0, list.Count);
+            return list[rnd];
+        }
+    */
+    public static List<int> RandomIntGenerate(this int max, int count){
+        if(count > max) return null;
+        List<int> list = new();
+
+        for(int i=0;i<max;i++){
+            list.Add(i);
+        }
 
         List<int> shuffledList = new(list);
         for (int i = 0; i < shuffledList.Count; i++)

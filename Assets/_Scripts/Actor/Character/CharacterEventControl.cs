@@ -143,8 +143,6 @@ public class CharacterEventControl : MonoBehaviour
     #region Death
     void OnEventDeath(EventDeath e){
         if(owner != e.target) return;
-
-        owner.ik.isTarget = false;
         
         owner.PlayAnimation("DEATH", 0.2f);
         owner.abilityControl.RemoveAll();
@@ -158,11 +156,7 @@ public class CharacterEventControl : MonoBehaviour
     }
 
     void OnEventSensorSightExit(EventSensorSightExit e){
-        //바라보는 자신과 from이 다르거나, 바라볼 타겟과 to가 다르면 무시한다.
-        if(owner != e.from || owner.ik.target != e.to) return;
 
-        owner.ik.target = null;
-        owner.ik.isTarget = false;
     }
     #endregion
 
@@ -170,9 +164,7 @@ public class CharacterEventControl : MonoBehaviour
     #region CursorHover
     // 커서가 호버된 타겟을 쳐다보는 이벤트.
     void OnEventCursorHover(EventCursorHover e){
-        owner.ik.isTarget = true;
-        owner.ik.target = e.target.eyePoint;
-        owner.LookAtY(e.target.eyePoint.position);
+
     }
     #endregion
 }

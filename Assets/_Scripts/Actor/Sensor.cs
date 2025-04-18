@@ -35,7 +35,7 @@ public class Sensor : MonoBehaviour
     public LayerMask targetLayer;
     public LayerMask blockLayer;
 
-    public string targetTag = "ENEMY";
+    public string targetTag;
     public bool showGizmos = true;
 
     private Dictionary<CharacterControl, TargetState> visibilityStates = new Dictionary<CharacterControl, TargetState>();
@@ -58,11 +58,11 @@ public class Sensor : MonoBehaviour
     {
         if (owner != e.character) return;
 
-        // detectionRadius = 5f;
-        // arrivedRadius = 1f;
+        detectionRadius = 5f;
+        attackRange = 2f;
 
-        detectionRadius = owner.Profile.sightRange;
-        attackRange = owner.Profile.attackRange;
+        // // detectionRadius = owner.Profile.sightRange;
+        // // attackRange = owner.Profile.attackRange;
     }
 
 

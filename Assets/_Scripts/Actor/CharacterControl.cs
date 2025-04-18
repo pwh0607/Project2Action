@@ -52,6 +52,7 @@ public class CharacterControl : MonoBehaviour, IActorControl
     [ReadOnly] public AnimationIKControl ik;
 
     [ReadOnly] public Transform eyePoint;
+    [ReadOnly] public Transform handPoint;
     [ReadOnly] public Transform model;
 
     void Awake()
@@ -63,7 +64,8 @@ public class CharacterControl : MonoBehaviour, IActorControl
         
         eyePoint = transform.Find("_EYEPOINT_");
         model = transform.Find("_MODEL_");
-
+        handPoint = transform.Find("_HANDPOINT_");
+        
         // Option : 있으면 쓰고, 없으면 무시.
         ik = GetComponent<AnimationIKControl>();
     }

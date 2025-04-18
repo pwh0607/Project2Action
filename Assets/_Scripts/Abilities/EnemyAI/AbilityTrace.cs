@@ -24,9 +24,9 @@ public class AbilityTrace : Ability<AbilityTraceData>
     public override void Activate(object obj)
     {
         data.target = obj as CharacterControl;
-
+        Debug.Log("Trace Activate");
         if(data.target == null) return;
-        Debug.Log("Trace 중...");
+        Debug.Log("Target Trace");
         owner.uiControl.Display($"{data.Flag}");
     }
 

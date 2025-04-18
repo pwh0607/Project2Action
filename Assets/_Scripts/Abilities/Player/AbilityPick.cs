@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class AbilityPick : Ability<AbilityPickData>
@@ -37,31 +38,39 @@ public class AbilityPick : Ability<AbilityPickData>
             }
         }
     }
+    
     private void PickItem(){
         if(currentItem != null || pickableItem == null) return;             // 이미 아이템을 가지고 있다면 무시.
-        Debug.Log("Pick!!");
+
+        Debug.Log("Take!!");
         pickableItem.Apply(owner);
+        currentItem = pickableItem;
     }
 
     private void ThrowItem(){
         if(currentItem != null) return;
         Debug.Log("Throw!!");
         pickableItem.Throw();
+        
+        currentItem = null;
     }
 
     private void CheckItem(){
-
         Debug.DrawRay(owner.eyePoint.transform.position, owner.transform.forward, Color.red, 3f);
         
         if(currentItem != null) return;
+        
+        var list = Physics.OverlapSphere(owner.transform.position + owner.transform.forward, 2f, LayerMask.GetMask("HeavyObject"));
 
-        if(Physics.Raycast(owner.eyePoint.transform.position, owner.transform.forward, out RaycastHit hit, data.pickRange)){
-            IInterative interative = hit.collider.GetComponent<IInterative>();
-            if(interative is Pickable pickable){
-                pickableItem = pickable;
-            }
-            
+        Debug.Log($"list sz : {list.Length}");
+
+        if(list[0].tag == "HEAVYOBJECT"){
+            Debug.Log(" 무거운 오브젝트;'");
+            pickableItem = list[0].GetComponent<Pickable>();
+
+            return;
         }
+        
         pickableItem = null;       
     }
 }

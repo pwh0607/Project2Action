@@ -7,14 +7,14 @@ public class FloorButton : MonoBehaviour
     
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "HeavyObject" || collision.gameObject.tag == "Player"){
+        if(collision.gameObject.tag == "HEAVYOBJECT" || collision.gameObject.tag == "Player"){
             OnPressedButton(true);
         }       
     }
 
     void OnCollisionExit(Collision collision)
     {
-        if(collision.gameObject.tag == "HeavyObject" || collision.gameObject.tag == "Player"){
+        if(collision.gameObject.tag == "HEAVYOBJECT" || collision.gameObject.tag == "Player"){
             OnPressedButton(false);
         }          
     }

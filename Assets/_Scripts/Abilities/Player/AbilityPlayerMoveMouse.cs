@@ -10,9 +10,16 @@ public class AbilityPlayerMoveMouse : Ability<AbilityPlayerMoveMouseData>
     private int next;
     private ParticleSystem marker;
     float currentVelocity;
+
+    private CursorControl cursor;
+
     public AbilityPlayerMoveMouse(AbilityPlayerMoveMouseData data, CharacterControl owner) : base(data, owner)
     {
         camera = Camera.main;
+        cursor = GameObject.FindFirstObjectByType<CursorControl>();
+        if(cursor == null)
+            Debug.LogWarning("AbilityMoveMouse ] CursorControl is null...");
+
         path = new();
 
         marker = GameObject.Instantiate(data.marker);
@@ -32,7 +39,8 @@ public class AbilityPlayerMoveMouse : Ability<AbilityPlayerMoveMouseData>
     public override void Update(){
         if (owner == null || owner.rb == null)
             return;
-
+        
+        RotateByCursor();
         MoveAnimation();
     }
 
@@ -107,6 +115,20 @@ public class AbilityPlayerMoveMouse : Ability<AbilityPlayerMoveMouseData>
             marker.Play();
             SetDestiNation(hit.point);
         }
+    }
+
+    void RotateByCursor(){
+        if(cursor == null) return;
+
+        Vector3 cursorPoint = cursor.CursorFixedPoint.position;
+
+        // 커서와 캐릭터의 y 높이를 같게 처리하기.
+        cursorPoint.y = owner.transform.position.y;
+        Vector3 direction = cursorPoint - owner.transform.position;
+
+        // 바라볼 방향으로 회전
+        Quaternion rot =Quaternion.LookRotation(direction);
+        owner.transform.rotation = Quaternion.Slerp(owner.transform.rotation, rot, Time.deltaTime * 10f);           //RotateTowards : 회전 보정
     }
 
 }

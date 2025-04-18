@@ -9,6 +9,7 @@ TagManager:
   - WALL
   - ENEMY
   - ITEM
+  - HEAVYOBJECT
   layers:
   - Default
   - TransparentFX

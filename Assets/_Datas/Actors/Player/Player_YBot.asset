@@ -30,11 +30,13 @@ MonoBehaviour:
   rotateSpeed: 1080
   jumpForce: 10
   jumpDuration: 0.5
+  sightRange: 0
+  attackRange: 0
   attackInterval: 0
   attackDamage: 0
   _h_s3: 0
   abilities:
-  - {fileID: 11400000, guid: 35b1cb29cd1801f418d40797bbd4429f, type: 2}
+  - {fileID: 11400000, guid: e5c0c666dfa69554cbde32415caf9f78, type: 2}
   - {fileID: 11400000, guid: 552225c8e201a3e43800274bb5a7dccc, type: 2}
   - {fileID: 11400000, guid: cd015bfbc7276af429e83518d5d246a1, type: 2}
   - {fileID: 11400000, guid: d7db2c60be139d54d88a7c9ec39a523c, type: 2}

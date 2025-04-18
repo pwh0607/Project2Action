@@ -44,7 +44,6 @@ public class AnimationEventListener : MonoBehaviour
     void OnDisable()
     {
         eventPlayerSpawnAfter.Unregister(OnEventPlayerSpawnAfter);
-
         eventEnemySpawnAfter.Unregister(OnEventEnemySpawnAfter);
     }
 

@@ -91,12 +91,28 @@ public class EnemyEventControl : MonoBehaviour
 
     #region Event-Sensor Sight
     void OnEventSensorSightEnter(EventSensorSightEnter e){
-        if(owner != e.from) return;
+        Debug.Log("Sight Enter");
+
+        if(owner != e.from){
+            Debug.Log($"{owner}, {e.from}; OnEventSensorSightEnter : owner != e.from");
+            return;
+        } 
+        Debug.Log("target Sight Complete");
+
         owner.abilityControl.Activate(AbilityFlag.Trace, true, e.to);
     }
 
     void OnEventSensorSightExit(EventSensorSightExit e){
-        if(owner != e.from) return;
+        Debug.Log("Sight Exit");
+
+
+        if(owner != e.from){
+            Debug.Log($"{owner}, {e.from}; OnEventSensorSightExit : owner != e.from");
+            return;
+        } 
+        
+        Debug.Log("target Sighte Complete");
+        
         owner.abilityControl.Activate(AbilityFlag.Wandor, true, null);
     }
     #endregion

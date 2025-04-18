@@ -104,7 +104,6 @@ public class CursorControl : MonoBehaviour
 
         if(currentHover == null) return;
         
-        // Selecteable 가능한 오브젝트와만 커서-상호작용을 한다.
         var sel = currentHover.GetComponentInParent<CursorSelectable>();
         if(sel == null) return;
 

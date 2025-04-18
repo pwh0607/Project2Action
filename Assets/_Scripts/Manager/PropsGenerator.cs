@@ -101,7 +101,8 @@ public class PropsGenerator : MonoBehaviour
 
         for(int i=0;i<links.Count;i++){
             Link link = links[i];
-            if(!CheckWall(Physics.OverlapSphere(link.linkPosition, 5f))) continue;
+            if(!CheckWall(Physics.OverlapSphere(link.linkPosition, 5f)))
+                continue;
             
             GameObject gatePrefab = indexes.Contains(i) ? doorData.lockedGate : doorData.openedGate;
             InterActiveGate gate = Instantiate(gatePrefab, link.linkPosition, link.quaternion).GetComponent<InterActiveGate>();
@@ -110,12 +111,7 @@ public class PropsGenerator : MonoBehaviour
     }
 
     List<int> RandomIndex(int size){
-        List<int> list = new();
-        for(int i =0;i<size;i++){
-            list.Add(i);
-        }
-
-        List<int> res = RandomGenerator.RandomIntGenerate(list, lockCount);
+        List<int> res = RandomGenerator.RandomIntGenerate(size, lockCount);
         return res;
     }
 #endregion
@@ -171,7 +167,6 @@ public class PropsGenerator : MonoBehaviour
 
                             AnswerKey key = MakeKey();
                             SendPairData(targetGate, key);                      // logic을 관리하는 매니저에게 전달.
-
                             SetKeyPosition(key);
                         }
                         continue;
@@ -184,7 +179,7 @@ public class PropsGenerator : MonoBehaviour
                 visitedRoom.Add(node);
             }
         }
-        MakeMark();
+        // MakeMark();
     }
 
     void MakeMark(){
@@ -240,24 +235,49 @@ public class PropsGenerator : MonoBehaviour
     void SetKeyPosition(AnswerKey key){
         if(key is NormalKey normalKey){
             int rnd1 = UnityEngine.Random.Range(0, activeRooms.Count);
-            normalKey.transform.position = activeRooms[rnd1].roomPosition + (Vector3.up * 2);
+
+            Vector3 center = activeRooms[rnd1].roomPosition;
+            normalKey.transform.position = RandomPositionCheck(center) + Vector3.up * 3f;
         }else if (key is ButtonKey buttonKey){
-            int rnd1 = UnityEngine.Random.Range(0, activeRooms.Count);
-            Vector3 pos1 = activeRooms[rnd1].roomPosition + (Vector3.up * 2);
+            List<int> randomIndex = RandomGenerator.RandomIntGenerate(activeRooms.Count, 2);
 
-            //임시로 세팅.
-            buttonKey.transform.position = pos1;
+            Vector3 center1 = Vector3.zero; 
+            Vector3 center2 = Vector3.zero; 
+            
+            if(activeRooms.Count <= 1){
+                center1 = activeRooms[0].roomPosition;
+                center2 = activeRooms[0].roomPosition;
+            }else{
+                center1 = activeRooms[randomIndex[0]].roomPosition;
+                center2 = activeRooms[randomIndex[1]].roomPosition;
+            }
 
-            int rnd2 = 2;           //temp
-            // do{
-            //     rnd2 = UnityEngine.Random.Range(0, activeRooms.Count);
-            // }while(rnd1 == rnd2);
+            Vector3 pos1 = RandomPositionCheck(center1) + Vector3.up;
+            Vector3 pos2 = RandomPositionCheck(center2) + Vector3.up * 0.1f;
 
-            Vector3 pos2 = activeRooms[rnd2].roomPosition + (Vector3.up * 2);
-            // buttonKey.SetPosition(pos1, pos2);
+            buttonKey.SetPosition(pos1, pos2);
         }
     }
 #endregion
+
+    Vector3 RandomPositionCheck(Vector3 center){
+        GameObject tile = null;
+        
+        while(tile == null){
+            Vector3 sphereRandom = UnityEngine.Random.insideUnitSphere * 8f;
+            Vector3 pos = center + sphereRandom;
+
+            if(Physics.Raycast(pos + Vector3.up * 20f, Vector3.down, out RaycastHit hit, Mathf.Infinity)){
+                if(hit.collider.tag == "TILE"){
+                    tile = hit.collider.gameObject;
+                    break;
+                }
+            }
+        }
+
+        Vector3 res = tile == null ? Vector3.zero : tile.transform.position;
+        return res;
+    }
 
     public void SendPairData(InterActiveGate gate, AnswerKey key)
     {
@@ -285,7 +305,7 @@ public class Room{
     }
 }
 
-public enum GateType{ NONE = 0, LOCK, OPEN}
+public enum GateType{ NONE = 0, LOCK, OPEN }
 
 [Serializable]
 public class Link{

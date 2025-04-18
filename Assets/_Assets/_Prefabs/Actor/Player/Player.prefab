@@ -260,20 +260,21 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1948834812007720715}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b89d889c76782f45838bc099071a609, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  l_s_1: 0
+  _h0: 0
+  eventEnemySpawnAfter: {fileID: 0}
   eventSensorSightEnter: {fileID: 11400000, guid: 40f208b09d6059b48bb04ee962102771, type: 2}
   eventSensorSightExit: {fileID: 11400000, guid: 1566c18dd46c9d84a9f04ddfa66e130c, type: 2}
   eventSensorAttackEnter: {fileID: 11400000, guid: e0f70750bae66be479a616d127dac90c, type: 2}
   eventSensorAttackExit: {fileID: 11400000, guid: 76b8554e3dc6cfd428c77a470e6efa1c, type: 2}
-  l_e_1: 0
+  _h1: 0
   interval: 0.5
   detectionRadius: 8
-  arrivedRadius: 3
+  attackRange: 3
   fieldOfViewAngle: 90
   targetLayer:
     serializedVersion: 2
@@ -283,6 +284,7 @@ MonoBehaviour:
     m_Bits: 1
   targetTag: ENEMY
   showGizmos: 1
+  _h2: 0
   owner: {fileID: 0}
   target: {fileID: 0}
 --- !u!1 &2778881341834981060
@@ -611,18 +613,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d9bb32c75eb1c43b7f305b5d50e3ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiControl: {fileID: 0}
   abilityControl: {fileID: 0}
+  uiControl: {fileID: 0}
   feedbackControl: {fileID: 0}
   profile: {fileID: 0}
+  isGrounded: 1
+  isDamageable: 1
+  isArrived: 1
   rb: {fileID: 0}
   animator: {fileID: 0}
   ik: {fileID: 0}
   eyePoint: {fileID: 2910737957155279010}
   model: {fileID: 0}
-  isGrounded: 1
-  isDamageable: 1
-  isArrived: 1
 --- !u!114 &2440496725877234930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -694,7 +696,7 @@ MonoBehaviour:
   eventAttackAfter: {fileID: 11400000, guid: 98f914c037a49164e9d1666facbb0e17, type: 2}
   eventSensorSightEnter: {fileID: 11400000, guid: 40f208b09d6059b48bb04ee962102771, type: 2}
   eventSensorSightExit: {fileID: 11400000, guid: 1566c18dd46c9d84a9f04ddfa66e130c, type: 2}
-  eventCursorHover: {fileID: 0}
+  eventCursorHover: {fileID: 11400000, guid: 59bd5455d95c0d445b0842c6cfeda0b1, type: 2}
 --- !u!114 &4916702610279981125
 MonoBehaviour:
   m_ObjectHideFlags: 0
