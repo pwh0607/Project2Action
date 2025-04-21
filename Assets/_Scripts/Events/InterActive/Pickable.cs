@@ -16,10 +16,8 @@ public class Pickable : MonoBehaviour, IInterative
         rb.isKinematic = true;
         rb.useGravity = false;
         col.isTrigger = true;
-        transform.parent = owner.transform;
+        transform.SetParent(owner.playerHand);
         
-        //temp
-        transform.localPosition = owner.transform.forward *2f;
         transform.localPosition = Vector3.zero;
     }
 

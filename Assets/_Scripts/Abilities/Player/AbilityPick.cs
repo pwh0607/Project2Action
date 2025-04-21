@@ -1,9 +1,8 @@
-using System.Linq;
 using UnityEngine;
 
 public class AbilityPick : Ability<AbilityPickData>
 {
-    Pickable currentItem;              //현재 잡고 있는 아이템
+    Pickable currentItem;
     Pickable pickableItem;
     
     public AbilityPick(AbilityPickData data, CharacterControl owner) : base(data, owner) {
@@ -13,7 +12,7 @@ public class AbilityPick : Ability<AbilityPickData>
     }
 
     public override void Activate(object obj)
-    {        
+    {
         currentItem = null;
     }
 
@@ -33,26 +32,29 @@ public class AbilityPick : Ability<AbilityPickData>
         {
             if(currentItem == null){
                 PickItem();
-            }else{
+            }
+            else{
                 ThrowItem();
             }
         }
     }
     
     private void PickItem(){
-        if(currentItem != null || pickableItem == null) return;             // 이미 아이템을 가지고 있다면 무시.
+        if(currentItem != null || pickableItem == null) return;
 
-        Debug.Log("Take!!");
         pickableItem.Apply(owner);
+
         currentItem = pickableItem;
     }
 
     private void ThrowItem(){
-        if(currentItem != null) return;
-        Debug.Log("Throw!!");
-        pickableItem.Throw();
+        if(currentItem == null) return;
+
+        currentItem.Throw();
         
         currentItem = null;
+        
+        pickableItem = null;
     }
 
     private void CheckItem(){
@@ -62,15 +64,13 @@ public class AbilityPick : Ability<AbilityPickData>
         
         var list = Physics.OverlapSphere(owner.transform.position + owner.transform.forward, 2f, LayerMask.GetMask("HeavyObject"));
 
-        Debug.Log($"list sz : {list.Length}");
+        if(list.Length <= 0) return;
 
         if(list[0].tag == "HEAVYOBJECT"){
-            Debug.Log(" 무거운 오브젝트;'");
             pickableItem = list[0].GetComponent<Pickable>();
-
             return;
         }
         
-        pickableItem = null;       
+        pickableItem = null;
     }
 }

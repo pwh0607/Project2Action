@@ -342,6 +342,37 @@ CapsuleCollider:
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!1 &2865788016716424735
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2316366434255546416}
+  m_Layer: 9
+  m_Name: Hand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2316366434255546416
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2865788016716424735}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3890508082810120887}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3109610391879902373
 GameObject:
   m_ObjectHideFlags: 0
@@ -549,6 +580,7 @@ Transform:
   - {fileID: 2910737957155279010}
   - {fileID: 1871621655938308286}
   - {fileID: 6366712871683737439}
+  - {fileID: 2316366434255546416}
   - {fileID: 4219303388545551775}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -613,6 +645,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d9bb32c75eb1c43b7f305b5d50e3ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerHand: {fileID: 2316366434255546416}
   abilityControl: {fileID: 0}
   uiControl: {fileID: 0}
   feedbackControl: {fileID: 0}
@@ -624,6 +657,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   ik: {fileID: 0}
   eyePoint: {fileID: 2910737957155279010}
+  handPoint: {fileID: 0}
   model: {fileID: 0}
 --- !u!114 &2440496725877234930
 MonoBehaviour:
@@ -669,7 +703,7 @@ MonoBehaviour:
   swing1: {fileID: 0}
   h_s_01: 0
   eventPlayerSpawnAfter: {fileID: 11400000, guid: dc969804fc864c940a147df9dd852e32, type: 2}
-  eventEnemySpawnAfter: {fileID: 0}
+  eventEnemySpawnAfter: {fileID: 11400000, guid: d2ae8029d79ca8542a4e389cce8c190a, type: 2}
   eventAttackBefore: {fileID: 0}
   h_e_01: 0
   modelRoot: {fileID: 6366712871683737439}

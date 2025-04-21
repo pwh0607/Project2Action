@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2354663409050758794}
-  - component: {fileID: 5566151134084054366}
   - component: {fileID: 1094234316187966945}
   m_Layer: 0
   m_Name: Gate_Opend
@@ -34,27 +33,6 @@ Transform:
   - {fileID: 5913819888984987041}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &5566151134084054366
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1654554159615204505}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 8.055975, y: 6.0392694, z: 1.1420835}
-  m_Center: {x: -0.0000071525574, y: 3.0113192, z: 0.0000014901161}
 --- !u!114 &1094234316187966945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,8 +134,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 8.055975, y: 6.0392694, z: 1.1420835}
-  m_Center: {x: -0.0000071525574, y: 3.0113192, z: 0.0000014901161}
+  m_Size: {x: 2.4352522, y: 6.0392694, z: 1.1420835}
+  m_Center: {x: 2.8103547, y: 3.0113187, z: 0.0000014901161}
 --- !u!33 &4070519092140512145
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -296,8 +274,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 8.055975, y: 6.0392694, z: 1.1420835}
-  m_Center: {x: -0.0000071525574, y: 3.0113192, z: 0.0000014901161}
+  m_Size: {x: 2.326746, y: 6.0392694, z: 1.1420835}
+  m_Center: {x: 2.8646069, y: 3.0113187, z: 0.0000014901161}
 --- !u!33 &3201789530473208071
 MeshFilter:
   m_ObjectHideFlags: 0

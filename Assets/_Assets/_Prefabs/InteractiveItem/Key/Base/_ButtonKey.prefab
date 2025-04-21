@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5556395154910438786}
   - component: {fileID: -8617812655424455460}
+  - component: {fileID: 8144647243105004528}
   m_Layer: 0
   m_Name: _ButtonKey
   m_TagString: Untagged
@@ -44,4 +45,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30754f02c4638884aad94038be3cf6ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: 1
   buttonKeyData: {fileID: 11400000, guid: 172cb15bfd477a64c815abd25b56669c, type: 2}
+  heavyObject: {fileID: 0}
+  button: {fileID: 0}
+--- !u!65 &8144647243105004528
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9023290736182744254}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.6, y: 0.3, z: 1.6}
+  m_Center: {x: -0.00066551566, y: 0.13485253, z: 0.024721622}

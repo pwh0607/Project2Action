@@ -33,7 +33,7 @@ public class PropsGenerator : MonoBehaviour
         dungeon = FindAnyObjectByType<Dungeon>();
 
         InitGraphData();
-        InitGate();
+        CreateGate();
         InitVisited();
 
         while(lockCount > 0){
@@ -96,16 +96,18 @@ public class PropsGenerator : MonoBehaviour
         }
     }
 
-    void InitGate(){
+    // 오류 발생.
+    void CreateGate(){
+        // 게이트를 생성할 링크의 인덱스.
         List<int> indexes = RandomIndex(links.Count);
 
         for(int i=0;i<links.Count;i++){
             Link link = links[i];
-            if(!CheckWall(Physics.OverlapSphere(link.linkPosition, 5f)))
+            if(!CheckWall(Physics.OverlapSphere(link.position, 5f)))
                 continue;
             
             GameObject gatePrefab = indexes.Contains(i) ? doorData.lockedGate : doorData.openedGate;
-            InterActiveGate gate = Instantiate(gatePrefab, link.linkPosition, link.quaternion).GetComponent<InterActiveGate>();
+            InterActiveGate gate = Instantiate(gatePrefab, link.position, link.quaternion).GetComponent<InterActiveGate>();                     // 오류 부분.
             link.gate = gate;
         }
     }
@@ -117,11 +119,12 @@ public class PropsGenerator : MonoBehaviour
 #endregion
 
 
-
+    // 1. StartSearch를 통해 첫번째로 발견한 잠긴 문과, key를 설치할 수 있는 노드들을 찾는다.
+    // 2. StartSeach를 통해 activeRooms에 key를 설치할 수 있는 key를 설치한다.
+    // 3. key를 설치 완료후, StartSearch를 시작하여 Gate 개수만큼 위 과정을 반복한다.
 #region 그래프 탐색
-    [ReadOnly] public string startNodeId;             // 탐색 시작 노드.
+    [ReadOnly] public string startNodeId;
 
-    // 활성화된 노드들 중 선택하여 Key를 설치한다.
     public Dictionary<Room, bool> visited = new();
     public List<Room> visitedRoom = new();
     public List<Room> activeRooms = new();
@@ -131,10 +134,6 @@ public class PropsGenerator : MonoBehaviour
             visited[room.Value] = false;
         }
     }
-
-    // 1. StartSearch를 통해 첫번째로 발견한 잠긴 문과, key를 설치할 수 있는 노드들을 찾는다.
-    // 2. StartSeach를 통해 activeRooms에 key를 설치할 수 있는 key를 설치한다.
-    // 3. key를 설치 완료후, StartSearch를 시작하여 Gate 개수만큼 위 과정을 반복한다.
     [ReadOnly] public InterActiveGate targetGate = null; 
     public List<InterActiveGate> gates = new();
 
@@ -157,16 +156,14 @@ public class PropsGenerator : MonoBehaviour
 
                 if(visited[node] || link == null) continue;
 
-                // Gate가 없는 경우를 고려한다. => Gate : nullable
-                // 무시해도 되는 node의 조건.
                 if(link.gate != null){
                     if(link.gate.type == GateType.LOCK) {
-                        if(!gates.Contains(link.gate)){                         //아직 처리하지 못한 Gate에 대해서만 설정한다.
+                        if(!gates.Contains(link.gate)){                         
                             targetGate = link.gate;
                             gates.Add(link.gate);
 
                             AnswerKey key = MakeKey();
-                            SendPairData(targetGate, key);                      // logic을 관리하는 매니저에게 전달.
+                            SendPairData(targetGate, key); 
                             SetKeyPosition(key);
                         }
                         continue;
@@ -179,19 +176,10 @@ public class PropsGenerator : MonoBehaviour
                 visitedRoom.Add(node);
             }
         }
-        // MakeMark();
     }
 
-    void MakeMark(){
-        foreach(var room in activeRooms){
-            Instantiate(markPrefab[searchCount], room.roomPosition, Quaternion.identity);
-        }
-        searchCount++;
-    }
+    public int spawnNodeNumber;             // PLAYER Spawn Node
 
-    public int spawnNodeNumber;
-
-    // 다음에 탐색할 노드를 찾는다.
     void SearchNode(){
         if(targetGate == null){
             var key = roomDic.Keys.ToList();
@@ -237,7 +225,7 @@ public class PropsGenerator : MonoBehaviour
             int rnd1 = UnityEngine.Random.Range(0, activeRooms.Count);
 
             Vector3 center = activeRooms[rnd1].roomPosition;
-            normalKey.transform.position = RandomPositionCheck(center) + Vector3.up * 3f;
+            normalKey.transform.position = RandomPositionCheck(center) + Vector3.up * .3f;
         }else if (key is ButtonKey buttonKey){
             List<int> randomIndex = RandomGenerator.RandomIntGenerate(activeRooms.Count, 2);
 
@@ -297,7 +285,7 @@ public class PropsGenerator : MonoBehaviour
 public class Room{
     public string roomId;
     public Vector3 roomPosition;
-    public List<Room> n_Node;           //인접 노드.
+    public List<Room> n_Node;
     public Room(string id, Vector3 position){
         this.roomId = id;
         this.roomPosition = position;
@@ -310,16 +298,16 @@ public enum GateType{ NONE = 0, LOCK, OPEN }
 [Serializable]
 public class Link{
     public (Room, Room) node;
-    public Vector3 linkPosition;
+    public Vector3 position;
     public Quaternion quaternion;
     
     //Door 설치
     public InterActiveGate gate;
 
-    public Link(Room startNodeId, Room endNodeId, Vector3 linkPosition, Quaternion quaternion){
+    public Link(Room startNodeId, Room endNodeId, Vector3 position, Quaternion quaternion){
         this.node = (startNodeId,endNodeId);
         
-        this.linkPosition = linkPosition;
+        this.position = position;
         this.quaternion = quaternion;
     }
 }

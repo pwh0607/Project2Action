@@ -50,7 +50,7 @@ public class AbilityAttack : Ability<AbilityAttackData>
 
         CoolTimeAsync().Forget();
 
-        owner.LookAtY(data.target.transform.position);
+        // owner.LookAtY(data.target.transform.position);
         
         AnimationClip clip = owner.Profile.ATTACK.Random();
         Debug.Log("공격 수행중...");

@@ -12,19 +12,25 @@ public class LockedGate : InterActiveGate
 
     void Start()
     {
-        // StageLogicManager.I.OnOpenLogicCompleted += OpenDoor;
+        // StageLogicManager.I.OnOpenLogicCompleted += OpenGate;
     }
 
-    void OpenDoor(){
+    public void OpenGate(){
         type = GateType.OPEN;
+        
+        Debug.Log("문 열기");
         if(blockDoor.gameObject.activeSelf) blockDoor.gameObject.SetActive(false);
 
         leftDoor.DOLocalRotate(new Vector3(0, 100f, 0), 1, RotateMode.FastBeyond360);
         rightDoor.DOLocalRotate(new Vector3(0, -100f, 0), 1, RotateMode.FastBeyond360);
     }
     
-    void CloseDoor(){
+    public void CloseGate(){
         type = GateType.LOCK;
-        blockDoor.gameObject.SetActive(true);
+        Debug.Log("문 닫기");
+        if(!blockDoor.gameObject.activeSelf) blockDoor.gameObject.SetActive(true);
+
+        leftDoor.DOLocalRotate(Vector3.zero, 1, RotateMode.FastBeyond360);
+        rightDoor.DOLocalRotate(Vector3.zero, 1, RotateMode.FastBeyond360);
     }
 }

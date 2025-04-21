@@ -24,6 +24,8 @@ public class CharacterControl : MonoBehaviour, IActorControl
     // 인스턴스화 한 데이터
     public CharacterState state;
 
+    public Transform playerHand;
+    
     // 원본 데이터
     [ReadOnly] public AbilityControl abilityControl;
     [ReadOnly] public UIControl uiControl;
@@ -34,8 +36,6 @@ public class CharacterControl : MonoBehaviour, IActorControl
         get => profile;
         set => profile = value; 
     }
-
-    
 
     [Header("flag")]   
     // 땅에 붙어 있는가?

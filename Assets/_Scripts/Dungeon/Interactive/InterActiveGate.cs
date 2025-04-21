@@ -6,5 +6,4 @@ public abstract class InterActiveGate : InteractiveObject
 {
     public GateType type;
     public Vector3 doorPos {get; private set;}
-
 }

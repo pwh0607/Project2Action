@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class StageLogicManager : BehaviourSingleton<StageLogicManager>
 {
     protected override bool IsDontDestroy() => true;
     
     public List<GatePair> pairs = new();
-    public UnityAction OnOpenLogicCompleted;
 
     void Start()
     {
@@ -17,12 +15,19 @@ public class StageLogicManager : BehaviourSingleton<StageLogicManager>
 
     public void SetPair(InterActiveGate gate, AnswerKey answerKey){
         Debug.Log($"Stage Logic Manager : {gate}, {answerKey}");
-        GatePair pair = new(gate, answerKey);
+        GatePair pair = new GatePair(gate, answerKey);
         pairs.Add(pair);
+
+        //Pair가 완성되고 난 후 이벤트를 추가한다.
+        if(answerKey is ButtonKey buttonKey){
+            buttonKey.RegisterEvent(OnPressButton);
+        }
     }
 
     //문에 아이템을 사용했을 때 이벤트 처리.
-    public bool UseKey(InterActiveGate gate, AnswerKey answerKey){
+    
+    // Normal Key를 문 앞에서 사용했을 때.
+    public bool OnUseKey(InterActiveGate gate, AnswerKey answerKey){
         Debug.Log($"Stage Logic Manager : {gate} = {answerKey} CHECK!");
         var targetKey = pairs.Find(pair => pair.answerKey == answerKey);
         if(targetKey == null) {
@@ -33,11 +38,31 @@ public class StageLogicManager : BehaviourSingleton<StageLogicManager>
         return gate == targetKey.gate;
     }
 
+    // Button Key를 사용했을 때.
+    public void OnPressButton(AnswerKey answerKey, bool on){
+        InterActiveGate gate = SearchGate(answerKey);
 
-    #region Test-Code
-    
+        if(gate == null) return;
 
-    #endregion
+        LockedGate lockedGate = gate as LockedGate;
+        if(on){
+            Debug.Log("문 열기.");
+            lockedGate.OpenGate();
+        }else{
+            Debug.Log("문 닫기.");
+            lockedGate.CloseGate();
+        }
+    }
+
+    InterActiveGate SearchGate(AnswerKey answerKey){
+        foreach(var p in pairs){
+            if(p.answerKey == answerKey){
+                Debug.Log("키와 맞는 쌍을 찾았다.");
+                return p.gate;
+            }
+        }
+        return null;
+    } 
 }
 
 [Serializable]

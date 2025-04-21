@@ -111,7 +111,7 @@ public class EnemyEventControl : MonoBehaviour
             return;
         } 
         
-        Debug.Log("target Sighte Complete");
+        Debug.Log("target Sight Complete");
         
         owner.abilityControl.Activate(AbilityFlag.Wandor, true, null);
     }
