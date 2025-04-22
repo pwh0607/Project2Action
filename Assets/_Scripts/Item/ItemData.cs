@@ -1,16 +1,12 @@
 using UnityEngine;
 
-public class ItemData : MonoBehaviour
-{
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+public enum ItemType{ NONE, KEY, CONSUMABLE}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+[CreateAssetMenu(menuName = "Item/NormalKey")]
+public abstract class ItemData : ScriptableObject
+{
+    public ItemType ItemType{get;}
+    public Sprite sprite;
+    public string itemName;
+    public string information;
 }

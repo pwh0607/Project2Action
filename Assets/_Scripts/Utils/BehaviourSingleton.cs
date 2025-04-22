@@ -29,7 +29,7 @@ public abstract class BehaviourSingleton<T> : MonoBehaviour where T : MonoBehavi
             Destroy(gameObject);
             return;
         }
-
+    
         if(IsDontDestroy()) 
             DontDestroyOnLoad(gameObject);
     }

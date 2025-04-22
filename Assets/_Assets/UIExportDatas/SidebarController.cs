@@ -27,8 +27,13 @@ public class SidebarController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     void InitSlots(){
         for(int i=0;i<slotCount;i++){
             SidebarSlot slot = Instantiate(slotPrefab, transform).GetComponent<SidebarSlot>();
+            slot.RegisterEvent(SetSelectedItem);
             slots.Add(slot);
         }
+    }
+
+    void SetSelectedItem(GameObject item){
+        selectedItem = item;
     }
 
     #region MouseEvent
@@ -46,7 +51,7 @@ public class SidebarController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         if (isMouseOver)
         {
-            float scrollDelta = eventData.scrollDelta.y;
+            float scrollDelta = eventData.scrollDelta.y > 0 ? 1 : -1;
             focusIndex = Mathf.Clamp(focusIndex - (int)scrollDelta, 0, slots.Count - 1);
 
             UpdateFocus();
@@ -76,5 +81,9 @@ public class SidebarController : MonoBehaviour, IPointerEnterHandler, IPointerEx
             if(slot.item == null) return slot;
         }
         return null;
+    }
+
+    public void GetItem(ItemData item){
+        
     }
 }
