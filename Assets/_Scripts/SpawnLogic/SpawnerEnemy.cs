@@ -27,7 +27,6 @@ public class SpawnerEnemy : Spawner
         control = Instantiate(e.enemyCharacter);
         control.transform.SetPositionAndRotation(spawnPoint.position, Quaternion.LookRotation(transform.forward));
         control.Profile = actorProfile;
-        control.state.Set(actorProfile);
         StartCoroutine(SpawnAfter());
     }
 

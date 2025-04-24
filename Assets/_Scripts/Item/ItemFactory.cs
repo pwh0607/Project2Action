@@ -1,13 +1,14 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class IconFactory : BehaviourSingleton<IconFactory>
 {
-    [Header("Icon Prefab")] [SerializeField] GameObject iconPrefab;
+    [Header("Icon Prefab")] [SerializeField] ItemIcon iconPrefab;
     protected override bool IsDontDestroy() => false;
-    public GameObject CreateItemIcon(ItemData itemData){
-        GameObject icon = null;
-
-        icon.GetComponent<SpriteRenderer>().sprite = itemData.sprite;
+    public ItemIcon CreateItemIcon(Item item){
+        ItemIcon icon = Instantiate(iconPrefab).GetComponent<ItemIcon>();
+        icon.item = item;
+        icon.GetComponent<Image>().sprite = item.data.sprite;
         
         return icon;
     }

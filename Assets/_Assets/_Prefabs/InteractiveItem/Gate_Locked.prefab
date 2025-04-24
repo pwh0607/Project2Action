@@ -138,6 +138,7 @@ MonoBehaviour:
   blockDoor: {fileID: 5101186605755783655}
   leftDoor: {fileID: 4144735544548848671}
   rightDoor: {fileID: 4144735546036073077}
+  index: 0
 --- !u!1 &1143446860226233868
 GameObject:
   m_ObjectHideFlags: 0

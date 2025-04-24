@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using CustomInspector;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 
 public class UIControl : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class UIControl : MonoBehaviour
     [SerializeField] Slider sliderHealth;
     [HorizontalLine(color:FixedColor.Cyan), HideInInspector] public bool h_e1;
 //  TempCode
+
+    [SerializeField] SidebarController sidebarController;
 
     void Start()
     {
@@ -47,5 +50,9 @@ public class UIControl : MonoBehaviour
 
         float cur = (float)current / (float)max;
         sliderHealth.value = Mathf.Clamp01(cur);
+    }
+
+    public void GetItem(Item item){
+        sidebarController.GetItem(item);
     }
 }

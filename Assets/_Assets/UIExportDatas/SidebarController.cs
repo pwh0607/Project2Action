@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using CustomInspector;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class SidebarController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     [SerializeField] int slotCount;
     [SerializeField] GameObject slotPrefab;
     List<SidebarSlot> slots = new();
-    [ReadOnly] GameObject selectedItem;
+    [ReadOnly] public Item selectedItem;
     [SerializeField, ReadOnly] int focusIndex;
 
     void Start()
@@ -21,7 +22,7 @@ public class SidebarController : MonoBehaviour, IPointerEnterHandler, IPointerEx
         InitSlots();
         focusIndex = 0;
 
-        UpdateFocus();
+        // UpdateFocus();
     }
 
     void InitSlots(){
@@ -32,7 +33,7 @@ public class SidebarController : MonoBehaviour, IPointerEnterHandler, IPointerEx
         }
     }
 
-    void SetSelectedItem(GameObject item){
+    void SetSelectedItem(Item item){
         selectedItem = item;
     }
 
@@ -70,10 +71,15 @@ public class SidebarController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     }
     #endregion
 
-    public void GetItem(GameObject item){
+    public bool GetItem(Item item){
         SidebarSlot slot = SearchEmptySlot();
 
-        item.transform.SetParent(slot.transform);
+        if(slot == null) return false;
+
+        ItemIcon icon = IconFactory.I.CreateItemIcon(item);
+        slot.SetIcon(icon);
+
+        return true;
     }
 
     SidebarSlot SearchEmptySlot(){
@@ -83,7 +89,22 @@ public class SidebarController : MonoBehaviour, IPointerEnterHandler, IPointerEx
         return null;
     }
 
-    public void GetItem(ItemData item){
-        
+    void Update()
+    {
+        if(isMouseOver){
+            if(Input.GetMouseButtonDown(1)){                //우클릭시 사용
+                UseItem();
+            }
+        }
+    }
+
+    public void UseItem(){          //test public
+        //플레이어가 인지한 잠긴 문이 있다면..?
+        if(selectedItem is NormalKey key){
+            if(key.Use(null))               //null은 임시 값         
+            {
+                slots[focusIndex].SetIcon(null);
+            }
+        }
     }
 }

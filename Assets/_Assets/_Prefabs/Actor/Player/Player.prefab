@@ -230,7 +230,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2910737957155279010}
-  - component: {fileID: 4009607869925742687}
+  - component: {fileID: 1967653270697135362}
+  - component: {fileID: 4466350019429305393}
   m_Layer: 2
   m_Name: _EYEPOINT_
   m_TagString: Player
@@ -253,40 +254,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3890508082810120887}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4009607869925742687
+--- !u!135 &1967653270697135362
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948834812007720715}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0.8}
+--- !u!114 &4466350019429305393
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1948834812007720715}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b89d889c76782f45838bc099071a609, type: 3}
+  m_Script: {fileID: 11500000, guid: 40edf246eb1a0d847be8028928c13b93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _h0: 0
-  eventEnemySpawnAfter: {fileID: 0}
-  eventSensorSightEnter: {fileID: 11400000, guid: 40f208b09d6059b48bb04ee962102771, type: 2}
-  eventSensorSightExit: {fileID: 11400000, guid: 1566c18dd46c9d84a9f04ddfa66e130c, type: 2}
-  eventSensorAttackEnter: {fileID: 11400000, guid: e0f70750bae66be479a616d127dac90c, type: 2}
-  eventSensorAttackExit: {fileID: 11400000, guid: 76b8554e3dc6cfd428c77a470e6efa1c, type: 2}
-  _h1: 0
-  interval: 0.5
-  detectionRadius: 8
-  attackRange: 3
-  fieldOfViewAngle: 90
-  targetLayer:
-    serializedVersion: 2
-    m_Bits: 512
-  blockLayer:
-    serializedVersion: 2
-    m_Bits: 1
-  targetTag: ENEMY
-  showGizmos: 1
-  _h2: 0
-  owner: {fileID: 0}
-  target: {fileID: 0}
 --- !u!1 &2778881341834981060
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,13 +649,13 @@ MonoBehaviour:
   abilityControl: {fileID: 0}
   uiControl: {fileID: 0}
   feedbackControl: {fileID: 0}
+  interActiveObject: {fileID: 0}
   profile: {fileID: 0}
   isGrounded: 1
   isDamageable: 1
   isArrived: 1
   rb: {fileID: 0}
   animator: {fileID: 0}
-  ik: {fileID: 0}
   eyePoint: {fileID: 2910737957155279010}
   handPoint: {fileID: 0}
   model: {fileID: 0}
@@ -711,7 +711,6 @@ MonoBehaviour:
   footRight: {fileID: 0}
   handLeft: {fileID: 0}
   handRight: {fileID: 0}
-  vfxSwing: {fileID: 0}
 --- !u!114 &750402350895046784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -748,6 +747,7 @@ MonoBehaviour:
   textMesh: {fileID: 0}
   sliderHealth: {fileID: 7757914009003801089}
   h_e1: 0
+  sidebarController: {fileID: 0}
   state: 
 --- !u!114 &3923841910659365889
 MonoBehaviour:

@@ -40,7 +40,6 @@ public class AbilityAttack : Ability<AbilityAttackData>
         Debug.Log("OnEventAttackBefore : 공격 시작!");
         data.eventAttackAfter.from = owner;
         data.eventAttackAfter.to = data.target;
-        data.eventAttackAfter.damage = owner.state.damage;
         data.eventAttackAfter.Raise();
     }
 

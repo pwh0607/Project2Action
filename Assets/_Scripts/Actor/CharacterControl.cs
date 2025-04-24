@@ -20,16 +20,14 @@ public struct CharacterState
 public class CharacterControl : MonoBehaviour, IActorControl
 {
     [Header("Ability")]
-
-    // 인스턴스화 한 데이터
-    public CharacterState state;
-
     public Transform playerHand;
     
     // 원본 데이터
     [ReadOnly] public AbilityControl abilityControl;
     [ReadOnly] public UIControl uiControl;
     [ReadOnly] public FeedbackControl feedbackControl;
+    
+    [ReadOnly] public GameObject interActiveObject;
 
     [ReadOnly, SerializeField] private ActorProfile profile;
     public ActorProfile Profile { 
@@ -38,22 +36,21 @@ public class CharacterControl : MonoBehaviour, IActorControl
     }
 
     [Header("flag")]   
-    // 땅에 붙어 있는가?
     [ReadOnly] public bool isGrounded;
-
-    //데미지를 받을 수 있는 상태
     [ReadOnly] public bool isDamageable = false;
-    // 목적지 도착 상태.
+
     [ReadOnly] public bool isArrived = true;
 
     [Header("Physics")]   
     [ReadOnly] public Rigidbody rb;
     [ReadOnly] public Animator animator;
-    [ReadOnly] public AnimationIKControl ik;
 
     [ReadOnly] public Transform eyePoint;
     [ReadOnly] public Transform handPoint;
     [ReadOnly] public Transform model;
+
+    [ReadOnly] public Pickable currentItem;
+    [ReadOnly] public Pickable pickableItem;
 
     void Awake()
     {
@@ -65,12 +62,11 @@ public class CharacterControl : MonoBehaviour, IActorControl
         eyePoint = transform.Find("_EYEPOINT_");
         model = transform.Find("_MODEL_");
         handPoint = transform.Find("_HANDPOINT_");
-        
-        // Option : 있으면 쓰고, 없으면 무시.
-        ik = GetComponent<AnimationIKControl>();
     }
 
-    void Start() { }
+    void Start() { 
+        interActiveObject = null;
+    }
 
     void Update()
     {
@@ -83,8 +79,6 @@ public class CharacterControl : MonoBehaviour, IActorControl
     }
 
     Tween tweenrot;
-
-    // 타겟을 바라본다 (Y축만 회전)
     public void LookAtY(Vector3 target){
         if(tweenrot != null || tweenrot.IsPlaying()) return;
 
@@ -131,7 +125,6 @@ public class CharacterControl : MonoBehaviour, IActorControl
         animator?.CrossFadeInFixedTime(clipName, duration, layer, 0f);
     }
     
-    //immediate = true => 보간처리 없이 바로 애니메이션 수행.
     public void AnimateMoveSpeed(float speed, bool immediate = false){
         if(animator == null) return;
 

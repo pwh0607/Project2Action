@@ -5,31 +5,37 @@ using UnityEngine;
 public class StageLogicManager : BehaviourSingleton<StageLogicManager>
 {
     protected override bool IsDontDestroy() => true;
-    
+    int keyNumber;
     public List<GatePair> pairs = new();
 
     void Start()
     {
         pairs.Clear();
+        keyNumber = 1;
     }
 
-    public void SetPair(InterActiveGate gate, AnswerKey answerKey){
+    public void SetPair(LockedGate gate, AnswerKey answerKey){
         Debug.Log($"Stage Logic Manager : {gate}, {answerKey}");
         GatePair pair = new GatePair(gate, answerKey);
         pairs.Add(pair);
 
-        //Pair가 완성되고 난 후 이벤트를 추가한다.
         if(answerKey is ButtonKey buttonKey){
             buttonKey.RegisterEvent(OnPressButton);
         }
+        
+        answerKey.index = keyNumber;
+        gate.index = keyNumber;
+
+        keyNumber++;
     }
 
     //문에 아이템을 사용했을 때 이벤트 처리.
     
     // Normal Key를 문 앞에서 사용했을 때.
-    public bool OnUseKey(InterActiveGate gate, AnswerKey answerKey){
+    public bool OnUseKey(LockedGate gate, AnswerKey answerKey){
         Debug.Log($"Stage Logic Manager : {gate} = {answerKey} CHECK!");
         var targetKey = pairs.Find(pair => pair.answerKey == answerKey);
+        
         if(targetKey == null) {
             Debug.Log($"Logic Fail...");
             return false;

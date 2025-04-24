@@ -9,11 +9,7 @@ public class LockedGate : InterActiveGate
     [SerializeField] Collider blockDoor;
     [SerializeField] Transform leftDoor;
     [SerializeField] Transform rightDoor;
-
-    void Start()
-    {
-        // StageLogicManager.I.OnOpenLogicCompleted += OpenGate;
-    }
+    public int index;
 
     public void OpenGate(){
         type = GateType.OPEN;

@@ -35,7 +35,7 @@ public class SpawnerPlayer : Spawner
 
         // 플레이어 캐릭터에 프로파일 연결
         _character.Profile = actorProfile;
-        _character.state.Set(actorProfile);
+        
         // 커서 세팅
         _cursor = Instantiate(e.playerCursor);
         _cursor.eyePoint = _character.eyePoint;

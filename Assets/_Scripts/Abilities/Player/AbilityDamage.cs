@@ -17,31 +17,6 @@ public class AbilityDamage : Ability<AbilityDamageData>
             Debug.LogWarning("AbilityDamage ] EventAttackAfter 형변환 실패...");
             return;
         } 
-        
-        Debug.Log("Player 피격!");
-
-        PoolManager.I.Spawn(e.feedbackFloatingText, owner.eyePoint.position, Quaternion.identity, null);
-        e.feedbackFloatingText.SetText(e.damage.ToString());
-
-        owner.feedbackControl?.PlayImpact();
-
-        Vector3 rndsphere = Random.insideUnitSphere;
-        rndsphere.y = 0f;
-
-        Vector3 rndpos = rndsphere * 0.5f + owner.eyePoint.position;
-
-        var floating = PoolManager.I.Spawn(e.particleHit, rndpos, Quaternion.identity, null) as PoolableFeedback;
-        if(floating != null)
-            floating.SetText($"{e.damage}");
-
-        owner.state.health -= e.damage;
-        owner.uiControl.SetHealth(owner.state.health, owner.Profile.health);
-        
-        if(owner.state.health <= 0){
-            
-            data.eventDeath.target = owner;
-            data.eventDeath.Raise();
-        }
     }
 
 

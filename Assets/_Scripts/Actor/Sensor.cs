@@ -60,12 +60,7 @@ public class Sensor : MonoBehaviour
 
         detectionRadius = 5f;
         attackRange = 2f;
-
-        // // detectionRadius = owner.Profile.sightRange;
-        // // attackRange = owner.Profile.attackRange;
     }
-
-
 
     void Start()
     {

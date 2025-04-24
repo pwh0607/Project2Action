@@ -269,7 +269,9 @@ public class PropsGenerator : MonoBehaviour
 
     public void SendPairData(InterActiveGate gate, AnswerKey key)
     {
-        StageLogicManager.I.SetPair(gate, key);
+        if(gate is LockedGate lockedGate){
+            StageLogicManager.I.SetPair(lockedGate, key);
+        }
     }
 
     bool CheckWall(Collider[] colliders){

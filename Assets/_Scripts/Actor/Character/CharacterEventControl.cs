@@ -50,13 +50,6 @@ public class CharacterEventControl : MonoBehaviour
         eventCursorHover.Unregister(OnEventCursorHover);
     }
 
-    //Temp
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Backspace))
-            owner.state.health = 0;
-    }
-
     void OnEventCameraSwitch(EventCameraSwitch e){
         if(e.inout)
             owner.abilityControl.Deactivate(AbilityFlag.MoveKeyboard);
@@ -111,29 +104,9 @@ public class CharacterEventControl : MonoBehaviour
     void OnEventAttackAfter(EventAttackAfter e){
         if(owner != e.to) return;              // e.to는 Player .. 피격자[공격을 받는 사람은]
 
-        // 플레이어 damage를 입다.
-        // object : damage값.
-        owner.abilityControl.Activate(AbilityFlag.Damage, false, e);             //일반 공격의 경우에는 맞으면서 움직일 수 있다.
+        owner.abilityControl.Activate(AbilityFlag.Damage, false, e);             
+        
 
-        PoolManager.I.Spawn(e.feedbackFloatingText, owner.eyePoint.position, Quaternion.identity, null);
-        e.feedbackFloatingText.SetText(e.damage.ToString());
-
-        Vector3 rndsphere = Random.insideUnitSphere;
-        rndsphere.y = 0f;
-
-        Vector3 rndpos = rndsphere * 0.5f + owner.eyePoint.position;
-
-        Debug.Log("OnEventAttackAfter : Damaged");
-
-        var floating = PoolManager.I.Spawn(e.particleHit, rndpos, Quaternion.identity, null) as PoolableFeedback;
-        if(floating != null)
-            floating.SetText($"{e.damage}");
-
-        // 데미지 ui 갱신
-        owner.state.health -= e.damage;
-        owner.uiControl.SetHealth(owner.state.health, owner.Profile.health);
-
-        owner.abilityControl.Activate(AbilityFlag.Damage, false, e);
     }
     #endregion
 

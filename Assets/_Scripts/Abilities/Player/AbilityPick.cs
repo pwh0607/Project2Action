@@ -1,24 +1,21 @@
 using UnityEngine;
 
 public class AbilityPick : Ability<AbilityPickData>
-{
-    Pickable currentItem;
-    Pickable pickableItem;
-    
+{    
     public AbilityPick(AbilityPickData data, CharacterControl owner) : base(data, owner) {
         if(owner.Profile == null) return;
 
-        pickableItem = null;
+        owner.pickableItem = null;
     }
 
     public override void Activate(object obj)
     {
-        currentItem = null;
+        owner.currentItem = null;
     }
 
     public override void Deactivate()
     {
-        currentItem = null;
+        owner.currentItem = null;
     }
 
     public override void Update()
@@ -30,7 +27,7 @@ public class AbilityPick : Ability<AbilityPickData>
     public void InputKeyboard(){
         if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
         {
-            if(currentItem == null){
+            if(owner.currentItem == null){
                 PickItem();
             }
             else{
@@ -40,37 +37,44 @@ public class AbilityPick : Ability<AbilityPickData>
     }
     
     private void PickItem(){
-        if(currentItem != null || pickableItem == null) return;
+        if(owner.currentItem != null || owner.pickableItem == null) return;
 
-        pickableItem.Apply(owner);
-
-        currentItem = pickableItem;
+        if(owner.currentItem.gameObject.GetComponent<Item>() != null){
+            Item item = owner.currentItem.gameObject.GetComponent<Item>();
+            owner.uiControl.GetItem(item);
+        }else{
+            owner.pickableItem.Apply(owner);
+            owner.currentItem = owner.pickableItem;
+        }
     }
 
     private void ThrowItem(){
-        if(currentItem == null) return;
+        if(owner.currentItem == null) return;
 
-        currentItem.Throw();
+        owner.currentItem.Throw();
         
-        currentItem = null;
+        owner.currentItem = null;
         
-        pickableItem = null;
+        owner.pickableItem = null;
     }
 
     private void CheckItem(){
         Debug.DrawRay(owner.eyePoint.transform.position, owner.transform.forward, Color.red, 3f);
         
-        if(currentItem != null) return;
+        if(owner.currentItem != null) return;
         
         var list = Physics.OverlapSphere(owner.transform.position + owner.transform.forward, 2f, LayerMask.GetMask("HeavyObject"));
 
         if(list.Length <= 0) return;
 
         if(list[0].tag == "HEAVYOBJECT"){
-            pickableItem = list[0].GetComponent<Pickable>();
+            owner.pickableItem = list[0].GetComponent<Pickable>();
+            //outline 생성하기
             return;
+        }else if(list[0].tag == "DOOR"){
+            Debug.Log("잠긴 문을 인식했다.");
         }
         
-        pickableItem = null;
+        owner.pickableItem = null;
     }
 }
