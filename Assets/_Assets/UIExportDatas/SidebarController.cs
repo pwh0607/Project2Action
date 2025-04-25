@@ -8,21 +8,22 @@ public class SidebarController : MonoBehaviour, IPointerEnterHandler, IPointerEx
 {
     private bool isMouseOver;
 
+    [SerializeField] SidebarData data;
     [SerializeField] int slotCount;
     [SerializeField] GameObject slotPrefab;
     List<SidebarSlot> slots = new();
     [ReadOnly] public Item selectedItem;
     [SerializeField, ReadOnly] int focusIndex;
-
+    private CharacterControl owner;
     void Start()
     {
+        owner = GetComponentInParent<CharacterControl>();
         isMouseOver = false;
         selectedItem = null;
 
         InitSlots();
         focusIndex = 0;
-
-        // UpdateFocus();
+        slotPrefab = data.slot.gameObject;
     }
 
     void InitSlots(){
@@ -92,7 +93,7 @@ public class SidebarController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     void Update()
     {
         if(isMouseOver){
-            if(Input.GetMouseButtonDown(1)){                //우클릭시 사용
+            if(Input.GetKeyDown(KeyCode.LeftShift)){                //우클릭시 사용
                 UseItem();
             }
         }
@@ -101,7 +102,7 @@ public class SidebarController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void UseItem(){          //test public
         //플레이어가 인지한 잠긴 문이 있다면..?
         if(selectedItem is NormalKey key){
-            if(key.Use(null))               //null은 임시 값         
+            if(key.Use(owner.detectedGate))               //null은 임시 값         
             {
                 slots[focusIndex].SetIcon(null);
             }

@@ -4,4 +4,8 @@ using UnityEngine;
 public abstract class Item : MonoBehaviour
 {
     public ItemData data;
+
+    public void DisableItem(){
+        gameObject.SetActive(false);
+    }
 }

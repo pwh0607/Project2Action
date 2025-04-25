@@ -636,7 +636,6 @@ GameObject:
   - component: {fileID: 1880474463011480214}
   - component: {fileID: 5751397563990564394}
   - component: {fileID: 6122278346836665987}
-  - component: {fileID: 3954374162032563192}
   - component: {fileID: 5658018190876893850}
   - component: {fileID: 7578951471217505408}
   m_Layer: 9
@@ -750,17 +749,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d9bb32c75eb1c43b7f305b5d50e3ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerHand: {fileID: 0}
   abilityControl: {fileID: 0}
   uiControl: {fileID: 0}
   feedbackControl: {fileID: 0}
+  interActiveObject: {fileID: 0}
   profile: {fileID: 0}
   isGrounded: 0
   isDamageable: 1
   isArrived: 1
   rb: {fileID: 0}
   animator: {fileID: 0}
-  ik: {fileID: 0}
   eyePoint: {fileID: 0}
+  handPoint: {fileID: 0}
   model: {fileID: 0}
 --- !u!114 &5751397563990564394
 MonoBehaviour:
@@ -794,24 +795,6 @@ MonoBehaviour:
   h_s_02: 0
   flags: 0
   datas: []
---- !u!114 &3954374162032563192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6943699192755661008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31bc6d6e76f794c40ba61c24a6f57cc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  type: 2
-  rds: []
-  selectableMaterial: {fileID: 2100000, guid: 650177d6a7696ca479ce72f331034091, type: 2}
-  selectableThickness: 1
-  on: 0
 --- !u!114 &5658018190876893850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -837,7 +820,6 @@ MonoBehaviour:
   footRight: {fileID: 0}
   handLeft: {fileID: 0}
   handRight: {fileID: 0}
-  vfxSwing: {fileID: 0}
 --- !u!114 &7578951471217505408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -853,8 +835,8 @@ MonoBehaviour:
   uiRoot: {fileID: 0}
   h_s1: 0
   textMesh: {fileID: 265699057270485124}
-  sliderHealth: {fileID: 0}
   h_e1: 0
+  sidebarController: {fileID: 0}
   state: 
 --- !u!1 &7357161927007150646
 GameObject:

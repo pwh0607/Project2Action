@@ -12,5 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad5e8137926dabb488970064da2a0c09, type: 3}
   m_Name: AbilityPlayerPick
   m_EditorClassIdentifier: 
-  pickRange: 1
+  eventSensorItemEnter: {fileID: 11400000, guid: 6ddce438103d4b4488a96ef097ed1768, type: 2}
+  eventSensorItemExit: {fileID: 11400000, guid: a833b8040b3a1fe44974d624f35e5767, type: 2}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 384
+  pickRange: 1.5
   pickOffset: {x: 0, y: 0, z: 1}

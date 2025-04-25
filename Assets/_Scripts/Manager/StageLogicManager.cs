@@ -46,10 +46,12 @@ public class StageLogicManager : BehaviourSingleton<StageLogicManager>
 
     // Button Key를 사용했을 때.
     public void OnPressButton(AnswerKey answerKey, bool on){
+        Debug.Log("OnPressButton");
         InterActiveGate gate = SearchGate(answerKey);
 
         if(gate == null) return;
-
+        Debug.Log("gate search");
+        
         LockedGate lockedGate = gate as LockedGate;
         if(on){
             Debug.Log("문 열기.");

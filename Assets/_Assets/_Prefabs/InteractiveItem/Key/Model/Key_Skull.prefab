@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 99236945269995251}
   - component: {fileID: 8081655206500095340}
   - component: {fileID: 1640790981520154376}
+  - component: {fileID: 5041381071202770515}
   m_Layer: 7
   m_Name: Key_Skull
   m_TagString: HEAVYOBJECT
@@ -135,7 +136,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 10
   m_CollisionDetection: 0
 --- !u!114 &1640790981520154376
 MonoBehaviour:
@@ -149,3 +150,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 633b26d5d7422564f8ac8ea00ebb9b28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5041381071202770515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7027281501114271962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9f1873cdf3a794498fd1571cd1216c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _h0: 0
+  eventSensorItemEnter: {fileID: 11400000, guid: 6ddce438103d4b4488a96ef097ed1768, type: 2}
+  eventSensorItemExit: {fileID: 11400000, guid: a833b8040b3a1fe44974d624f35e5767, type: 2}
+  _h1: 0
+  rds: []
+  selectableMaterial: {fileID: 0}
+  selectableThickness: 0.02
+  on: 0

@@ -1,5 +1,4 @@
 using CustomInspector;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class InteractiveObject : MonoBehaviour
@@ -13,7 +12,6 @@ public class InteractiveObject : MonoBehaviour
     [Space(10), HorizontalLine(color:FixedColor.Cyan),HideField] public bool _h1;
 #endregion
 
-    //위 이벤트에 이벤트 추가하기
     public Renderer[] rds;
     [Tooltip("Outline Material")]
     public Material selectableMaterial;
@@ -39,12 +37,14 @@ public class InteractiveObject : MonoBehaviour
     }
 
     void OnEventSensorItemEnter(EventSensorItemEnter e){
-        if(e.to.GetComponent<InteractiveObject>() == null) return;
+        if(e.to != this.gameObject || e.to.GetComponent<InteractiveObject>() == null) return;
+
         Select(true);
     }
 
     void OnEventSensorItemExit(EventSensorItemExit e){
-        if(e.to.GetComponent<InteractiveObject>() == null) return;
+        if(e.to != this.gameObject || e.to.GetComponent<InteractiveObject>() == null) return;
+
         Select(false);
     }
 

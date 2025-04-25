@@ -1,4 +1,6 @@
 public interface IInterative
 {
-    public abstract void Apply(CharacterControl owner);
+    public void Apply(CharacterControl owner){
+        owner.InterActItem();
+    }
 }

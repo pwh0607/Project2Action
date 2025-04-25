@@ -1,5 +1,6 @@
 using UnityEngine;
 
+//주워 들을 수 있는 아이템
 public class Pickable : MonoBehaviour, IInterative
 {
     private Rigidbody rb;
@@ -12,7 +13,6 @@ public class Pickable : MonoBehaviour, IInterative
     }
 
     public void Apply(CharacterControl owner){
-        Debug.Log("아이템 픽!");
         rb.isKinematic = true;
         rb.useGravity = false;
         col.isTrigger = true;

@@ -49,10 +49,11 @@ public class AbilityAttack : Ability<AbilityAttackData>
 
         CoolTimeAsync().Forget();
 
-        // owner.LookAtY(data.target.transform.position);
-        
+       
         AnimationClip clip = owner.Profile.ATTACK.Random();
+
         Debug.Log("공격 수행중...");
+
         owner.AnimateTrigger("ATTACK", owner.Profile.animatorOverride, clip);
         owner.AnimateMoveSpeed(0f, true);
         data.eventAttackAfter.Raise();

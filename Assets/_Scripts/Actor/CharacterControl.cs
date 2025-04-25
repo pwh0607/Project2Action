@@ -2,18 +2,6 @@ using UnityEngine;
 using CustomInspector;
 using DG.Tweening;
 
-//TempCode
-public struct CharacterState
-{
-    public int health;
-    public int damage;
-
-    public void Set(ActorProfile profile){
-        health = profile.health;
-        damage = profile.attackDamage;
-    }
-}
-
 // GAS (Game Ability System) : 언리얼.
 // 32bit = 4byte ( int )
 // 0000 .... 0000 0000
@@ -21,6 +9,7 @@ public class CharacterControl : MonoBehaviour, IActorControl
 {
     [Header("Ability")]
     public Transform playerHand;
+    public LockedGate detectedGate;
     
     // 원본 데이터
     [ReadOnly] public AbilityControl abilityControl;
@@ -49,19 +38,17 @@ public class CharacterControl : MonoBehaviour, IActorControl
     [ReadOnly] public Transform handPoint;
     [ReadOnly] public Transform model;
 
-    [ReadOnly] public Pickable currentItem;
-    [ReadOnly] public Pickable pickableItem;
-
     void Awake()
     {
         TryGetComponent(out abilityControl);
         TryGetComponent(out rb);
         TryGetComponent(out animator);
-        TryGetComponent(out uiControl);
         
         eyePoint = transform.Find("_EYEPOINT_");
         model = transform.Find("_MODEL_");
         handPoint = transform.Find("_HANDPOINT_");
+
+        uiControl = GetComponentInChildren<UIControl>();
     }
 
     void Start() { 
@@ -131,5 +118,9 @@ public class CharacterControl : MonoBehaviour, IActorControl
         float current = animator.GetFloat("MOVESPEED");
         float spd = Mathf.Lerp(current, speed, Time.deltaTime * 10f);
         animator.SetFloat("MOVESPEED", immediate ? speed : spd);
+    }
+
+    public void InterActItem(){
+        
     }
 }

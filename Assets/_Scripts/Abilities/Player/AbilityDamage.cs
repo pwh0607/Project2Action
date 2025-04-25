@@ -7,7 +7,6 @@ public class AbilityDamage : Ability<AbilityDamageData>
 
         owner.isDamageable = true;
         owner.uiControl?.Show(true);
-        owner.uiControl.SetHealth(owner.Profile.health, owner.Profile.health);
     }
 
     public override void Activate(object obj)

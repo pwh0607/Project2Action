@@ -10,6 +10,7 @@ TagManager:
   - ENEMY
   - ITEM
   - HEAVYOBJECT
+  - LOCKEDGATE
   layers:
   - Default
   - TransparentFX

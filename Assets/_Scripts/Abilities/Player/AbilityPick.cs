@@ -2,20 +2,23 @@ using UnityEngine;
 
 public class AbilityPick : Ability<AbilityPickData>
 {    
+    GameObject detectiveItem;
+    GameObject currentItem;
+    
     public AbilityPick(AbilityPickData data, CharacterControl owner) : base(data, owner) {
         if(owner.Profile == null) return;
 
-        owner.pickableItem = null;
+        detectiveItem = null;
     }
 
     public override void Activate(object obj)
     {
-        owner.currentItem = null;
+        currentItem = null;
     }
 
     public override void Deactivate()
     {
-        owner.currentItem = null;
+        currentItem = null;
     }
 
     public override void Update()
@@ -27,7 +30,7 @@ public class AbilityPick : Ability<AbilityPickData>
     public void InputKeyboard(){
         if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
         {
-            if(owner.currentItem == null){
+            if(currentItem == null){
                 PickItem();
             }
             else{
@@ -37,44 +40,64 @@ public class AbilityPick : Ability<AbilityPickData>
     }
     
     private void PickItem(){
-        if(owner.currentItem != null || owner.pickableItem == null) return;
+        if(currentItem != null || detectiveItem == null) return;
 
-        if(owner.currentItem.gameObject.GetComponent<Item>() != null){
-            Item item = owner.currentItem.gameObject.GetComponent<Item>();
+        // OnLost();
+        if(detectiveItem.gameObject.GetComponent<Item>() != null){           //보유할 수 있는 
+            Item item = detectiveItem.gameObject.GetComponent<Item>();
             owner.uiControl.GetItem(item);
+            item.gameObject.SetActive(false);//DisableItem();
         }else{
-            owner.pickableItem.Apply(owner);
-            owner.currentItem = owner.pickableItem;
+            currentItem = detectiveItem;
+            detectiveItem.GetComponent<Pickable>().Apply(owner);
         }
     }
 
     private void ThrowItem(){
-        if(owner.currentItem == null) return;
+        if(currentItem == null) return;
 
-        owner.currentItem.Throw();
+        currentItem.GetComponent<Pickable>().Throw();
         
-        owner.currentItem = null;
-        
-        owner.pickableItem = null;
+        currentItem = null;
+        detectiveItem = null;
     }
 
     private void CheckItem(){
-        Debug.DrawRay(owner.eyePoint.transform.position, owner.transform.forward, Color.red, 3f);
         
-        if(owner.currentItem != null) return;
+        Debug.DrawRay(owner.transform.position + owner.transform.up * 0.2f, owner.transform.forward, Color.red, data.pickRange);
         
-        var list = Physics.OverlapSphere(owner.transform.position + owner.transform.forward, 2f, LayerMask.GetMask("HeavyObject"));
+        if(currentItem != null) return;
 
-        if(list.Length <= 0) return;
-
-        if(list[0].tag == "HEAVYOBJECT"){
-            owner.pickableItem = list[0].GetComponent<Pickable>();
-            //outline 생성하기
-            return;
-        }else if(list[0].tag == "DOOR"){
-            Debug.Log("잠긴 문을 인식했다.");
+        if(Physics.Raycast(owner.transform.position + owner.transform.up * 0.2f, owner.transform.forward, out RaycastHit hit, data.pickRange)){
+            if (hit.transform.tag == "HEAVYOBJECT"|| hit.transform.tag == "ITEM")
+            {
+                detectiveItem = hit.collider.gameObject;
+                OnFound();
+                return;
+            }
+            else if(hit.transform.tag == "LOCKEDGATE"){
+                Debug.Log("Door 인지");
+                detectiveItem = hit.collider.gameObject;
+                owner.detectedGate = detectiveItem.GetComponentInParent<LockedGate>();
+                return;
+            }
         }
-        
-        owner.pickableItem = null;
+       OnLost();
+       detectiveItem = null;
+    }
+    void OnFound()
+    {
+        data.eventSensorItemEnter.from = owner;
+        data.eventSensorItemEnter.to = detectiveItem.gameObject;
+        data.eventSensorItemEnter.Raise();
+    }
+
+    void OnLost()
+    {
+        if(detectiveItem == null) return;
+        data.eventSensorItemExit.from = owner;
+        data.eventSensorItemExit.to = detectiveItem.gameObject;
+        data.eventSensorItemExit.Raise();
+        detectiveItem = null;
     }
 }

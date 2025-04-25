@@ -1,8 +1,6 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using CustomInspector;
-using UnityEditorInternal.Profiling.Memory.Experimental;
 
 public class UIControl : MonoBehaviour
 {
@@ -11,17 +9,21 @@ public class UIControl : MonoBehaviour
 //  TempCode
     [HorizontalLine("직접 연결 (없으면 미사용)"), HideInInspector] public bool h_s1;
     [SerializeField] TextMeshPro textMesh;
-    [SerializeField] Slider sliderHealth;
     [HorizontalLine(color:FixedColor.Cyan), HideInInspector] public bool h_e1;
-//  TempCode
 
     [SerializeField] SidebarController sidebarController;
 
     void Start()
     {
         uiRoot = transform.Find("_UI_");
-        if(uiRoot == null) Debug.LogWarning("UIControl : _UI_ 없음");
+        sidebarController = GetComponentInChildren<SidebarController>();
+        
+        if(uiRoot == null) {
+            Debug.LogWarning("UIControl : _UI_ 없음");
+            return;
+        }
 
+        
         uiRoot.localScale = Vector3.zero;
         Show(false);
     }
@@ -43,13 +45,6 @@ public class UIControl : MonoBehaviour
 
         textMesh.text = info;
         state = info;
-    }
-
-    public void SetHealth(int current, int max){
-        if(sliderHealth == null) return;
-
-        float cur = (float)current / (float)max;
-        sliderHealth.value = Mathf.Clamp01(cur);
     }
 
     public void GetItem(Item item){

@@ -96,6 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4144735544318936923}
   - component: {fileID: 7602464417711795486}
+  - component: {fileID: 834688946525090440}
   m_Layer: 0
   m_Name: Gate_Locked
   m_TagString: Untagged
@@ -139,6 +140,26 @@ MonoBehaviour:
   leftDoor: {fileID: 4144735544548848671}
   rightDoor: {fileID: 4144735546036073077}
   index: 0
+--- !u!114 &834688946525090440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143446859910886728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9f1873cdf3a794498fd1571cd1216c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _h0: 0
+  eventSensorItemEnter: {fileID: 11400000, guid: 6ddce438103d4b4488a96ef097ed1768, type: 2}
+  eventSensorItemExit: {fileID: 11400000, guid: a833b8040b3a1fe44974d624f35e5767, type: 2}
+  _h1: 0
+  rds: []
+  selectableMaterial: {fileID: 0}
+  selectableThickness: 0.02
+  on: 0
 --- !u!1 &1143446860226233868
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,7 +430,7 @@ GameObject:
   - component: {fileID: 5101186605755783655}
   m_Layer: 0
   m_Name: Block
-  m_TagString: Untagged
+  m_TagString: LOCKEDGATE
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
