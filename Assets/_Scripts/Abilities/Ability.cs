@@ -1,14 +1,6 @@
 using System;
 using UnityEngine;
 
-// MVC : Model(데이터) , View(UI) , Control(행동)
-
-// abstract     : 부모,자식 - 변수(O)
-// interface    : 친척      - 변수(X)
-
-// GAS ( Game Ability System ) : 언리얼
-// 32bit = 4byte ( int )
-// 0000 0000 0000 0000  ... 0000 0000 0000 0101
 [Flags]
 public enum AbilityFlag
 {
@@ -29,6 +21,7 @@ public enum AbilityFlag
     
     // Damaged
     Damage = 1 << 30,
+    Death = 1 << 35,
 }
 
 // 데이터 담당 : 역할

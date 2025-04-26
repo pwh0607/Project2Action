@@ -28,6 +28,8 @@ public class AbilityPick : Ability<AbilityPickData>
     }
     
     public void InputKeyboard(){
+        if(detectiveItem != null && detectiveItem.GetComponent<LockedGate>() != null) return;
+
         if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
         {
             if(currentItem == null){
@@ -42,14 +44,19 @@ public class AbilityPick : Ability<AbilityPickData>
     private void PickItem(){
         if(currentItem != null || detectiveItem == null) return;
 
-        // OnLost();
-        if(detectiveItem.gameObject.GetComponent<Item>() != null){           //보유할 수 있는 
+        if(detectiveItem.gameObject.GetComponent<Item>() != null){           
             Item item = detectiveItem.gameObject.GetComponent<Item>();
             owner.uiControl.GetItem(item);
-            item.gameObject.SetActive(false);//DisableItem();
+            item.gameObject.SetActive(false);
+            
+            detectiveItem = null;
+            currentItem = null;
         }else{
             currentItem = detectiveItem;
+            
+            if(detectiveItem.tag == "LOCKEDGATE") return;
             detectiveItem.GetComponent<Pickable>().Apply(owner);
+            owner.animator.SetBool("PICK", true);
         }
     }
 
@@ -60,6 +67,7 @@ public class AbilityPick : Ability<AbilityPickData>
         
         currentItem = null;
         detectiveItem = null;
+        owner.animator.SetBool("PICK", false);
     }
 
     private void CheckItem(){
@@ -69,21 +77,26 @@ public class AbilityPick : Ability<AbilityPickData>
         if(currentItem != null) return;
 
         if(Physics.Raycast(owner.transform.position + owner.transform.up * 0.2f, owner.transform.forward, out RaycastHit hit, data.pickRange)){
-            if (hit.transform.tag == "HEAVYOBJECT"|| hit.transform.tag == "ITEM")
+            detectiveItem = hit.collider.gameObject;
+
+            if (detectiveItem.tag == "HEAVYOBJECT" || detectiveItem.tag == "ITEM")
             {
-                detectiveItem = hit.collider.gameObject;
                 OnFound();
                 return;
             }
-            else if(hit.transform.tag == "LOCKEDGATE"){
-                Debug.Log("Door 인지");
-                detectiveItem = hit.collider.gameObject;
+            else if(detectiveItem.tag == "LOCKEDGATE"){
                 owner.detectedGate = detectiveItem.GetComponentInParent<LockedGate>();
+                return;
+            }else{
+                detectiveItem = null;
+                owner.detectedGate = null;
                 return;
             }
         }
-       OnLost();
-       detectiveItem = null;
+
+        OnLost();
+        detectiveItem = null;
+        owner.detectedGate = null;
     }
     void OnFound()
     {
@@ -98,6 +111,5 @@ public class AbilityPick : Ability<AbilityPickData>
         data.eventSensorItemExit.from = owner;
         data.eventSensorItemExit.to = detectiveItem.gameObject;
         data.eventSensorItemExit.Raise();
-        detectiveItem = null;
     }
 }

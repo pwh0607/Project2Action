@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: EventPlayerSpawnBefore
   m_EditorClassIdentifier: 
   player: {fileID: 5679736799722811503, guid: 2c863d22710c72046a0bcbb17b23503b, type: 3}
-  playerCursor: {fileID: 6881519493202298620, guid: 1d22620292dd95f4ba7fbea847dfc910, type: 3}
-  playerCamera: {fileID: -4996535222861771060, guid: cf3bb698daec20c49a48ae5b4d713155, type: 3}
+  camera: {fileID: 5688368329036790501, guid: cf3bb698daec20c49a48ae5b4d713155, type: 3}

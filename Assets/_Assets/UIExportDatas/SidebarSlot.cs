@@ -26,8 +26,9 @@ public class SidebarSlot : MonoBehaviour
 
     public void SetIcon(ItemIcon icon){
         if(icon == null){
-            Destroy(icon.gameObject);
-            icon = null;
+            ItemIcon itemicon = transform.GetComponentInChildren<ItemIcon>();
+            if(itemicon == null) return;
+        
             return;
         }
         icon.transform.SetParent(transform);

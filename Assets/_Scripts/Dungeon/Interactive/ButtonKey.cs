@@ -10,9 +10,11 @@ public class ButtonKey : AnswerKey
     [SerializeField] ButtonKeyData buttonKeyData;
     [SerializeField, ReadOnly] private GameObject heavyObject;                     //key 쌍
     [SerializeField, ReadOnly] private GameObject button;                 //바닥 버튼
-
+    private bool isPressed = false;
     void Start()
     {
+        isPressed = false;
+
         MakeKey();
         MakeButton();
     }
@@ -54,7 +56,8 @@ public class ButtonKey : AnswerKey
     #region Collider
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "HEAVYOBJECT" || collision.gameObject.tag == "Player"){
+        if(isPressed) return;
+        if(collision.gameObject.tag == "HEAVYOBJECT"){
             Debug.Log("버튼 푸쉬!");
             OnPressedButton?.Invoke(this, true);
         }       
@@ -62,7 +65,8 @@ public class ButtonKey : AnswerKey
 
     void OnCollisionExit(Collision collision)
     {
-        if(collision.gameObject.tag == "HEAVYOBJECT" || collision.gameObject.tag == "Player"){
+        if(!isPressed) return;
+        if(collision.gameObject.tag == "HEAVYOBJECT"){
             Debug.Log("버튼 풀...!");
             OnPressedButton?.Invoke(this, false);
         }          

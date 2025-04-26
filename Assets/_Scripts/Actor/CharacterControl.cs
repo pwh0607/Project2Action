@@ -26,7 +26,7 @@ public class CharacterControl : MonoBehaviour, IActorControl
 
     [Header("flag")]   
     [ReadOnly] public bool isGrounded;
-    [ReadOnly] public bool isDamageable = false;
+    [ReadOnly] public bool isDeath = false;
 
     [ReadOnly] public bool isArrived = true;
 

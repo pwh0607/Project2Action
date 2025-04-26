@@ -7,6 +7,6 @@ public class EventPlayerSpawnBefore : GameEvent<EventPlayerSpawnBefore>
 
     [Space(20)]
     public CharacterControl player;
-    public CursorControl playerCursor;
-    public CameraControl playerCamera;  
+    
+    public CameraControl camera;
 }

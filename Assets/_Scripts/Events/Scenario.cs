@@ -17,14 +17,12 @@ public class Scenario : MonoBehaviour
     IEnumerator Start()
     {
         yield return new WaitForEndOfFrame();
-
-        // 캐릭터 스폰
-        playerSpawnerBefore?.Raise();
-    
-        // 적 스폰
+        playerSpawnerBefore?.Raise();    
         enemySpawn?.Raise();
 
-        //아이템 스폰
+        //아이템 데이터 추가하기.
+        
+
 
         yield return new WaitForSeconds(1f);
         GameManager.I.ShowInfo("Escape Dungeon", 3f);

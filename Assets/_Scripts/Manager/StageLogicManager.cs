@@ -4,82 +4,97 @@ using UnityEngine;
 
 public class StageLogicManager : BehaviourSingleton<StageLogicManager>
 {
+    [Serializable]
+    public class GatePair{
+        public InterActiveGate gate;
+        public AnswerKey answerKey;
+
+        public GatePair(InterActiveGate gate, AnswerKey answerKey){
+            this.gate = gate;
+            this.answerKey = answerKey;
+        }
+    }
+    
     protected override bool IsDontDestroy() => true;
-    int keyNumber;
+
     public List<GatePair> pairs = new();
+
+    public GameObject portalPrefab;
+
+    private bool stageCompleted;
+
+    public List<Room> rooms = new();
+    public List<Link> links = new();
 
     void Start()
     {
         pairs.Clear();
-        keyNumber = 1;
+        stageCompleted = false;
     }
 
     public void SetPair(LockedGate gate, AnswerKey answerKey){
-        Debug.Log($"Stage Logic Manager : {gate}, {answerKey}");
         GatePair pair = new GatePair(gate, answerKey);
         pairs.Add(pair);
 
-        if(answerKey is ButtonKey buttonKey){
+        if(answerKey is ButtonKey buttonKey)
             buttonKey.RegisterEvent(OnPressButton);
-        }
-        
-        answerKey.index = keyNumber;
-        gate.index = keyNumber;
-
-        keyNumber++;
     }
 
-    //문에 아이템을 사용했을 때 이벤트 처리.
-    
-    // Normal Key를 문 앞에서 사용했을 때.
     public bool OnUseKey(LockedGate gate, AnswerKey answerKey){
-        Debug.Log($"Stage Logic Manager : {gate} = {answerKey} CHECK!");
         var targetKey = pairs.Find(pair => pair.answerKey == answerKey);
         
         if(targetKey == null) {
             Debug.Log($"Logic Fail...");
             return false;
         }
-        Debug.Log($"Logic Complete!");
+
+        gate.OpenGate();
         return gate == targetKey.gate;
     }
 
-    // Button Key를 사용했을 때.
     public void OnPressButton(AnswerKey answerKey, bool on){
-        Debug.Log("OnPressButton");
         InterActiveGate gate = SearchGate(answerKey);
 
         if(gate == null) return;
-        Debug.Log("gate search");
         
         LockedGate lockedGate = gate as LockedGate;
-        if(on){
-            Debug.Log("문 열기.");
-            lockedGate.OpenGate();
-        }else{
-            Debug.Log("문 닫기.");
-            lockedGate.CloseGate();
-        }
+        if(on) lockedGate.OpenGate();
+        else lockedGate.CloseGate();
+
     }
 
     InterActiveGate SearchGate(AnswerKey answerKey){
         foreach(var p in pairs){
             if(p.answerKey == answerKey){
-                Debug.Log("키와 맞는 쌍을 찾았다.");
                 return p.gate;
             }
         }
         return null;
-    } 
-}
+    }
 
-[Serializable]
-public class GatePair{
-    public InterActiveGate gate;
-    public AnswerKey answerKey;
+    void RemovePair(AnswerKey answerKey){
+        GatePair removedPair = null;
+        foreach(var p in pairs){
+            if(p.answerKey == answerKey){
+                removedPair = p;
+                break;
+            }
+        }
+        
+        if(removedPair == null) return;
 
-    public GatePair(InterActiveGate gate, AnswerKey answerKey){
-        this.gate = gate;
-        this.answerKey = answerKey;
+        pairs.Remove(removedPair);
+
+        if(pairs.Count <= 0 && !stageCompleted){
+            ShowPortal();
+        }
+    }
+
+    public void SendDungeonData(List<Room> rooms){
+        this.rooms = rooms;
+    }
+
+    void ShowPortal(){
+        
     }
 }

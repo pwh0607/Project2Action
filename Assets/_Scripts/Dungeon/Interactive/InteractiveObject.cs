@@ -17,7 +17,7 @@ public class InteractiveObject : MonoBehaviour
     public Material selectableMaterial;
 
     [Tooltip("Outline Thickness")]
-    public float selectableThickness = 0.05f;
+    public float selectableThickness = 0.02f;
 
     [ReadOnly] public bool on;
 

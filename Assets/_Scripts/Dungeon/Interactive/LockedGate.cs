@@ -13,8 +13,6 @@ public class LockedGate : InterActiveGate
 
     public void OpenGate(){
         type = GateType.OPEN;
-        
-        Debug.Log("문 열기");
         if(blockDoor.gameObject.activeSelf) blockDoor.gameObject.SetActive(false);
 
         leftDoor.DOLocalRotate(new Vector3(0, 100f, 0), 1, RotateMode.FastBeyond360);
@@ -23,7 +21,6 @@ public class LockedGate : InterActiveGate
     
     public void CloseGate(){
         type = GateType.LOCK;
-        Debug.Log("문 닫기");
         if(!blockDoor.gameObject.activeSelf) blockDoor.gameObject.SetActive(true);
 
         leftDoor.DOLocalRotate(Vector3.zero, 1, RotateMode.FastBeyond360);

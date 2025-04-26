@@ -19,7 +19,7 @@ public class UIControl : MonoBehaviour
         sidebarController = GetComponentInChildren<SidebarController>();
         
         if(uiRoot == null) {
-            Debug.LogWarning("UIControl : _UI_ 없음");
+            Debug.LogWarning($"{gameObject.name} : UIControl : _UI_ 없음");
             return;
         }
 
@@ -48,6 +48,8 @@ public class UIControl : MonoBehaviour
     }
 
     public void GetItem(Item item){
+        if(sidebarController == null) return;
+        
         sidebarController.GetItem(item);
     }
 }

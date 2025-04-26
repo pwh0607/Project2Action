@@ -21,19 +21,13 @@ public class CameraControl : MonoBehaviour
     }
 
     void OnEventPlayerSpawnAfter(EventPlayerSpawnAfter e){
-
-
+        targetGroup = GetComponentInChildren<CinemachineTargetGroup>();
         targetGroup.Targets.Clear();
 
         CinemachineTargetGroup.Target main = new CinemachineTargetGroup.Target();
         main.Object = e.eyePoint;
         main.Weight= 0.8f;
 
-        CinemachineTargetGroup.Target sub = new CinemachineTargetGroup.Target();
-        sub.Object = e.CursorFixedPoint;        
-        sub.Weight= 0.2f;
-
         targetGroup.Targets.Add(main);
-        targetGroup.Targets.Add(sub);
     }
 }

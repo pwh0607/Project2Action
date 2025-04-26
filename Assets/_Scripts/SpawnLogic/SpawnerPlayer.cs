@@ -9,7 +9,6 @@ public class SpawnerPlayer : Spawner
     
     [Space(10)]
     CharacterControl _character;
-    CursorControl _cursor;
     
     void OnEnable()
     {
@@ -25,7 +24,7 @@ public class SpawnerPlayer : Spawner
   
     void OnEventPlayerSpawnBefore(EventPlayerSpawnBefore e){
         //플레이어용 카메라 생성
-        CameraControl camera = Instantiate(e.playerCamera);
+        CameraControl camera = Instantiate(e.camera);
     
         //플레이어 캐릭터 생성
         _character = Instantiate(e.player);
@@ -36,10 +35,6 @@ public class SpawnerPlayer : Spawner
         // 플레이어 캐릭터에 프로파일 연결
         _character.Profile = actorProfile;
         
-        // 커서 세팅
-        _cursor = Instantiate(e.playerCursor);
-        _cursor.eyePoint = _character.eyePoint;
-        
         StartCoroutine(SpawnAfter());
     }
     
@@ -48,8 +43,6 @@ public class SpawnerPlayer : Spawner
         yield return new WaitForEndOfFrame();
         
         eventPlayerSpawnAfter.eyePoint = _character.eyePoint;
-        eventPlayerSpawnAfter.CursorFixedPoint = _cursor.CursorFixedPoint;
         eventPlayerSpawnAfter?.Raise();
     }
-
 }
