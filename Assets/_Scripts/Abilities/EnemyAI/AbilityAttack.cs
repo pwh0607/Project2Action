@@ -48,11 +48,8 @@ public class AbilityAttack : Ability<AbilityAttackData>
         if(isAttacking || data.target == null) return;
 
         CoolTimeAsync().Forget();
-
        
         AnimationClip clip = owner.Profile.ATTACK.Random();
-
-        Debug.Log("공격 수행중...");
 
         owner.AnimateTrigger("ATTACK", owner.Profile.animatorOverride, clip);
         owner.AnimateMoveSpeed(0f, true);

@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51acea4bcbdadd541895d845bdab37ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actorProfile: {fileID: 11400000, guid: e019b9ff6033bc54993de2fa0196b5ca, type: 2}
+  actorProfile: {fileID: 11400000, guid: 47883e624887d3547b6f201adc9e87be, type: 2}
   spawnPoint: {fileID: 1061355800369934818}
   eventEnemySpawnBefore: {fileID: 11400000, guid: a73a5a91a993c5a4e9679bdced9d5b7e, type: 2}
   eventEnemySpawnAfter: {fileID: 11400000, guid: d2ae8029d79ca8542a4e389cce8c190a, type: 2}

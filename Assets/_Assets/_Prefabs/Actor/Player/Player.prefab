@@ -254,7 +254,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2316366434255546416}
   m_Layer: 9
-  m_Name: Hand
+  m_Name: _HAND_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -346,9 +346,9 @@ Transform:
   m_Children:
   - {fileID: 4675960079967612654}
   - {fileID: 2910737957155279010}
-  - {fileID: 1871621655938308286}
   - {fileID: 6366712871683737439}
   - {fileID: 2316366434255546416}
+  - {fileID: 1871621655938308286}
   - {fileID: 1968130942268849863}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -421,7 +421,7 @@ MonoBehaviour:
   interActiveObject: {fileID: 0}
   profile: {fileID: 0}
   isGrounded: 1
-  isDamageable: 1
+  isDeath: 0
   isArrived: 1
   rb: {fileID: 0}
   animator: {fileID: 0}

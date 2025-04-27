@@ -50,6 +50,9 @@ public class InteractiveObject : MonoBehaviour
 
     void Select(bool on)
     {
+
+        if(on) Debug.Log("select on");
+        
         if(rds == null || rds.Length <=0) return;
 
         foreach(var rd in rds){

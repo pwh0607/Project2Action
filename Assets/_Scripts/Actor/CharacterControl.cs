@@ -8,13 +8,12 @@ using DG.Tweening;
 public class CharacterControl : MonoBehaviour, IActorControl
 {
     [Header("Ability")]
-    public Transform playerHand;
     public LockedGate detectedGate;
+    [ReadOnly] public Vector3 centerPos;
     
     // 원본 데이터
     [ReadOnly] public AbilityControl abilityControl;
     [ReadOnly] public UIControl uiControl;
-    [ReadOnly] public FeedbackControl feedbackControl;
     
     [ReadOnly] public GameObject interActiveObject;
 
@@ -27,7 +26,6 @@ public class CharacterControl : MonoBehaviour, IActorControl
     [Header("flag")]   
     [ReadOnly] public bool isGrounded;
     [ReadOnly] public bool isDeath = false;
-
     [ReadOnly] public bool isArrived = true;
 
     [Header("Physics")]   
@@ -46,7 +44,7 @@ public class CharacterControl : MonoBehaviour, IActorControl
         
         eyePoint = transform.Find("_EYEPOINT_");
         model = transform.Find("_MODEL_");
-        handPoint = transform.Find("_HANDPOINT_");
+        handPoint = transform.Find("_HAND_");
 
         uiControl = GetComponentInChildren<UIControl>();
     }
@@ -87,9 +85,10 @@ public class CharacterControl : MonoBehaviour, IActorControl
         model.gameObject.SetActive(b);
     }
 
-    
     public void AnimateTrigger(string clipName, AnimatorOverrideController aoc, AnimationClip clip){
         if(animator == null) return;
+
+        if(clipName == "ATTACK") Debug.Log("어택 애니메이션 수행!");
 
         aoc[name] = clip;
         animator.runtimeAnimatorController = aoc;
@@ -118,9 +117,5 @@ public class CharacterControl : MonoBehaviour, IActorControl
         float current = animator.GetFloat("MOVESPEED");
         float spd = Mathf.Lerp(current, speed, Time.deltaTime * 10f);
         animator.SetFloat("MOVESPEED", immediate ? speed : spd);
-    }
-
-    public void InterActItem(){
-        
     }
 }

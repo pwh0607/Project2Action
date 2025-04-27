@@ -22,8 +22,6 @@ public class Scenario : MonoBehaviour
 
         //아이템 데이터 추가하기.
         
-
-
         yield return new WaitForSeconds(1f);
         GameManager.I.ShowInfo("Escape Dungeon", 3f);
     }

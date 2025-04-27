@@ -17,6 +17,7 @@ public class SidebarController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     private CharacterControl owner;
     void Start()
     {
+        Debug.Log("사이드바 생성!");
         owner = GetComponentInParent<CharacterControl>();
         isMouseOver = false;
         selectedItem = null;
@@ -104,7 +105,8 @@ public class SidebarController : MonoBehaviour, IPointerEnterHandler, IPointerEx
         if(selectedItem is NormalKey key){
             if(key.Use(owner.detectedGate))               //null은 임시 값         
             {
-                slots[focusIndex].SetIcon(null);
+                //알맞은 키를 사용했을 떄.
+                slots[focusIndex].RemoveIcon();
             }
         }
     }

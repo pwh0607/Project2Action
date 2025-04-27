@@ -25,12 +25,6 @@ public class SidebarSlot : MonoBehaviour
     }
 
     public void SetIcon(ItemIcon icon){
-        if(icon == null){
-            ItemIcon itemicon = transform.GetComponentInChildren<ItemIcon>();
-            if(itemicon == null) return;
-        
-            return;
-        }
         icon.transform.SetParent(transform);
         icon.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         
@@ -38,6 +32,17 @@ public class SidebarSlot : MonoBehaviour
 
         if(focusFrame.activeSelf){
             OnSlotFocused?.Invoke(icon.item);
+        }
+    }
+
+    public void RemoveIcon(){
+        ItemIcon itemIcon = GetComponentInChildren<ItemIcon>();
+        Destroy(itemIcon.gameObject);
+
+        item = null;
+
+        if(focusFrame.activeSelf){      //현재 칸이 활성화 되어있다면...
+            OnSlotFocused?.Invoke(null);
         }
     }
 }

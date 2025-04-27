@@ -22,7 +22,6 @@ public class UIControl : MonoBehaviour
             Debug.LogWarning($"{gameObject.name} : UIControl : _UI_ 없음");
             return;
         }
-
         
         uiRoot.localScale = Vector3.zero;
         Show(false);

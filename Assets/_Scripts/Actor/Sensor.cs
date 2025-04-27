@@ -85,8 +85,8 @@ public class Sensor : MonoBehaviour
             if (target == null)
                 Debug.LogWarning("Sensor ] target - CharacterControl 없음");
 
-            // 데미지 받을 수 없는 상태는 무시
-            if (!target.isDamageable) continue;
+            // 이미 죽어있는 상태라면...
+            if (target.isDeath) continue;
 
             Vector3 direction = (target.transform.position - owner.transform.position).normalized;
 

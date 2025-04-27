@@ -91,10 +91,6 @@ public class AbilityWandor : Ability<AbilityWandorData>
 
 
     private void RandomPosition(){
-        // 이동할 랜덤 위치 선정.
-        // [-1  ~  1]
-        
-        // 가는 중이다.
         Vector3 randomPos = owner.transform.position + Random.insideUnitSphere * data.wandorRadius;
         randomPos.y = 1f;
     
