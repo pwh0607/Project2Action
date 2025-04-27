@@ -57,10 +57,8 @@ public class CharacterEventControl : MonoBehaviour
     }
     
     IEnumerator SpawnSequence(EventPlayerSpawnAfter e){
-        Debug.Log("Spawn Player start");
         yield return new WaitUntil(() => owner.Profile.avatar != null && owner.Profile.models != null);
 
-        Debug.Log("Spawn Player start");
         owner.Profile = owner.Profile;
 
         if(owner.Profile.models == null)

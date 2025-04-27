@@ -96,16 +96,11 @@ public class Sensor : MonoBehaviour
 
             currentFrameTargets.Add(target);
 
-            // 타겟과의 거리 체크
             float distance = Vector3.Distance(transform.position, target.transform.position);
             
-            // 타겟과의 장애물 체크
             bool isVisible = !Physics.Raycast(transform.position, direction, distance, blockLayer);
-            
-            // 타겟이 공격 가능 범위에 도착했는지
+           
             bool isAttackable = distance <= attackRange;
-
-            //현재 상태 가져오기
             visibilityStates.TryGetValue(target, out TargetState previousState);
 
             TargetState newState = new TargetState
@@ -114,7 +109,6 @@ public class Sensor : MonoBehaviour
                 isAttackable = isAttackable
             };
 
-            // 새로운 타겟 출현
             if (!visibilityStates.ContainsKey(target))
             {
                 visibilityStates[target] = newState;
@@ -127,7 +121,6 @@ public class Sensor : MonoBehaviour
                     OnAttack();
             }
 
-            // 기존 타겟의 상태 변경
             else if (previousState.isVisible != isVisible || previousState.isAttackable != isAttackable)
             {
                 visibilityStates[target] = newState;
@@ -141,7 +134,6 @@ public class Sensor : MonoBehaviour
             }
         }
 
-        // 삭제할 목록 작성
         List<CharacterControl> toRemove = new List<CharacterControl>();
         foreach (var kvp in visibilityStates)
         {
@@ -152,7 +144,6 @@ public class Sensor : MonoBehaviour
             }
         }
 
-        // 실제 삭제
         foreach (var t in toRemove)
             visibilityStates.Remove(t);
     }
@@ -160,7 +151,6 @@ public class Sensor : MonoBehaviour
     
     void OnFound()
     {
-        Debug.Log("FOUND");
         eventSensorSightEnter.from = owner;
         eventSensorSightEnter.to = target;
         eventSensorSightEnter.Raise();
@@ -168,7 +158,6 @@ public class Sensor : MonoBehaviour
 
     void OnBlocked()
     {
-        Debug.Log("BLOCK");
         eventSensorSightExit.from = owner;
         eventSensorSightExit.to = target;
         eventSensorSightExit.Raise();
@@ -176,7 +165,6 @@ public class Sensor : MonoBehaviour
 
     void OnLost()
     {        
-        Debug.Log("LOST");
         eventSensorSightExit.from = owner;
         eventSensorSightExit.to = target;        
         eventSensorSightExit.Raise();
@@ -184,13 +172,10 @@ public class Sensor : MonoBehaviour
 
     void OnAttack()
     {
-        Debug.Log("Attack On");
         eventSensorAttackEnter.from = owner;
         eventSensorAttackEnter.to = target;
         eventSensorAttackEnter.Raise();
     }
-
-
 
     void OnDrawGizmosSelected()
     {

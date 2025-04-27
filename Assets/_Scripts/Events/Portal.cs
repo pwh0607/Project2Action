@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Portal : MonoBehaviour
 {
@@ -6,6 +7,6 @@ public class Portal : MonoBehaviour
         if(collider.tag != "Player") return;
 
         Debug.Log("트리거 엔터!! 맵을 이동합니다.");
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);      
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);      
     }
 }

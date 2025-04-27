@@ -17,7 +17,6 @@ public class SidebarController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     private CharacterControl owner;
     void Start()
     {
-        Debug.Log("사이드바 생성!");
         owner = GetComponentInParent<CharacterControl>();
         isMouseOver = false;
         selectedItem = null;
@@ -100,9 +99,9 @@ public class SidebarController : MonoBehaviour, IPointerEnterHandler, IPointerEx
         }
     }
 
-    public void UseItem(){          //test public
-        //플레이어가 인지한 잠긴 문이 있다면..?
+    public void UseItem(){
         if(selectedItem is NormalKey key){
+            Debug.Log("아이템 ㅅ용!");
             if(key.Use(owner.detectedGate))               //null은 임시 값         
             {
                 //알맞은 키를 사용했을 떄.

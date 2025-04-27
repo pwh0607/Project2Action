@@ -14,8 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventSensorItemEnter: {fileID: 11400000, guid: 6ddce438103d4b4488a96ef097ed1768, type: 2}
   eventSensorItemExit: {fileID: 11400000, guid: a833b8040b3a1fe44974d624f35e5767, type: 2}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 384
-  pickRange: 2.5
-  pickOffset: {x: 0, y: 0, z: 1}
+  offset: {x: 0, y: 0.5, z: 0}
+  pickRange: 3

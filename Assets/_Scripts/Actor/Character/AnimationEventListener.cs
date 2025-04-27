@@ -32,7 +32,6 @@ public class AnimationEventListener : MonoBehaviour
     void OnEnable()
     {
         eventPlayerSpawnAfter.Register(OnEventPlayerSpawnAfter);
-
         eventEnemySpawnAfter.Register(OnEventEnemySpawnAfter);
     }
 
@@ -60,6 +59,7 @@ public class AnimationEventListener : MonoBehaviour
 
         footRight = modelRoot.FindSlot("rightfoot", "Ball_R", "r foot", "Rfoot");
         footLeft = modelRoot.FindSlot("leftfoot", "Ball_L", "l foot", "Lfoot");
+        
         handLeft = modelRoot.FindSlot("L Hand","LeftHand");
         handRight = modelRoot.FindSlot("R Hand","LeftHand");
     }

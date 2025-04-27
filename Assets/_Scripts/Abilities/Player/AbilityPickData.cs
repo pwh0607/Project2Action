@@ -7,7 +7,8 @@ public class AbilityPickData : AbilityData
     
     [SerializeField] public EventSensorItemEnter eventSensorItemEnter;
     [SerializeField] public EventSensorItemExit eventSensorItemExit;
-    
+
+    public Vector3 offset;
     public override Ability CreateAbility(CharacterControl owner) => new AbilityPick(this, owner);
 
     public float pickRange;

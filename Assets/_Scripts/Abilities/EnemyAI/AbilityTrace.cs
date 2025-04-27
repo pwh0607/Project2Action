@@ -10,7 +10,6 @@ public class AbilityTrace : Ability<AbilityTraceData>
     
     float currentVelocity;
    
-    
     public AbilityTrace(AbilityTraceData data, CharacterControl owner) : base(data, owner) {
         if(owner.Profile == null) return;
 
@@ -24,9 +23,7 @@ public class AbilityTrace : Ability<AbilityTraceData>
     public override void Activate(object obj)
     {
         data.target = obj as CharacterControl;
-        Debug.Log("Trace Activate");
         if(data.target == null) return;
-        Debug.Log("Target Trace");
         owner.uiControl.Display($"{data.Flag}");
     }
 
@@ -71,11 +68,9 @@ public class AbilityTrace : Ability<AbilityTraceData>
 
         Vector3 nextTarget = corners[next];
 
-        // 다음 위치 방향.
         Vector3 direction = (nextTarget - owner.rb.transform.position).normalized;
         direction.y = 0;
         
-        // 회전
         if(direction != Vector3.zero) lookrot = Quaternion.LookRotation(direction);
         
         owner.transform.rotation = Quaternion.RotateTowards(owner.transform.rotation, lookrot, data.rotatePerSec * Time.deltaTime);
@@ -97,9 +92,3 @@ public class AbilityTrace : Ability<AbilityTraceData>
         owner.AnimateMoveSpeed(a, false);
     }
 }
-
-// EQS
-/*
-    Environment Query Systems
-    Player의 주변환경 파악하기.
-*/

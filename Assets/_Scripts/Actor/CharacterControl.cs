@@ -2,9 +2,6 @@ using UnityEngine;
 using CustomInspector;
 using DG.Tweening;
 
-// GAS (Game Ability System) : 언리얼.
-// 32bit = 4byte ( int )
-// 0000 .... 0000 0000
 public class CharacterControl : MonoBehaviour, IActorControl
 {
     [Header("Ability")]
@@ -87,8 +84,6 @@ public class CharacterControl : MonoBehaviour, IActorControl
 
     public void AnimateTrigger(string clipName, AnimatorOverrideController aoc, AnimationClip clip){
         if(animator == null) return;
-
-        if(clipName == "ATTACK") Debug.Log("어택 애니메이션 수행!");
 
         aoc[name] = clip;
         animator.runtimeAnimatorController = aoc;

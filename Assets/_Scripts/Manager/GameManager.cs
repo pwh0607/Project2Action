@@ -1,6 +1,8 @@
 using UnityEngine;
 using MoreMountains.Feedbacks;
 using TMPro;
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameManager : BehaviourSingleton<GameManager>
 {
@@ -9,6 +11,8 @@ public class GameManager : BehaviourSingleton<GameManager>
 
     [SerializeField] TextMeshProUGUI information_TMP;
     protected override bool IsDontDestroy() => true;
+
+    
 
     public void ShowInfo(string info, float duration = 1f){
 
@@ -19,8 +23,16 @@ public class GameManager : BehaviourSingleton<GameManager>
         feedbackInformation.PlayFeedbacks();
     }
 
-    public void GameOver(){
+    public void GameOver(float duration = 10f){
         if(feedbackFinish.IsPlaying) feedbackFinish.StopFeedbacks();
+        feedbackFinish.GetFeedbackOfType<MMF_Pause>().PauseDuration = duration;
         feedbackFinish.PlayFeedbacks();
+
+        StartCoroutine(LoadLobby_Co());
+    }
+
+    IEnumerator LoadLobby_Co(){
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene(0);
     }
 }

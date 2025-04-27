@@ -13,13 +13,11 @@ public class AbilityPick : Ability<AbilityPickData>
 
     public override void Activate(object obj)
     {
-        Debug.Log("Pick Active");
         currentItem = null;
     }
 
     public override void Deactivate()
     {
-        Debug.Log("Pick DeActive");
         currentItem = null;
     }
 
@@ -54,11 +52,12 @@ public class AbilityPick : Ability<AbilityPickData>
             detectiveItem = null;
             currentItem = null;
         }else{
-            currentItem = detectiveItem;
-            
             if(detectiveItem.tag == "LOCKEDGATE") return;
+            
+            currentItem = detectiveItem;
             detectiveItem.GetComponent<Pickable>().Apply(owner);
             owner.animator.SetBool("PICK", true);
+            OnLost();
         }
     }
 
@@ -73,15 +72,13 @@ public class AbilityPick : Ability<AbilityPickData>
     }
 
     private void CheckItem(){
-        Debug.Log("Pick 인지중...");
-        Debug.DrawRay(owner.transform.position + owner.transform.up * 0.2f, owner.transform.forward, Color.red, data.pickRange);
+        Debug.DrawRay(owner.transform.position + data.offset, owner.transform.forward, Color.red, data.pickRange);
         
         if(currentItem != null) return;
 
-        if(Physics.Raycast(owner.transform.position + owner.transform.up * 0.2f, owner.transform.forward, out RaycastHit hit, data.pickRange)){
+        if(Physics.Raycast(owner.transform.position + data.offset, owner.transform.forward, out RaycastHit hit, data.pickRange)){
             detectiveItem = hit.collider.gameObject;
             
-            Debug.Log("Pick 아이템 화인...");
             if (detectiveItem.tag == "HEAVYOBJECT" || detectiveItem.tag == "ITEM")
             {
                 OnFound();
@@ -113,6 +110,7 @@ public class AbilityPick : Ability<AbilityPickData>
     void OnLost()
     {
         if(detectiveItem == null) return;
+
         data.eventSensorItemExit.from = owner;
         data.eventSensorItemExit.to = detectiveItem.gameObject;
         data.eventSensorItemExit.Raise();

@@ -11,7 +11,7 @@ public class NormalKey : AnswerKey
     
     public bool Use(LockedGate gate){
         Debug.Log(" 키 사용!");
-        bool complete = StageLogicManager.I.OnUseKey(gate, this);
+        bool complete = StageManager.I.OnUseKey(gate, this);
         if(complete){
             Debug.Log("문 열기 성공!!");
             Destroy(this.gameObject);
