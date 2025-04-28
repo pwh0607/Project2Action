@@ -6,8 +6,8 @@ public class LobbyManager : BehaviourSingleton<LobbyManager>
     protected override bool IsDontDestroy() => false;
 
     public void OnClickStart(){
-        int nextSceneIndext = SceneManager.GetActiveScene().buildIndex + 1;
-        SceneManager.LoadScene(nextSceneIndext);
+        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        LoadingController.LoadScene(nextSceneIndex);
     }
 
     public void OnClickExit(){

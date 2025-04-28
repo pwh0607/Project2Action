@@ -9,7 +9,13 @@ public class LockedGate : InterActiveGate
     [SerializeField] Collider blockDoor;
     [SerializeField] Transform leftDoor;
     [SerializeField] Transform rightDoor;
-    public int index;
+    
+    private AudioSource audioSource;
+
+    void Start()
+    {
+        TryGetComponent(out audioSource);
+    }
 
     public void OpenGate(){
         type = GateType.OPEN;
@@ -17,6 +23,8 @@ public class LockedGate : InterActiveGate
 
         leftDoor.DOLocalRotate(new Vector3(0, 100f, 0), 1, RotateMode.FastBeyond360);
         rightDoor.DOLocalRotate(new Vector3(0, -100f, 0), 1, RotateMode.FastBeyond360);
+
+        audioSource.Play();
     }
     
     public void CloseGate(){

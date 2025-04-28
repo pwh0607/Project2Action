@@ -6,14 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : BehaviourSingleton<GameManager>
 {
+    protected override bool IsDontDestroy() => true;
+    
     [SerializeField] MMF_Player feedbackInformation;
     [SerializeField] MMF_Player feedbackFinish;
 
     [SerializeField] TextMeshProUGUI information_TMP;
-    protected override bool IsDontDestroy() => true;
-
     
-
     public void ShowInfo(string info, float duration = 1f){
 
         if(feedbackInformation.IsPlaying) feedbackInformation.StopFeedbacks();

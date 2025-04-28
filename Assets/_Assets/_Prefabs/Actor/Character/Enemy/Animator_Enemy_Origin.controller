@@ -35,7 +35,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ATTACK
-  m_Speed: 1.5
+  m_Speed: 1.2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1491522429016639964}
@@ -155,9 +155,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.001943469
-  m_TransitionOffset: 0.3307421
-  m_ExitTime: 0.9338228
+  m_TransitionDuration: 0.29651344
+  m_TransitionOffset: 0.095086195
+  m_ExitTime: 0.7840414
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0

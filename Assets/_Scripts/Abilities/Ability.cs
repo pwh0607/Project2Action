@@ -5,15 +5,14 @@ using UnityEngine;
 public enum AbilityFlag
 {
     None = 0,
-
     // Player
-    MoveKeyboard = 1 << 0,  // 0001
-    MoveMouse = 1 << 1,     // 0010
-    Jump = 1 << 2,          // 0100
+    MoveKeyboard = 1 << 0,
+    MoveMouse = 1 << 1,     
+    Jump = 1 << 2,          
     Pick = 1 << 3,
 
     // Enemy
-    Wandor = 1 << 11,        // 1000
+    Wandor = 1 << 11,     
     Trace = 1 << 12,
 
     // Attack
@@ -24,19 +23,12 @@ public enum AbilityFlag
     Death = 1 << 35,
 }
 
-// 데이터 담당 : 역할
-// 1. Ability 의 타입을 정한다.
-// 2. Ability 타입에 맞게 생성한다.
 public abstract class AbilityData : ScriptableObject
 {
     public abstract AbilityFlag Flag { get; }
     public abstract Ability CreateAbility( CharacterControl owner );
 }
 
-// 행동 담당
-// abstract 와 virtual 차이 ? 
-// abstract (정의 - 필수) 는 자식에서 무조건 정의 해야한다.
-// virtual (정의 - 선택) 은 옵션
 public abstract class Ability{
     public virtual void Activate(object obj = null) { }
     public virtual void Deactivate() { }
@@ -50,7 +42,7 @@ public abstract class Ability<D> : Ability where D : AbilityData
 
     protected CharacterControl owner;
 
-    public Ability(D data, CharacterControl owner){             // data와 data가 적용된 controller
+    public Ability(D data, CharacterControl owner){   
         this.data = data;
         this.owner = owner;
     }

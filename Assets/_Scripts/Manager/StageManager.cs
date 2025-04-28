@@ -39,7 +39,6 @@ public class StageManager : BehaviourSingleton<StageManager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log($"새 씬 로드됨: {scene.name}");
         InitializeStage();
     }
     
@@ -84,9 +83,9 @@ public class StageManager : BehaviourSingleton<StageManager>
 
     void MakePortal(){
         int num = UnityEngine.Random.Range(0, context.rooms.Count);
-        GameObject portal = Instantiate(portalPrefab, context.rooms[num].roomPosition, Quaternion.identity);
+        stagePortal = Instantiate(portalPrefab, context.rooms[num].roomPosition, Quaternion.identity).GetComponent<Portal>();
         
-        portal.SetActive(false);
+        stagePortal.gameObject.SetActive(false);
     }
 
     public void SetPair(LockedGate gate, AnswerKey answerKey){

@@ -12,8 +12,6 @@ public class AbilityMoveKeyBoard : Ability<AbilityMoveKeyBoardData>
     {
         cameraTransform = Camera.main.transform;
         cursor = GameObject.FindFirstObjectByType<CursorControl>();
-        if(cursor == null)
-            Debug.LogWarning("AbilityMoveMouse ] CursorControl is null...");
 
         if(owner.Profile == null) return;
 

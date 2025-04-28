@@ -4,15 +4,12 @@ using UnityEngine;
 public class InteractiveObject : MonoBehaviour
 {
 #region EVENTS
-    [HorizontalLine("EVENTS"),HideField] public bool _h0;
-
     [SerializeField] EventSensorItemEnter eventSensorItemEnter;
     [SerializeField] EventSensorItemExit eventSensorItemExit;
-    
-    [Space(10), HorizontalLine(color:FixedColor.Cyan),HideField] public bool _h1;
 #endregion
 
     public Renderer[] rds;
+
     [Tooltip("Outline Material")]
     public Material selectableMaterial;
 
@@ -49,10 +46,7 @@ public class InteractiveObject : MonoBehaviour
     }
 
     void Select(bool on)
-    {
-
-        if(on) Debug.Log("select on");
-        
+    {        
         if(rds == null || rds.Length <=0) return;
 
         foreach(var rd in rds){

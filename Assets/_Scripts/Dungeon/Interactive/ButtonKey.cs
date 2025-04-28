@@ -5,15 +5,19 @@ using UnityEngine.Events;
 
 public class ButtonKey : AnswerKey
 {
-    // 설치 가능한 방을 propsGenerator에게 받는다.
     public override KeyType Key => KeyType.BUTTON;
     [SerializeField] ButtonKeyData buttonKeyData;
-    [SerializeField, ReadOnly] private GameObject heavyObject;                     //key 쌍
-    [SerializeField, ReadOnly] private GameObject button;                 //바닥 버튼
+    [SerializeField, ReadOnly] private GameObject heavyObject;                     
+    [SerializeField, ReadOnly] private GameObject button;
     private bool isPressed = false;
+ 
+    private AudioSource auidoSource;
+ 
+ 
     void Start()
     {
         isPressed = false;
+        TryGetComponent(out auidoSource);
 
         MakeKey();
         MakeButton();
@@ -30,10 +34,10 @@ public class ButtonKey : AnswerKey
     }
 
     public void SetPosition(Vector3 pos1, Vector3 pos2){
-        StartCoroutine(PositionSet(pos1, pos2));
+        StartCoroutine(SetPosition_Co(pos1, pos2));
     }
 
-    IEnumerator PositionSet(Vector3 pos1, Vector3 pos2){
+    IEnumerator SetPosition_Co(Vector3 pos1, Vector3 pos2){
         yield return new WaitUntil(() => heavyObject != null && button != null);
 
         heavyObject.transform.position = pos1;
@@ -58,8 +62,8 @@ public class ButtonKey : AnswerKey
     {
         if(isPressed) return;
         if(collision.gameObject.tag == "HEAVYOBJECT"){
-            Debug.Log("버튼 푸쉬!");
             OnPressedButton?.Invoke(this, true);
+            auidoSource.Play();
         }       
     }
 
@@ -67,7 +71,6 @@ public class ButtonKey : AnswerKey
     {
         if(!isPressed) return;
         if(collision.gameObject.tag == "HEAVYOBJECT"){
-            Debug.Log("버튼 풀...!");
             OnPressedButton?.Invoke(this, false);
         }          
     }

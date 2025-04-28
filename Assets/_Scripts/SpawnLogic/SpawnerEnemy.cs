@@ -20,7 +20,6 @@ public class SpawnerEnemy : Spawner
     }
 
     void OnEventEnemySpawnBefore(EventEnemySpawnBefore e){
-
         control = Instantiate(e.enemyCharacter);
         control.transform.SetPositionAndRotation(spawnPoint.position, Quaternion.LookRotation(transform.forward));
         control.Profile = actorProfile;
